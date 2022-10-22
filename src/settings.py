@@ -29,7 +29,3 @@ DEEPPINK = (255,20,147)
 HOTPINK = (255,105,180)
 
 MARS_RED = (150, 40, 50)
-
-
-# constants
-SQRT3 = math.sqrt(3)

@@ -1,6 +1,9 @@
-v0.1.1
+v0.1.1 - 22.10.2022
 ====
-* 
+* New HexTile class structure;
+* New Map class structure, new methods: id2world;
+* New math functions, e.g. world2screen, screen2world;
+* Added manipulation of the map view using mouse and keyboard.
 
 v0.1.0 - 21.10.2022
 ====

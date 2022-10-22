@@ -6,44 +6,60 @@ from classes_hex import *
 
 class Map:
 
-    def __init__(self, map_width, map_height, tile_radius):
+    def __init__(self, map_width, map_height, tile_edge_length):
     # initialization of the map
         self.map_width = map_width # number of tiles horizontally
         self.map_height = map_height # number of tiles vertically
-        self.outer_tile_radius = tile_radius # outer radius = lenght of the edge
-        self.inner_tile_radius = self.outer_tile_radius * SQRT3 / 2 # inner radius
 
-        self.coord = [100, 100] # map position
+        self.tile_edge_length = tile_edge_length
+        self.outer_tile_radius = tile_edge_length # outer radius = length of the edge
+        self.inner_tile_radius = tile_edge_length * SQRT3 / 2 # inner radius
 
         self.BOARD = [] # 2D list with HexTiles
 
         for y in range(map_height):
             row = []
             for x in range(map_width):
-                row.append(HexTile())
+                row.append(HexTile((x, y), self.id2world((x, y)), tile_edge_length))
             self.BOARD.append(row)
 
-        self.upload(100, 100, 1)
+        self.old_offset_x = 0
+        self.old_offset_y = 0
+        self.old_scale = 1
 
-    def upload(self, offset_x, offset_y, scale):
-    # upload coordinates of the HexTiles
-        i_x = 0
-        i_y = 0
-        for row in self.BOARD:
-            if i_y % 2:
-                for tile in row:
-                    tile.compute_corners([(2 * i_x + 1) * self.inner_tile_radius * scale + offset_x, 3 / 2 * self.outer_tile_radius * i_y * scale + offset_y], self.outer_tile_radius )
-                    i_x += 1
-            else:
-                for tile in row:
-                    tile.compute_corners([2 * i_x * self.inner_tile_radius * scale + offset_x, 3 / 2 *  self.outer_tile_radius * i_y * scale + offset_y], self.outer_tile_radius )
-                    i_x += 1
-
-            i_x = 0
-            i_y += 1
 
     def draw(self, win):
     # draw the Map on the screen
         for row in self.BOARD:
             for tile in row:
                 tile.draw(win)
+
+
+    def update_screen_corners(self, offset_x, offset_y, scale = 1):
+    # upload coordinates of the HexTiles
+
+        if self.old_offset_x != offset_x or self.old_offset_y != offset_y or self.old_scale != scale:
+            self.old_offset_x = offset_x
+            self.old_offset_y = offset_y
+            self.old_scale = scale
+
+            for row in self.BOARD:
+                for tile in row:
+                    tile.update_screen_corners(offset_x, offset_y, scale)
+
+    def id2world(self, id):
+    # calculate coordinates from tile's id to world coordinate system
+    # return coordinates in the world coordinate system
+
+        x_id, y_id = id
+
+        if y_id % 2:
+            x_world = (2 * x_id + 1) * self.inner_tile_radius
+        else:
+            x_world = 2 * x_id * self.inner_tile_radius
+
+        y_world = 3 / 2 * self.outer_tile_radius * y_id
+
+        return (x_world, y_world)
+
+    
