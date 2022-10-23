@@ -24,6 +24,7 @@ else:
 
 from settings import *
 from classes_map import *
+from classes_vehicles import *
 
 
 def run():
@@ -32,20 +33,36 @@ def run():
     # initialize the pygame
     pygame.init()
     pygame.display.set_caption("Trains 2022")
-    ICON_IMGS = pygame.image.load(ICON_PATH)
+    ICON_IMGS = pygame.image.load(os.path.join(*ICON_PATH))
     pygame.display.set_icon(ICON_IMGS)
     WIN = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT))
     CLOCK = pygame.time.Clock()
     CURRENT_FRAME = 0
 
     # window variables
-    OFFSET_VERTICAL = 0
-    OFFSET_HORIZONTAL = 90
+    OFFSET_VERTICAL = 100
+    OFFSET_HORIZONTAL = 100
     SCALE = 1
+    SHOW_EXTRA_DATA = True
 
     # initialize the game
     MAP = Map(50, 50, 10)
     MAP.BOARD[1][10].color = BLUE
+
+    # test vehicles
+    number_of_test_vehicles = 5
+    angle = math.pi * 2 / number_of_test_vehicles
+    LIST_WITH_VEHICLES = []
+    for i in range(number_of_test_vehicles):
+        LIST_WITH_VEHICLES.append(Vehicle(move_point([400, 350], 200, i*angle), i*angle - math.pi)) # - math.pi
+        LIST_WITH_VEHICLES[i].movement_target = [400, 350]
+
+    # for i in range(number_of_test_vehicles):
+    #     LIST_WITH_VEHICLES.append(Vehicle([100 + 50*i, 100], math.pi/2))
+
+    # # LIST_WITH_VEHICLES[3].movement_target = [250, 400]
+    # LIST_WITH_VEHICLES[4].movement_target = [400, 400]
+
 
 # main loop
     running = True
@@ -147,8 +164,17 @@ def run():
             OFFSET_HORIZONTAL = 100
             OFFSET_VERTICAL = 100
             SCALE = 1
+        # show extra data
+        if keys_pressed[pygame.K_m]:
+            if SHOW_EXTRA_DATA: SHOW_EXTRA_DATA = False
+            else: SHOW_EXTRA_DATA = True
+
 
 # run the simulation
+
+        # life-cycles of vehicles
+        for vehicle in LIST_WITH_VEHICLES:
+            vehicle.run()
         
 
 # draw the screen
@@ -160,6 +186,15 @@ def run():
         MAP.update_screen_corners(OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
         # draw the map
         MAP.draw(WIN)
+
+        # show extra data
+        if SHOW_EXTRA_DATA:
+            for vehicle in LIST_WITH_VEHICLES:
+                vehicle.draw_extra_data(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
+
+        # draw vehicles
+        for vehicle in LIST_WITH_VEHICLES:
+            vehicle.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
         # flip the screen
         pygame.display.update()

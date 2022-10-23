@@ -8,8 +8,11 @@ import math
 WIN_WIDTH, WIN_HEIGHT = 1260, 720
 FRAMERATE = 60
 
+# sprites - vehicles
+TANK_PATH = ["imgs","vehicles","tank.png"]
+
 # sprites - other
-ICON_PATH = os.path.join("imgs","other","icon.png")
+ICON_PATH = ["imgs","other","icon.png"]
 
 # colors
 BLACK = (0, 0, 0)
