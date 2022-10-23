@@ -1,3 +1,7 @@
+v0.1.2 - 23.10.2022
+====
+* Performance optimisation in HexTile class
+
 v0.1.1 - 22.10.2022
 ====
 * New HexTile class structure;

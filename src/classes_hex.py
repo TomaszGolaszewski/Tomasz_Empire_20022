@@ -17,18 +17,28 @@ class HexTile:
         self.corners_world = self.compute_corners(coord_world, edge_length)
         self.corners_screen = self.corners_world.copy()
 
+        self.is_on_screen = True
+
         self.color = [MARS_RED[0] - random.randint(0, 20), MARS_RED[1] + random.randint(0, 20), MARS_RED[2]]
 
 
     def draw(self, win):
     # draw the HexTile on the screen
-        pygame.draw.polygon(win, self.color, self.corners_screen)
+        if self.is_on_screen:
+            pygame.draw.polygon(win, self.color, self.corners_screen)
 
 
     def update_screen_corners(self, offset_x, offset_y, scale = 1):
     # update the hexagon's corners' coordinates in screen coordinate system
         self.coord_screen = world2screen(self.coord_world, offset_x, offset_y, scale)
         self.corners_screen = self.compute_corners(self.coord_screen, self.edge_length_world * scale)
+
+        margin = 30
+        x, y = self.coord_screen
+        if x < -margin or y < -margin or x > WIN_WIDTH+margin or y > WIN_HEIGHT+margin:
+            self.is_on_screen = False
+        else:
+            self.is_on_screen = True
 
 
     def compute_corners(self, center_coord, edge_length):
