@@ -1,3 +1,8 @@
+v0.2.1 - 24.10.2022
+====
+* Performance optimisation in HexTile class
+* Bugfixes in Vehicle class
+
 v0.2.0 - 23.10.2022
 ====
 * Created Vehicle class with draw, move, accelerate methods

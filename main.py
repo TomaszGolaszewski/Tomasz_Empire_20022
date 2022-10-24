@@ -46,22 +46,22 @@ def run():
     SHOW_EXTRA_DATA = True
 
     # initialize the game
-    MAP = Map(50, 50, 10)
+    MAP = Map(50, 50, 30)
     MAP.BOARD[1][10].color = BLUE
 
     # test vehicles
-    number_of_test_vehicles = 5
+    number_of_test_vehicles = 7
     angle = math.pi * 2 / number_of_test_vehicles
     LIST_WITH_VEHICLES = []
     for i in range(number_of_test_vehicles):
-        LIST_WITH_VEHICLES.append(Vehicle(move_point([400, 350], 200, i*angle), i*angle - math.pi)) # - math.pi
-        LIST_WITH_VEHICLES[i].movement_target = [400, 350]
+        LIST_WITH_VEHICLES.append(Vehicle(move_point([600, 350], 300, i*angle), i*angle)) # - math.pi
+        LIST_WITH_VEHICLES[i].movement_target = [600, 350]
 
-    # for i in range(number_of_test_vehicles):
-    #     LIST_WITH_VEHICLES.append(Vehicle([100 + 50*i, 100], math.pi/2))
+    for i in range(number_of_test_vehicles):
+        LIST_WITH_VEHICLES.append(Vehicle([100 + 50*i, 100], math.pi/2))
 
-    # # LIST_WITH_VEHICLES[3].movement_target = [250, 400]
-    # LIST_WITH_VEHICLES[4].movement_target = [400, 400]
+    LIST_WITH_VEHICLES[8].movement_target = [250, 400]
+    LIST_WITH_VEHICLES[9].movement_target = [400, 400]
 
 
 # main loop
@@ -126,7 +126,7 @@ def run():
                     SCALE -= 0.25
                     # if SCALE == 0: SCALE = 0.5
                     # elif SCALE == -0.5: SCALE = 0.25
-                    if SCALE <= 0: SCALE = 0.25
+                    if SCALE <= 0.25: SCALE = 0.25
 
                     if old_scale - SCALE:
                         # OFFSET_HORIZONTAL -= mouse_pos[0] / old_scale - WIN_WIDTH/2 / SCALE
@@ -142,6 +142,15 @@ def run():
                     running = False
                     pygame.quit()
                     quit()
+                # center
+                if event.key == pygame.K_c:
+                    OFFSET_HORIZONTAL = 100
+                    OFFSET_VERTICAL = 100
+                    SCALE = 1
+                # show extra data
+                if event.key == pygame.K_m:
+                    if SHOW_EXTRA_DATA: SHOW_EXTRA_DATA = False
+                    else: SHOW_EXTRA_DATA = True
 
 # keys that can be pressed multiple times
         keys_pressed=pygame.key.get_pressed()
@@ -159,15 +168,6 @@ def run():
         # move down
         if keys_pressed[pygame.K_DOWN] or keys_pressed[pygame.K_s]:
             OFFSET_VERTICAL -= move_speed
-        # center
-        if keys_pressed[pygame.K_c]:
-            OFFSET_HORIZONTAL = 100
-            OFFSET_VERTICAL = 100
-            SCALE = 1
-        # show extra data
-        if keys_pressed[pygame.K_m]:
-            if SHOW_EXTRA_DATA: SHOW_EXTRA_DATA = False
-            else: SHOW_EXTRA_DATA = True
 
 
 # run the simulation

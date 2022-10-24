@@ -30,14 +30,14 @@ class HexTile:
 
     def update_screen_corners(self, offset_x, offset_y, scale = 1):
     # update the hexagon's corners' coordinates in screen coordinate system
-        self.coord_screen = world2screen(self.coord_world, offset_x, offset_y, scale)
-        self.corners_screen = self.compute_corners(self.coord_screen, self.edge_length_world * scale)
+        self.coord_screen = world2screen(self.coord_world, offset_x, offset_y, scale)  
 
-        margin = 30
+        margin = self.edge_length_world * scale
         x, y = self.coord_screen
         if x < -margin or y < -margin or x > WIN_WIDTH+margin or y > WIN_HEIGHT+margin:
             self.is_on_screen = False
         else:
+            self.corners_screen = self.compute_corners(self.coord_screen, self.edge_length_world * scale)
             self.is_on_screen = True
 
 

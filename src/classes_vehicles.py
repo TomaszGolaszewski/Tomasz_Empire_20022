@@ -8,9 +8,9 @@ from functions_math import *
 
 class Vehicle:
     path = TANK_PATH
-    v_max = 2
+    v_max = 1
     acceleration = 0.1
-    turn_speed = 0.005
+    turn_speed = 0.04
     radar_radius = 100
 
     def __init__(self, coord, angle):
@@ -28,11 +28,12 @@ class Vehicle:
 
     def draw(self, win, offset_x, offset_y, scale):
     # draw the vehicle on the screen
-        self.rotated_image = pygame.transform.rotate(self.body, -math.degrees(self.angle))
-        body = self.rotated_image.get_rect()
-        scaled_image = pygame.transform.scale(self.rotated_image, (scale*body.width, scale*body.height))
-        new_rect = scaled_image.get_rect(center = world2screen(self.coord, offset_x, offset_y, scale))
-        win.blit(scaled_image, new_rect.topleft)
+        
+        body = self.body.get_rect()
+        scaled_image = pygame.transform.scale(self.body, (scale*body.width, scale*body.height))
+        rotated_image = pygame.transform.rotate(scaled_image, -math.degrees(self.angle))
+        new_rect = rotated_image.get_rect(center = world2screen(self.coord, offset_x, offset_y, scale))
+        win.blit(rotated_image, new_rect.topleft)
         # win.blit(scaled_image, move_point(self.orgin, offset_x, offset_y, scale))
 
 
@@ -73,15 +74,16 @@ class Vehicle:
             target_angle = math.atan2(self.movement_target[1] - self.coord[1], self.movement_target[0] - self.coord[0])
             if target_angle < 0: target_angle += 2*math.pi
 
-            if self.angle > target_angle:
-                self.angle -= self.turn_speed
-            else:
-                self.angle += self.turn_speed
+            if abs(target_angle - self.angle) > 0.05:
+                if self.angle > target_angle:
+                    self.angle -= self.turn_speed
+                else:
+                    self.angle += self.turn_speed
 
-            if self.angle > 2*math.pi: self.angle -= 2*math.pi
-            elif self.angle < 0: self.angle += 2*math.pi
+                if self.angle > 2*math.pi: self.angle -= 2*math.pi
+                elif self.angle < 0: self.angle += 2*math.pi
 
-            print(str(self.angle) + "\t" + str(target_angle))
+                # print(str(self.angle) + "\t" + str(target_angle))
 
     def move(self):
     # move the vehicle forward
