@@ -41,27 +41,37 @@ def run():
 
     # window variables
     OFFSET_VERTICAL = 100
-    OFFSET_HORIZONTAL = 100
-    SCALE = 1
+    OFFSET_HORIZONTAL = 1000
+    SCALE = 0.25
     SHOW_EXTRA_DATA = True
 
     # initialize the game
-    MAP = Map(50, 50, 30)
+    MAP = Map(40, 60, 30)
     MAP.BOARD[1][10].color = BLUE
 
     # test vehicles
     number_of_test_vehicles = 7
     angle = math.pi * 2 / number_of_test_vehicles
+    id = 0
     LIST_WITH_VEHICLES = []
     for i in range(number_of_test_vehicles):
         LIST_WITH_VEHICLES.append(Vehicle(move_point([600, 350], 300, i*angle), i*angle)) # - math.pi
         LIST_WITH_VEHICLES[i].movement_target = [600, 350]
+        id += 1
 
-    for i in range(number_of_test_vehicles):
-        LIST_WITH_VEHICLES.append(Vehicle([100 + 50*i, 100], math.pi/2))
+    for i in range(10):
+        LIST_WITH_VEHICLES.append(Vehicle([500 + 50*i, 100], math.pi/2))
+        id += 1
 
     LIST_WITH_VEHICLES[8].movement_target = [250, 400]
     LIST_WITH_VEHICLES[9].movement_target = [400, 400]
+
+    for i in range(15):
+        LIST_WITH_VEHICLES.append(Vehicle([500 + 100*i, 2500], -math.pi/2))
+        LIST_WITH_VEHICLES[id].movement_target = [500 + 50*i, 500]
+        id += 1
+
+
 
 
 # main loop
@@ -174,7 +184,7 @@ def run():
 
         # life-cycles of vehicles
         for vehicle in LIST_WITH_VEHICLES:
-            vehicle.run()
+            vehicle.run(MAP)
         
 
 # draw the screen

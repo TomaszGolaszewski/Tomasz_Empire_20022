@@ -20,7 +20,7 @@ class HexTile:
         self.is_on_screen = True
 
         self.color = [MARS_RED[0] - random.randint(0, 20), MARS_RED[1] + random.randint(0, 20), MARS_RED[2]]
-
+        self.degradation_level = 0
 
     def draw(self, win):
     # draw the HexTile on the screen
@@ -60,3 +60,24 @@ class HexTile:
                 (x - inner_tile_radius, y + outer_tile_radius / 2),
                 (x - inner_tile_radius, y - outer_tile_radius / 2),
             ]
+
+    def degrade(self, level):
+    # degrade the tile - it will be darker
+
+        difference = level - self.degradation_level
+
+        if difference:
+            self.degradation_level = level
+
+            r, g, b = self.color
+            r -= 20
+            g -= 20
+            b -= 20
+            if r < 0: r = 0
+            if g < 0: g = 0
+            if b < 0: b = 0
+            self.color = [r, g, b]
+            # for i_rgb in range(3):
+            #     self.color[i_rgb] = 20
+
+            # self.color = BLUE

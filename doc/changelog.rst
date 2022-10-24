@@ -1,3 +1,7 @@
+v0.2.2 - 24.10.2022
+====
+* Added ground degradation
+
 v0.2.1 - 24.10.2022
 ====
 * Performance optimisation in HexTile class

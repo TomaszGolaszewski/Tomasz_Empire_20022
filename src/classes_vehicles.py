@@ -11,7 +11,7 @@ class Vehicle:
     v_max = 1
     acceleration = 0.1
     turn_speed = 0.04
-    radar_radius = 100
+    radar_radius = 200
 
     def __init__(self, coord, angle):
     # initialization of the vehicle
@@ -48,12 +48,14 @@ class Vehicle:
         pygame.draw.circle(win, YELLOW, world2screen(self.coord, offset_x, offset_y, scale), self.radar_radius*scale, 1)
 
 
-    def run(self):
+    def run(self, Map):
     # life-cycle of the vehicle
         self.accelerate()
         self.turn_to_target()
         self.move()
 
+        x_id, y_id = Map.world2id(self.coord)
+        Map.BOARD[y_id][x_id].degrade(1)
 
     def accelerate(self):
     # accelerate the vehicle - calculate the current speed

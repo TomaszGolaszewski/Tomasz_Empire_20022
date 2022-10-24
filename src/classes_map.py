@@ -63,3 +63,17 @@ class Map:
         return (x_world, y_world)
 
     
+    def world2id(self, coord):
+    # calculate coordinates from world coordinate system to tile's id
+    # return tile's id coordinates
+
+        x_world, y_world = coord
+        
+        y_id = int(2 / 3 * y_world / self.outer_tile_radius + 0.5)
+
+        if y_id % 2:
+            x_id = int(x_world / self.inner_tile_radius / 2)
+        else:
+            x_id = int(x_world / self.inner_tile_radius / 2 + 0.5)
+
+        return (x_id, y_id)
