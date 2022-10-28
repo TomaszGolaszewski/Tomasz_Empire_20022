@@ -1,3 +1,8 @@
+v0.3.0 - 28.10.2022
+====
+* Added Turret class with draw method
+* Added Unit class which is made of Vehicle and Turret objects
+
 v0.2.2 - 24.10.2022
 ====
 * Added ground degradation

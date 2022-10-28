@@ -24,7 +24,7 @@ else:
 
 from settings import *
 from classes_map import *
-from classes_vehicles import *
+from classes_units import *
 
 
 def run():
@@ -53,22 +53,22 @@ def run():
     number_of_test_vehicles = 7
     angle = math.pi * 2 / number_of_test_vehicles
     id = 0
-    LIST_WITH_VEHICLES = []
+    LIST_WITH_UNITS = []
     for i in range(number_of_test_vehicles):
-        LIST_WITH_VEHICLES.append(Vehicle(move_point([600, 350], 300, i*angle), i*angle)) # - math.pi
-        LIST_WITH_VEHICLES[i].movement_target = [600, 350]
+        LIST_WITH_UNITS.append(Light_tank(move_point([600, 350], 300, i*angle), i*angle)) # - math.pi
+        LIST_WITH_UNITS[i].base.movement_target = [600, 350]
         id += 1
 
     for i in range(10):
-        LIST_WITH_VEHICLES.append(Vehicle([500 + 50*i, 100], math.pi/2))
+        LIST_WITH_UNITS.append(Light_tank([500 + 50*i, 100], math.pi/2))
         id += 1
 
-    LIST_WITH_VEHICLES[8].movement_target = [250, 400]
-    LIST_WITH_VEHICLES[9].movement_target = [400, 400]
+    LIST_WITH_UNITS[8].base.movement_target = [250, 400]
+    LIST_WITH_UNITS[9].base.movement_target = [400, 400]
 
     for i in range(15):
-        LIST_WITH_VEHICLES.append(Vehicle([500 + 100*i, 2500], -math.pi/2))
-        LIST_WITH_VEHICLES[id].movement_target = [500 + 50*i, 500]
+        LIST_WITH_UNITS.append(Light_tank([300 + 100*i, 2500], -math.pi/2))
+        LIST_WITH_UNITS[id].base.movement_target = [500 + 50*i, 500]
         id += 1
 
 
@@ -183,8 +183,8 @@ def run():
 # run the simulation
 
         # life-cycles of vehicles
-        for vehicle in LIST_WITH_VEHICLES:
-            vehicle.run(MAP)
+        for unit in LIST_WITH_UNITS:
+            unit.run(MAP)
         
 
 # draw the screen
@@ -199,12 +199,12 @@ def run():
 
         # show extra data
         if SHOW_EXTRA_DATA:
-            for vehicle in LIST_WITH_VEHICLES:
-                vehicle.draw_extra_data(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
+            for unit in LIST_WITH_UNITS:
+                unit.draw_extra_data(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
         # draw vehicles
-        for vehicle in LIST_WITH_VEHICLES:
-            vehicle.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
+        for unit in LIST_WITH_UNITS:
+            unit.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
         # flip the screen
         pygame.display.update()

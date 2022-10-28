@@ -7,11 +7,11 @@ from functions_math import *
 
 
 class Vehicle:
-    path = TANK_PATH
+    path = LIGHT_TANK_PATH
     v_max = 1
     acceleration = 0.1
     turn_speed = 0.04
-    radar_radius = 200
+    hit_box_radius = 13
 
     def __init__(self, coord, angle):
     # initialization of the vehicle
@@ -24,7 +24,9 @@ class Vehicle:
         self.body = pygame.image.load(os.path.join(*self.path))
         self.body.convert()
         self.body.set_colorkey(BLACK)
+        # print(self.body.get_at((0,10)))
         # self.rotated_image = pygame.transform.rotate(self.body, -math.degrees(self.angle))
+
 
     def draw(self, win, offset_x, offset_y, scale):
     # draw the vehicle on the screen
@@ -44,8 +46,8 @@ class Vehicle:
         pygame.draw.line(win, BLUE, world2screen(self.coord, offset_x, offset_y, scale), world2screen(self.movement_target, offset_x, offset_y, scale))
         pygame.draw.circle(win, BLUE, world2screen(self.movement_target, offset_x, offset_y, scale), 10*scale, 1)
 
-        # radar radius
-        pygame.draw.circle(win, YELLOW, world2screen(self.coord, offset_x, offset_y, scale), self.radar_radius*scale, 1)
+        # hit box radius
+        pygame.draw.circle(win, RED, world2screen(self.coord, offset_x, offset_y, scale), self.hit_box_radius*scale, 1)
 
 
     def run(self, Map):
@@ -90,3 +92,12 @@ class Vehicle:
     def move(self):
     # move the vehicle forward
         self.coord = move_point(self.coord, self.v_current, self.angle)
+
+    
+    def get_position(self):
+    # return coordinates
+        return self.coord
+
+    def get_angle(self):
+    # return angle
+        return self.angle
