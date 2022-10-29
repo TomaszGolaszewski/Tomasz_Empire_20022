@@ -21,8 +21,8 @@ else:
     path.append('.\\src')
     print("other")
 
-
 from settings import *
+from functions_test import *
 from classes_map import *
 from classes_units import *
 
@@ -40,38 +40,19 @@ def run():
     CURRENT_FRAME = 0
 
     # window variables
-    OFFSET_VERTICAL = 100
-    OFFSET_HORIZONTAL = 1000
-    SCALE = 0.25
+    # OFFSET_VERTICAL = 100
+    # OFFSET_HORIZONTAL = 1000
+    # SCALE = 0.25
+    OFFSET_VERTICAL = 150
+    OFFSET_HORIZONTAL = 200
+    SCALE = 0.5
     SHOW_EXTRA_DATA = True
 
     # initialize the game
     MAP = Map(40, 60, 30)
-    MAP.BOARD[1][10].color = BLUE
+    # MAP.BOARD[1][10].color = BLUE
 
-    # test vehicles
-    number_of_test_vehicles = 7
-    angle = math.pi * 2 / number_of_test_vehicles
-    id = 0
-    LIST_WITH_UNITS = []
-    for i in range(number_of_test_vehicles):
-        LIST_WITH_UNITS.append(Light_tank(move_point([600, 350], 300, i*angle), i*angle)) # - math.pi
-        LIST_WITH_UNITS[i].base.movement_target = [600, 350]
-        id += 1
-
-    for i in range(10):
-        LIST_WITH_UNITS.append(Light_tank([500 + 50*i, 100], math.pi/2))
-        id += 1
-
-    LIST_WITH_UNITS[8].base.movement_target = [250, 400]
-    LIST_WITH_UNITS[9].base.movement_target = [400, 400]
-
-    for i in range(15):
-        LIST_WITH_UNITS.append(Light_tank([300 + 100*i, 2500], -math.pi/2))
-        LIST_WITH_UNITS[id].base.movement_target = [500 + 50*i, 500]
-        id += 1
-
-
+    LIST_WITH_UNITS = make_test_units()
 
 
 # main loop

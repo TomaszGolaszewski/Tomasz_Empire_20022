@@ -1,3 +1,7 @@
+v0.3.1 - 29.10.2022
+====
+* Added team and unit class indicator
+
 v0.3.0 - 28.10.2022
 ====
 * Added Turret class with draw method
