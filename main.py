@@ -165,7 +165,7 @@ def run():
 
         # life-cycles of vehicles
         for unit in LIST_WITH_UNITS:
-            unit.run(MAP)
+            unit.run(MAP, LIST_WITH_UNITS)
         
 
 # draw the screen

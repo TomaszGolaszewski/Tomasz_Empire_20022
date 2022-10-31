@@ -1,3 +1,7 @@
+v0.3.2 - 31.10.2022
+====
+* Added method find_target to Turret class
+
 v0.3.1 - 29.10.2022
 ====
 * Added team and unit class indicator

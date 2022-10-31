@@ -13,10 +13,12 @@ class Vehicle:
     turn_speed = 0.04
     hit_box_radius = 13
 
-    def __init__(self, coord, angle):
+    def __init__(self, coord, angle, player_id, team_id):
     # initialization of the vehicle
         self.coord = coord
         self.angle = angle
+        self.player_id = player_id
+        self.team_id = team_id
         
         self.v_current = 0
         self.movement_target = coord
@@ -50,14 +52,14 @@ class Vehicle:
         pygame.draw.circle(win, RED, world2screen(self.coord, offset_x, offset_y, scale), self.hit_box_radius*scale, 1)
 
 
-    def run(self, Map):
+    def run(self, map):
     # life-cycle of the vehicle
         self.accelerate()
         self.turn_to_target()
         self.move()
 
-        x_id, y_id = Map.world2id(self.coord)
-        Map.BOARD[y_id][x_id].degrade(1)
+        x_id, y_id = map.world2id(self.coord)
+        map.BOARD[y_id][x_id].degrade(1)
 
     def accelerate(self):
     # accelerate the vehicle - calculate the current speed

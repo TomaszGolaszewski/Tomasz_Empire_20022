@@ -10,14 +10,15 @@ from classes_turrets import *
 
 
 class Unit:
-    def __init__(self, coord, angle, player_id):
+    def __init__(self, coord, angle, player_id, team_id):
     # initialization of the unit
-        self.base = Vehicle(coord, angle)
-        self.weapon = Turret(coord, angle)
+        self.base = Vehicle(coord, angle, player_id, team_id)
+        self.weapon = Turret(coord, angle, player_id, team_id)
 
         self.coord = coord
         self.angle = angle
         self.player_id = player_id
+        self.team_id = team_id
 
 
     def draw(self, win, offset_x, offset_y, scale):
@@ -32,28 +33,28 @@ class Unit:
         self.weapon.draw_extra_data(win, offset_x, offset_y, scale)
 
 
-    def run(self, Map):
+    def run(self, map, list_with_units):
     # life-cycle of the unit
-        self.base.run(Map)
+        self.base.run(map)
         self.coord = self.base.get_position()
         self.weapon.set_position(self.coord)
         self.angle = self.base.get_angle()
         self.weapon.set_angle(self.angle)
-        self.weapon.run()
+        self.weapon.run(list_with_units)
 
 
 class Land_unit(Unit):
-    def __init__(self, coord, angle, player_id):
+    def __init__(self, coord, angle, player_id, team_id):
     # initialization of the land unit
-        Unit.__init__(self, coord, angle, player_id)
+        Unit.__init__(self, coord, angle, player_id, team_id)
 
 
 class Light_tank(Land_unit):
-    def __init__(self, coord, angle, player_id):
+    def __init__(self, coord, angle, player_id, team_id):
     # initialization of the light tank
-        Land_unit.__init__(self, coord, angle, player_id)
-        self.base = Vehicle(coord, angle)
-        self.weapon = Turret(coord, angle)
+        Land_unit.__init__(self, coord, angle, player_id, team_id)
+        self.base = Vehicle(coord, angle, player_id, team_id)
+        self.weapon = Turret(coord, angle, player_id, team_id)
 
 
     def draw(self, win, offset_x, offset_y, scale):
