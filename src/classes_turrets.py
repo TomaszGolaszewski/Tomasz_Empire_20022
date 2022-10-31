@@ -1,17 +1,20 @@
 import pygame
 import math
 import random
+from classes_bullets import Bullet
 
 from settings import *
 from functions_math import *
 
 class Turret:
     path = LIGHT_TURRET_PATH
-    # v_max = 1
-    # acceleration = 0.1
+    
     turn_speed = 0.04
     max_radar_radius = 200
     min_radar_radius = 50
+
+    max_bullet_range = 400
+    barrel_length = 10
 
     countdown_time = FRAMERATE
 
@@ -56,11 +59,14 @@ class Turret:
         pygame.draw.circle(win, LIME, world2screen(self.coord, offset_x, offset_y, scale), self.min_radar_radius*scale, 1)
 
 
-    def run(self, list_with_units):
+    def run(self, list_with_units, list_with_bullets):
     # life-cycle of the weapon
         if not self.countdown:
             self.find_target(list_with_units)
             self.countdown = self.countdown_time
+            if abs(self.turret_angle - self.angle_to_target) < 0.05:
+                bullet_coord = move_point(self.coord, self.barrel_length, self.turret_angle)
+                list_with_bullets.append(Bullet(bullet_coord, self.turret_angle, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id))
         else:
             self.countdown -= 1
 
@@ -109,6 +115,9 @@ class Light_cannon(Turret):
     max_radar_radius = 200
     min_radar_radius = 50
 
+    max_bullet_range = 400
+    barrel_length = 10
+
     countdown_time = FRAMERATE
 
     def __init__(self, coord, base_angle, player_id, team_id):
@@ -122,6 +131,9 @@ class Medium_cannon(Turret):
     turn_speed = 0.04
     max_radar_radius = 400
     min_radar_radius = 75
+
+    max_bullet_range = 800
+    barrel_length = 20
 
     countdown_time = FRAMERATE
 

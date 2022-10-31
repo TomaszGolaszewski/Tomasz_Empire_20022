@@ -53,6 +53,7 @@ def run():
     # MAP.BOARD[1][10].color = BLUE
 
     LIST_WITH_UNITS = make_test_units()
+    LIST_WITH_BULLETS = []
 
 
 # main loop
@@ -163,9 +164,13 @@ def run():
 
 # run the simulation
 
-        # life-cycles of vehicles
+        # life-cycles of bullets
+        for bullet in LIST_WITH_BULLETS:
+            bullet.run(MAP)
+
+        # life-cycles of units
         for unit in LIST_WITH_UNITS:
-            unit.run(MAP, LIST_WITH_UNITS)
+            unit.run(MAP, LIST_WITH_UNITS, LIST_WITH_BULLETS)
         
 
 # draw the screen
@@ -186,6 +191,10 @@ def run():
         # draw vehicles
         for unit in LIST_WITH_UNITS:
             unit.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
+
+        # draw bullets
+        for bullet in LIST_WITH_BULLETS:
+            bullet.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
         # flip the screen
         pygame.display.update()

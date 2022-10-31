@@ -64,10 +64,8 @@ class HexTile:
     def degrade(self, level):
     # degrade the tile - it will be darker
 
-        difference = level - self.degradation_level
-
-        if difference:
-            self.degradation_level = level
+        if self.degradation_level < level:
+            self.degradation_level += 1
 
             r, g, b = self.color
             r -= 20

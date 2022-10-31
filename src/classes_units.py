@@ -33,14 +33,14 @@ class Unit:
         self.weapon.draw_extra_data(win, offset_x, offset_y, scale)
 
 
-    def run(self, map, list_with_units):
+    def run(self, map, list_with_units, list_with_bullets):
     # life-cycle of the unit
         self.base.run(map)
         self.coord = self.base.get_position()
         self.weapon.set_position(self.coord)
         self.angle = self.base.get_angle()
         self.weapon.set_angle(self.angle)
-        self.weapon.run(list_with_units)
+        self.weapon.run(list_with_units, list_with_bullets)
 
 
 class Land_unit(Unit):

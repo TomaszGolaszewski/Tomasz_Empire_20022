@@ -1,3 +1,9 @@
+v0.4.0 - 31.10.2022
+====
+* Added Bullet class with draw and run methods
+* Turrets are shooting bullets now
+* Small changes in ground degradation
+
 v0.3.3 - 31.10.2022
 ====
 * Added rotating the tower to run method in Turret class

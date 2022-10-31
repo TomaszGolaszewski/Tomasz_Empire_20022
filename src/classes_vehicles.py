@@ -95,8 +95,7 @@ class Vehicle:
     def move(self):
     # move the vehicle forward
         self.coord = move_point(self.coord, self.v_current, self.angle)
-
-    
+   
     def get_position(self):
     # return coordinates
         return self.coord
