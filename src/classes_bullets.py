@@ -8,7 +8,7 @@ from functions_math import *
 
 class Bullet:
     speed = 5
-    radius = 5
+    radius = 3
 
     def __init__(self, coord, angle, max_distance, min_distance, player_id, team_id):
     # initialization of the bullet

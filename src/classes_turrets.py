@@ -7,7 +7,7 @@ from settings import *
 from functions_math import *
 
 class Turret:
-    path = LIGHT_TURRET_PATH
+    path = TURRET_PATH
     
     turn_speed = 0.04
     max_radar_radius = 200
@@ -107,16 +107,15 @@ class Turret:
         self.base_angle = angle
 
 
-
 class Light_cannon(Turret): 
-    path = LIGHT_TURRET_PATH
+    path = LIGHT_CANNON_PATH
 
     turn_speed = 0.04
     max_radar_radius = 200
     min_radar_radius = 50
 
     max_bullet_range = 400
-    barrel_length = 10
+    barrel_length = 15
 
     countdown_time = FRAMERATE
 
@@ -126,14 +125,14 @@ class Light_cannon(Turret):
 
 
 class Medium_cannon(Turret): 
-    path = LIGHT_TURRET_PATH
+    path = MEDIUM_CANNON_PATH
 
     turn_speed = 0.04
     max_radar_radius = 400
     min_radar_radius = 75
 
     max_bullet_range = 800
-    barrel_length = 20
+    barrel_length = 25
 
     countdown_time = FRAMERATE
 

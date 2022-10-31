@@ -65,6 +65,7 @@ def run():
             CURRENT_FRAME = 0
             print("FPS: %.2f" % CLOCK.get_fps(), end="\t")
             print("TIME: " + str(pygame.time.get_ticks() // 1000))
+            print(len(LIST_WITH_BULLETS))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -101,7 +102,7 @@ def run():
                     SCALE += 0.25
                     # if SCALE == 1.5: SCALE = 1
                     # elif SCALE == 1.25: SCALE = 0.5
-                    if SCALE >= 3: SCALE = 3
+                    if SCALE >= 4: SCALE = 4
 
                     if old_scale - SCALE:
                         # OFFSET_HORIZONTAL -= mouse_pos[0] / old_scale - WIN_WIDTH/2 / SCALE

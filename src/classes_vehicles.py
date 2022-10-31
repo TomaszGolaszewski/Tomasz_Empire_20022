@@ -7,7 +7,7 @@ from functions_math import *
 
 
 class Vehicle:
-    path = LIGHT_TANK_PATH
+    path = TANK_PATH
     v_max = 1
     acceleration = 0.1
     turn_speed = 0.04
@@ -106,7 +106,7 @@ class Vehicle:
 
 
 class Light_track(Vehicle):
-    path = LIGHT_TANK_PATH
+    path = LIGHT_TRACK_PATH
     v_max = 1
     acceleration = 0.1
     turn_speed = 0.04
@@ -118,11 +118,11 @@ class Light_track(Vehicle):
 
 
 class Medium_track(Vehicle):
-    path = LIGHT_TANK_PATH
+    path = MEDIUM_TRACK_PATH
     v_max = 0.75
     acceleration = 0.1
     turn_speed = 0.04
-    hit_box_radius = 20
+    hit_box_radius = 17
 
     def __init__(self, coord, angle, player_id, team_id):
     # initialization of the medium track

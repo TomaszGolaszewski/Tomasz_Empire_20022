@@ -1,3 +1,8 @@
+v0.4.1 - 31.10.2022
+====
+* New units: Light tank and Main battle tank
+* Lots of small fixes
+
 v0.4.0 - 31.10.2022
 ====
 * Added Bullet class with draw and run methods

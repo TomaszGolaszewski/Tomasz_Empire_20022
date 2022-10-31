@@ -9,8 +9,13 @@ WIN_WIDTH, WIN_HEIGHT = 1260, 720
 FRAMERATE = 60
 
 # sprites - units
-LIGHT_TANK_PATH = ["imgs","vehicles","tank.bmp"]
-LIGHT_TURRET_PATH = ["imgs","vehicles","turret.bmp"]
+TANK_PATH = ["imgs","vehicles","tank.png"]
+LIGHT_TRACK_PATH = ["imgs","vehicles","light_track.bmp"]
+MEDIUM_TRACK_PATH = ["imgs","vehicles","medium_track.bmp"]
+
+TURRET_PATH = ["imgs","vehicles","turret.png"]
+LIGHT_CANNON_PATH = ["imgs","vehicles","light_cannon.bmp"]
+MEDIUM_CANNON_PATH = ["imgs","vehicles","medium_cannon.bmp"]
 
 # sprites - other
 ICON_PATH = ["imgs","other","icon.png"]
