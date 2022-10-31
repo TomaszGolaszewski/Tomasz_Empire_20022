@@ -1,3 +1,7 @@
+v0.4.2 - 31.10.2022
+====
+* Added deletion of old bullets
+
 v0.4.1 - 31.10.2022
 ====
 * New units: Light tank and Main battle tank

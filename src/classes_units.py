@@ -15,6 +15,8 @@ class Unit:
         self.base = Vehicle(coord, angle, player_id, team_id)
         self.weapon = Turret(coord, angle, player_id, team_id)
 
+        self.is_alive = True
+
         self.coord = coord
         self.angle = angle
         self.player_id = player_id

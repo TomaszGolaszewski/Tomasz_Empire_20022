@@ -23,6 +23,7 @@ else:
 
 from settings import *
 from functions_test import *
+from functions_other import *
 from classes_map import *
 from classes_units import *
 
@@ -199,6 +200,16 @@ def run():
 
         # flip the screen
         pygame.display.update()
+
+
+# clear dead elements
+
+        # dead bullets
+        remove_few_dead_elements(LIST_WITH_BULLETS)
+        # LIST_WITH_BULLETS = remove_many_dead_elements(LIST_WITH_BULLETS)
+
+        # dead units
+        remove_few_dead_elements(LIST_WITH_UNITS)
     
 
 if __name__ == "__main__":

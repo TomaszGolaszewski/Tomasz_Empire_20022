@@ -12,6 +12,8 @@ class Bullet:
 
     def __init__(self, coord, angle, max_distance, min_distance, player_id, team_id):
     # initialization of the bullet
+        self.is_alive = True
+
         self.coord = coord
         self.angle = angle
         self.player_id = player_id
@@ -28,12 +30,14 @@ class Bullet:
 
 
     def run(self, map):
-    # life-cycle of the bullet
-        if self.distance <= self.max_distance: self.move()
+    # life-cycle of the bullet          
 
         if self.distance > self.max_distance:
             x_id, y_id = map.world2id(self.coord)
             map.BOARD[y_id][x_id].degrade(2)
+            self.is_alive = False
+        else:
+            self.move()
 
 
     def move(self):

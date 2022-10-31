@@ -30,6 +30,8 @@ class Turret:
         self.angle_to_target = base_angle
         self.dist_to_target = 0
         self.countdown = 0
+        self.target_locked = False
+        # self.show_target = False
 
         self.body = pygame.image.load(os.path.join(*self.path))
         self.body.convert()
@@ -51,8 +53,9 @@ class Turret:
     # draw extra data about the weapon on the screen
         
         # target
-        pygame.draw.line(win, RED, world2screen(self.coord, offset_x, offset_y, scale), world2screen(self.target_coord, offset_x, offset_y, scale))
-        pygame.draw.circle(win, RED, world2screen(self.target_coord, offset_x, offset_y, scale), 10*scale, 1)
+        if self.target_locked:
+            pygame.draw.line(win, RED, world2screen(self.coord, offset_x, offset_y, scale), world2screen(self.target_coord, offset_x, offset_y, scale))
+            pygame.draw.circle(win, RED, world2screen(self.target_coord, offset_x, offset_y, scale), 10*scale, 1)
 
         # radar radius
         pygame.draw.circle(win, YELLOW, world2screen(self.coord, offset_x, offset_y, scale), self.max_radar_radius*scale, 1)
@@ -64,9 +67,10 @@ class Turret:
         if not self.countdown:
             self.find_target(list_with_units)
             self.countdown = self.countdown_time
-            if abs(self.turret_angle - self.angle_to_target) < 0.05:
+            if self.target_locked and abs(self.turret_angle - self.angle_to_target) < 0.05:
                 bullet_coord = move_point(self.coord, self.barrel_length, self.turret_angle)
                 list_with_bullets.append(Bullet(bullet_coord, self.turret_angle, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id))
+                # self.target_locked = False
         else:
             self.countdown -= 1
 
@@ -94,9 +98,10 @@ class Turret:
             self.target_coord = temp_coord
             self.angle_to_target = angle_to_target(self.coord, temp_coord)
             self.dist_to_target = temp_dist
+            self.target_locked = True
         else:
-            self.target_coord = move_point(self.coord, 20, self.base_angle)
-
+            self.target_coord = self.coord
+            self.target_locked = False
 
     def set_position(self, coord):
     # set new position of weapon
