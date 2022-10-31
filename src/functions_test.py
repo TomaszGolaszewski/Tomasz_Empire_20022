@@ -24,13 +24,18 @@ def make_test_units():
     LIST_WITH_UNITS[9].base.movement_target = [400, 400]
 
     # test vehicles for green team
+    red_id = 0
     for i in range(15):
-        LIST_WITH_UNITS.append(Light_tank([300 + 100*i, 2500], -math.pi/2, 2, 2))
+        if red_id == 6 or red_id == 7: LIST_WITH_UNITS.append(Main_battle_tank([300 + 100*i, 1000], -math.pi/2, 2, 2)) # 2500      
+        else: LIST_WITH_UNITS.append(Light_tank([300 + 100*i, 1000], -math.pi/2, 2, 2))
         LIST_WITH_UNITS[id].base.movement_target = [500 + 50*i, 500]
         id += 1
+        red_id += 1
 
     # test vehicles for red team
     LIST_WITH_UNITS.append(Light_tank([1700, 100], -math.pi, 3, 3))
     LIST_WITH_UNITS.append(Light_tank([1700, 150], -math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Main_battle_tank([1700, 200], -math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Main_battle_tank([1700, 250], -math.pi, 3, 3))
 
     return LIST_WITH_UNITS

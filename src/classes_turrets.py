@@ -64,6 +64,8 @@ class Turret:
         else:
             self.countdown -= 1
 
+        self.turret_angle = turn_to_target_angle(self.turret_angle, self.angle_to_target, self.turn_speed)
+
 
     def find_target(self, list_with_units):
     # find closest target
@@ -79,16 +81,15 @@ class Turret:
                 dist = dist_two_points(unit.coord, self.coord)
                 if dist < self.max_radar_radius and dist < temp_dist and dist > self.min_radar_radius:
                     temp_coord = unit.coord
-                    # temp_angle = 
                     temp_dist = dist
                     temp_found_new_target = True
         
         if temp_found_new_target:
             self.target_coord = temp_coord
-            self.angle_to_target = temp_angle
+            self.angle_to_target = angle_to_target(self.coord, temp_coord)
             self.dist_to_target = temp_dist
         else:
-            self.target_coord = [self.coord[0] + 50, self.coord[1] + 50]
+            self.target_coord = move_point(self.coord, 20, self.base_angle)
 
 
     def set_position(self, coord):
@@ -98,3 +99,32 @@ class Turret:
     def set_angle(self, angle):
     # set new base angle of weapon
         self.base_angle = angle
+
+
+
+class Light_cannon(Turret): 
+    path = LIGHT_TURRET_PATH
+
+    turn_speed = 0.04
+    max_radar_radius = 200
+    min_radar_radius = 50
+
+    countdown_time = FRAMERATE
+
+    def __init__(self, coord, base_angle, player_id, team_id):
+    # initialization of the light cannon
+        Turret.__init__(self, coord, base_angle, player_id, team_id)
+
+
+class Medium_cannon(Turret): 
+    path = LIGHT_TURRET_PATH
+
+    turn_speed = 0.04
+    max_radar_radius = 400
+    min_radar_radius = 75
+
+    countdown_time = FRAMERATE
+
+    def __init__(self, coord, base_angle, player_id, team_id):
+    # initialization of the light cannon
+        Turret.__init__(self, coord, base_angle, player_id, team_id)

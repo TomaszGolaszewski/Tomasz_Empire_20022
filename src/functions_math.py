@@ -32,3 +32,28 @@ def dist_two_points(point1, point2):
 def dist_two_points_square(point1, point2):
 # function that calculate square of distance between two points
     return (point1[0]-point2[0])**2 + (point1[1]-point2[1])**2
+
+
+def angle_to_target(origin, target):
+# function that calculate angle between two points
+# return angle in radians - in the range of 0 to 2pi
+    angle = math.atan2(target[1] - origin[1], target[0] - origin[0])
+    if angle < 0: angle += 2*math.pi
+    return angle
+
+
+def turn_to_target_angle(origin_angle, target_angle, turn_speed, damping = 0.05):
+# function that slowly (by turn_speed) changes origin_angle in target_angle_direction
+# optional vibration damping
+# return angle in radians - in the range of 0 to 2pi
+
+    if abs(target_angle - origin_angle) > damping:
+        if origin_angle > target_angle:
+            origin_angle -= turn_speed
+        else:
+            origin_angle += turn_speed
+
+        if origin_angle > 2*math.pi: origin_angle -= 2*math.pi
+        elif origin_angle < 0: origin_angle += 2*math.pi
+
+    return origin_angle

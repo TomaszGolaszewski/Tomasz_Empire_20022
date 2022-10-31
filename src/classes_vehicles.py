@@ -77,17 +77,18 @@ class Vehicle:
         dist_to_target = dist_two_points(self.coord,self.movement_target)
 
         if dist_to_target > 20:
-            target_angle = math.atan2(self.movement_target[1] - self.coord[1], self.movement_target[0] - self.coord[0])
-            if target_angle < 0: target_angle += 2*math.pi
+            target_angle = angle_to_target(self.coord, self.movement_target)
 
-            if abs(target_angle - self.angle) > 0.05:
-                if self.angle > target_angle:
-                    self.angle -= self.turn_speed
-                else:
-                    self.angle += self.turn_speed
+            # if abs(target_angle - self.angle) > 0.05:
+            #     if self.angle > target_angle:
+            #         self.angle -= self.turn_speed
+            #     else:
+            #         self.angle += self.turn_speed
 
-                if self.angle > 2*math.pi: self.angle -= 2*math.pi
-                elif self.angle < 0: self.angle += 2*math.pi
+            #     if self.angle > 2*math.pi: self.angle -= 2*math.pi
+            #     elif self.angle < 0: self.angle += 2*math.pi
+
+            self.angle = turn_to_target_angle(self.angle, target_angle, self.turn_speed)
 
                 # print(str(self.angle) + "\t" + str(target_angle))
 
@@ -103,3 +104,27 @@ class Vehicle:
     def get_angle(self):
     # return angle
         return self.angle
+
+
+class Light_track(Vehicle):
+    path = LIGHT_TANK_PATH
+    v_max = 1
+    acceleration = 0.1
+    turn_speed = 0.04
+    hit_box_radius = 13
+
+    def __init__(self, coord, angle, player_id, team_id):
+    # initialization of the light track
+        Vehicle.__init__(self, coord, angle, player_id, team_id)
+
+
+class Medium_track(Vehicle):
+    path = LIGHT_TANK_PATH
+    v_max = 0.75
+    acceleration = 0.1
+    turn_speed = 0.04
+    hit_box_radius = 20
+
+    def __init__(self, coord, angle, player_id, team_id):
+    # initialization of the medium track
+        Vehicle.__init__(self, coord, angle, player_id, team_id)

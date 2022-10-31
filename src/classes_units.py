@@ -53,8 +53,8 @@ class Light_tank(Land_unit):
     def __init__(self, coord, angle, player_id, team_id):
     # initialization of the light tank
         Land_unit.__init__(self, coord, angle, player_id, team_id)
-        self.base = Vehicle(coord, angle, player_id, team_id)
-        self.weapon = Turret(coord, angle, player_id, team_id)
+        self.base = Light_track(coord, angle, player_id, team_id)
+        self.weapon = Light_cannon(coord, angle, player_id, team_id)
 
 
     def draw(self, win, offset_x, offset_y, scale):
@@ -66,6 +66,32 @@ class Light_tank(Land_unit):
         # draw level indicator
         pygame.draw.line(win, BLACK, coord_on_screen, [coord_on_screen[0], coord_on_screen[1] + 8], 3)
         pygame.draw.line(win, WHITE, coord_on_screen, [coord_on_screen[0], coord_on_screen[1] + 7], 1)
+
+        # draw team circle
+        pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, 6, 0)
+
+        # draw unit indicator
+        pygame.draw.circle(win, WHITE, coord_on_screen, 3, 1)
+
+
+class Main_battle_tank(Land_unit):
+    def __init__(self, coord, angle, player_id, team_id):
+    # initialization of the main battle tank
+        Land_unit.__init__(self, coord, angle, player_id, team_id)
+        self.base = Medium_track(coord, angle, player_id, team_id)
+        self.weapon = Medium_cannon(coord, angle, player_id, team_id)
+
+
+    def draw(self, win, offset_x, offset_y, scale):
+    # draw the main battle on the screen
+        Land_unit.draw(self, win, offset_x, offset_y, scale)
+
+        coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale)
+
+        # draw level indicator
+        pygame.draw.line(win, BLACK, coord_on_screen, [coord_on_screen[0], coord_on_screen[1] + 8], 5)
+        pygame.draw.line(win, WHITE, [coord_on_screen[0] - 1, coord_on_screen[1]], [coord_on_screen[0] - 1, coord_on_screen[1] + 7], 1)
+        pygame.draw.line(win, WHITE, [coord_on_screen[0] + 1, coord_on_screen[1]], [coord_on_screen[0] + 1, coord_on_screen[1] + 7], 1)
 
         # draw team circle
         pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, 6, 0)

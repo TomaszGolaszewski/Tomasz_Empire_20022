@@ -1,3 +1,7 @@
+v0.3.3 - 31.10.2022
+====
+* Added rotating the tower to run method in Turret class
+
 v0.3.2 - 31.10.2022
 ====
 * Added method find_target to Turret class
