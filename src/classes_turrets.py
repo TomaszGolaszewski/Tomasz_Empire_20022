@@ -16,7 +16,10 @@ class Turret:
     max_bullet_range = 400
     barrel_length = 10
 
-    countdown_time = FRAMERATE
+    power = 100
+
+    countdown_time_to_search = FRAMERATE // 6
+    countdown_time_to_shot = FRAMERATE
 
     def __init__(self, coord, base_angle, player_id, team_id):
     # initialization of the weapon
@@ -29,7 +32,8 @@ class Turret:
         self.target_coord = coord
         self.angle_to_target = base_angle
         self.dist_to_target = 0
-        self.countdown = 0
+        self.countdown_to_search = 0
+        self.countdown_to_shot = 0
         self.target_locked = False
         # self.show_target = False
 
@@ -64,17 +68,23 @@ class Turret:
 
     def run(self, list_with_units, list_with_bullets):
     # life-cycle of the weapon
-        if not self.countdown:
+        if not self.countdown_to_search:
+            # try to find target
             self.find_target(list_with_units)
-            self.countdown = self.countdown_time
-            if self.target_locked and abs(self.turret_angle - self.angle_to_target) < 0.05:
-                bullet_coord = move_point(self.coord, self.barrel_length, self.turret_angle)
-                list_with_bullets.append(Bullet(bullet_coord, self.turret_angle, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id))
-                # self.target_locked = False
+            self.countdown_to_search = self.countdown_time_to_search          
         else:
-            self.countdown -= 1
+            self.countdown_to_search -= 1
 
-        self.turret_angle = turn_to_target_angle(self.turret_angle, self.angle_to_target, self.turn_speed)
+        if not self.countdown_to_shot:
+            if self.target_locked and abs(self.turret_angle - self.angle_to_target) < 0.05:
+                # make and shot the bullet
+                bullet_coord = move_point(self.coord, self.barrel_length, self.turret_angle)
+                list_with_bullets.append(Bullet(bullet_coord, self.turret_angle, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id, self.power))
+                self.countdown_to_shot = self.countdown_time_to_shot
+        else:
+            self.countdown_to_shot -= 1
+
+        self.turret_angle = turn_to_target_angle(self.turret_angle, self.angle_to_target, self.turn_speed, 0.02)
 
 
     def find_target(self, list_with_units):
@@ -116,13 +126,16 @@ class Light_cannon(Turret):
     path = LIGHT_CANNON_PATH
 
     turn_speed = 0.04
-    max_radar_radius = 200
+    max_radar_radius = 300
     min_radar_radius = 50
 
-    max_bullet_range = 400
+    max_bullet_range = 600
     barrel_length = 15
 
-    countdown_time = FRAMERATE
+    power = 40
+
+    countdown_time_to_search = FRAMERATE // 6
+    countdown_time_to_shot = FRAMERATE
 
     def __init__(self, coord, base_angle, player_id, team_id):
     # initialization of the light cannon
@@ -139,7 +152,10 @@ class Medium_cannon(Turret):
     max_bullet_range = 800
     barrel_length = 25
 
-    countdown_time = FRAMERATE
+    power = 80
+
+    countdown_time_to_search = FRAMERATE // 6
+    countdown_time_to_shot = FRAMERATE
 
     def __init__(self, coord, base_angle, player_id, team_id):
     # initialization of the light cannon

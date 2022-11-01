@@ -21,9 +21,9 @@ def remove_many_dead_elements(list):
     # list = [element for element in list if element.is_alive]
     # return list
 
-    temp_list = []
+    new_list = []
     for element in list:
         if element.is_alive:
-            temp_list.append(element)
+            new_list.append(element)
 
-    return temp_list
+    return new_list

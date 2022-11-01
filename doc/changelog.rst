@@ -1,3 +1,10 @@
+v0.4.3 - 01.11.2022
+====
+* Small fixes in aiming algorithm
+* Bullets are checking now if they hit units
+* Units are getting now damage
+* Added draw_HP method to Unit class
+
 v0.4.2 - 31.10.2022
 ====
 * Added deletion of old bullets

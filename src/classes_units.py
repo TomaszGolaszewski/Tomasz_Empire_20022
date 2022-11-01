@@ -15,6 +15,9 @@ class Unit:
         self.base = Vehicle(coord, angle, player_id, team_id)
         self.weapon = Turret(coord, angle, player_id, team_id)
 
+        self.hit_box_radius = self.base.hit_box_radius
+        self.base_HP = self.base.base_HP
+        self.HP = self.base.base_HP
         self.is_alive = True
 
         self.coord = coord
@@ -35,14 +38,42 @@ class Unit:
         self.weapon.draw_extra_data(win, offset_x, offset_y, scale)
 
 
+    def draw_HP(self, win, offset_x, offset_y, scale):
+    # draw HP bar        
+        percentage_of_HP = self.HP / self.base_HP
+        start_point = [self.coord[0] - 10 * scale, self.coord[1] + 10 * scale]
+        if percentage_of_HP > 0.5:
+            color = GREEN
+        elif percentage_of_HP > 0.25:
+            color = YELLOW
+        else:
+            color = RED
+        pygame.draw.line(win, color, 
+                    world2screen(start_point, offset_x, offset_y, scale), 
+                    world2screen([start_point[0] + 20 * percentage_of_HP * scale, start_point[1]], offset_x, offset_y, scale), 3 * int(scale))
+
+
+
     def run(self, map, list_with_units, list_with_bullets):
     # life-cycle of the unit
-        self.base.run(map)
-        self.coord = self.base.get_position()
-        self.weapon.set_position(self.coord)
-        self.angle = self.base.get_angle()
-        self.weapon.set_angle(self.angle)
-        self.weapon.run(list_with_units, list_with_bullets)
+
+        if self.is_alive:
+            self.base.run(map)
+            self.coord = self.base.get_position()
+            self.weapon.set_position(self.coord)
+            self.angle = self.base.get_angle()
+            self.weapon.set_angle(self.angle)
+            self.weapon.run(list_with_units, list_with_bullets)
+        else:
+            x_id, y_id = map.world2id(self.coord)
+            map.BOARD[y_id][x_id].degrade(2)
+
+
+    def get_hit(self, power):
+    # function that subtracts damage from HP and kills the unit if necessary
+        self.HP -= power
+        if self.HP <= 0:
+            self.is_alive = False
 
 
 class Land_unit(Unit):

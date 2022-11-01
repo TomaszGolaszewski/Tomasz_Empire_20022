@@ -11,7 +11,9 @@ class Vehicle:
     v_max = 1
     acceleration = 0.1
     turn_speed = 0.04
+
     hit_box_radius = 13
+    base_HP = 100
 
     def __init__(self, coord, angle, player_id, team_id):
     # initialization of the vehicle
@@ -110,7 +112,9 @@ class Light_track(Vehicle):
     v_max = 1
     acceleration = 0.1
     turn_speed = 0.04
+
     hit_box_radius = 13
+    base_HP = 100
 
     def __init__(self, coord, angle, player_id, team_id):
     # initialization of the light track
@@ -122,7 +126,9 @@ class Medium_track(Vehicle):
     v_max = 0.75
     acceleration = 0.1
     turn_speed = 0.04
+
     hit_box_radius = 17
+    base_HP = 200
 
     def __init__(self, coord, angle, player_id, team_id):
     # initialization of the medium track

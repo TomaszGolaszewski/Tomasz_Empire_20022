@@ -48,6 +48,7 @@ def run():
     OFFSET_HORIZONTAL = 200
     SCALE = 0.5
     SHOW_EXTRA_DATA = True
+    SHOW_HP_BARS = True
 
     # initialize the game
     MAP = Map(40, 60, 30)
@@ -66,7 +67,11 @@ def run():
             CURRENT_FRAME = 0
             print("FPS: %.2f" % CLOCK.get_fps(), end="\t")
             print("TIME: " + str(pygame.time.get_ticks() // 1000))
-            print(len(LIST_WITH_BULLETS))
+
+            print("BULLETS:", end=" ")
+            print(len(LIST_WITH_BULLETS), end="\t")
+            print("UNITS:", end=" ")
+            print(len(LIST_WITH_UNITS))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -145,6 +150,10 @@ def run():
                 if event.key == pygame.K_m:
                     if SHOW_EXTRA_DATA: SHOW_EXTRA_DATA = False
                     else: SHOW_EXTRA_DATA = True
+                # show HP bars
+                if event.key == pygame.K_h:
+                    if SHOW_HP_BARS: SHOW_HP_BARS = False
+                    else: SHOW_HP_BARS = True
 
 # keys that can be pressed multiple times
         keys_pressed=pygame.key.get_pressed()
@@ -168,7 +177,7 @@ def run():
 
         # life-cycles of bullets
         for bullet in LIST_WITH_BULLETS:
-            bullet.run(MAP)
+            bullet.run(MAP, LIST_WITH_UNITS)
 
         # life-cycles of units
         for unit in LIST_WITH_UNITS:
@@ -193,6 +202,11 @@ def run():
         # draw vehicles
         for unit in LIST_WITH_UNITS:
             unit.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
+
+        # show HP bars
+        if SHOW_HP_BARS and SCALE >= 0.5:
+            for unit in LIST_WITH_UNITS:
+                unit.draw_HP(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
         # draw bullets
         for bullet in LIST_WITH_BULLETS:
