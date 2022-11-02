@@ -125,7 +125,7 @@ class Turret:
 class Light_cannon(Turret): 
     path = LIGHT_CANNON_PATH
 
-    turn_speed = 0.04
+    turn_speed = 0.06
     max_radar_radius = 300
     min_radar_radius = 50
 

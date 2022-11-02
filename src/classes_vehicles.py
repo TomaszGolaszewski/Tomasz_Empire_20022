@@ -23,7 +23,7 @@ class Vehicle:
         self.team_id = team_id
         
         self.v_current = 0
-        self.movement_target = coord
+        self.movement_target = []
 
         self.body = pygame.image.load(os.path.join(*self.path))
         self.body.convert()
@@ -47,8 +47,12 @@ class Vehicle:
     # draw extra data about the vehicle on the screen
         
         # target
-        pygame.draw.line(win, BLUE, world2screen(self.coord, offset_x, offset_y, scale), world2screen(self.movement_target, offset_x, offset_y, scale))
-        pygame.draw.circle(win, BLUE, world2screen(self.movement_target, offset_x, offset_y, scale), 10*scale, 1)
+        if len(self.movement_target):
+            last_target = self.coord
+            for target in self.movement_target:
+                pygame.draw.line(win, BLUE, world2screen(last_target, offset_x, offset_y, scale), world2screen(target, offset_x, offset_y, scale))
+                pygame.draw.circle(win, BLUE, world2screen(target, offset_x, offset_y, scale), 10*scale, 1)
+                last_target = target
 
         # hit box radius
         pygame.draw.circle(win, RED, world2screen(self.coord, offset_x, offset_y, scale), self.hit_box_radius*scale, 1)
@@ -56,43 +60,48 @@ class Vehicle:
 
     def run(self, map):
     # life-cycle of the vehicle
-        self.accelerate()
-        self.turn_to_target()
+
+        if len(self.movement_target):
+            dist_to_target = dist_two_points(self.coord, self.movement_target[0])
+
+            if dist_to_target > 20:
+                self.accelerate()
+                self.turn_to_target()
+            else:
+                self.decelerate()
+                self.movement_target.pop(0) # remove the achieved target
+
+        else:
+            self.decelerate()
+
         self.move()
 
         x_id, y_id = map.world2id(self.coord)
         map.BOARD[y_id][x_id].degrade(1)
 
+
     def accelerate(self):
     # accelerate the vehicle - calculate the current speed
-        dist_to_target = dist_two_points(self.coord,self.movement_target)
+        
+        self.v_current += self.acceleration
+        if self.v_current > self.v_max: self.v_current = self.v_max
 
-        if dist_to_target > 20:
-            self.v_current += self.acceleration
-            if self.v_current > self.v_max: self.v_current = self.v_max
-        else: 
-            self.v_current -= self.acceleration
-            if self.v_current < 0: self.v_current = 0
+
+    def decelerate(self):
+    # decelerate the vehicle - calculate the current speed
+        
+        self.v_current -= self.acceleration
+        if self.v_current < 0: self.v_current = 0
+
 
     def turn_to_target(self):
     # change vehicle's angle to target the movement target
-        dist_to_target = dist_two_points(self.coord,self.movement_target)
+        dist_to_target = dist_two_points(self.coord, self.movement_target[0])
 
         if dist_to_target > 20:
-            target_angle = angle_to_target(self.coord, self.movement_target)
-
-            # if abs(target_angle - self.angle) > 0.05:
-            #     if self.angle > target_angle:
-            #         self.angle -= self.turn_speed
-            #     else:
-            #         self.angle += self.turn_speed
-
-            #     if self.angle > 2*math.pi: self.angle -= 2*math.pi
-            #     elif self.angle < 0: self.angle += 2*math.pi
-
+            target_angle = angle_to_target(self.coord, self.movement_target[0])
             self.angle = turn_to_target_angle(self.angle, target_angle, self.turn_speed)
 
-                # print(str(self.angle) + "\t" + str(target_angle))
 
     def move(self):
     # move the vehicle forward

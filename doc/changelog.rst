@@ -1,3 +1,8 @@
+v0.5.0 - 02.11.2022
+====
+* The target of vehicle movement is now a list
+
+
 v0.4.4 - 02.11.2022
 ====
 * Small changes in draw_HP method
@@ -25,6 +30,7 @@ v0.4.0 - 31.10.2022
 * Turrets are shooting bullets now
 * Small changes in ground degradation
 
+
 v0.3.3 - 31.10.2022
 ====
 * Added rotating the tower to run method in Turret class
@@ -42,6 +48,7 @@ v0.3.0 - 28.10.2022
 * Added Turret class with draw method
 * Added Unit class which is made of Vehicle and Turret objects
 
+
 v0.2.2 - 24.10.2022
 ====
 * Added ground degradation
@@ -54,6 +61,7 @@ v0.2.1 - 24.10.2022
 v0.2.0 - 23.10.2022
 ====
 * Created Vehicle class with draw, move, accelerate methods
+
 
 v0.1.2 - 23.10.2022
 ====
