@@ -19,6 +19,7 @@ class Unit:
         self.base_HP = self.base.base_HP
         self.HP = self.base.base_HP
         self.is_alive = True
+        self.is_selected = False
 
         self.coord = coord
         self.angle = angle
@@ -30,6 +31,9 @@ class Unit:
     # draw the unit on the screen
         self.base.draw(win, offset_x, offset_y, scale)
         self.weapon.draw(win, offset_x, offset_y, scale)
+
+        if self.is_selected:
+            pygame.draw.circle(win, LIME, world2screen(self.coord, offset_x, offset_y, scale), 20, 3)
 
 
     def draw_extra_data(self, win, offset_x, offset_y, scale):

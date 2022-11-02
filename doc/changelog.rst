@@ -1,3 +1,7 @@
+v0.5.1 - 02.11.2022
+====
+* Added mouse control of selected units
+
 v0.5.0 - 02.11.2022
 ====
 * The target of vehicle movement is now a list

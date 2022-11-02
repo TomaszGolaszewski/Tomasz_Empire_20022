@@ -22,6 +22,7 @@ else:
     print("other")
 
 from settings import *
+from functions_graphics import *
 from functions_test import *
 from functions_other import *
 from classes_map import *
@@ -49,6 +50,8 @@ def run():
     SCALE = 0.5
     SHOW_EXTRA_DATA = True
     SHOW_HP_BARS = True
+
+    left_mouse_button_down = False
 
     # initialize the game
     MAP = Map(40, 60, 30)
@@ -93,14 +96,18 @@ def run():
                 pygame.quit()
                 quit()
 
- # mouse
+# mouse button down
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # 1 - left click
+                if event.button == 1:
+                    left_mouse_button_coord = pygame.mouse.get_pos()
+                    left_mouse_button_down = True
+
+# mouse button up
             if event.type == pygame.MOUSEBUTTONUP:
                 # 1 - left click
                 if event.button == 1:
-                    pass
-                    # running = False
-                    # pygame.quit()
-                    # quit()
+                    left_mouse_button_down = False
 
                 # 2 - middle click
                 if event.button == 2:
@@ -111,7 +118,9 @@ def run():
 
                 # 3 - right click
                 if event.button == 3:
-                    pass
+                    # set new movement target
+                    keys_pressed = pygame.key.get_pressed()
+                    set_new_target(LIST_WITH_UNITS, screen2world(pygame.mouse.get_pos(), OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE), keys_pressed[pygame.K_LCTRL])
 
                 # 4 - scroll up
                 if event.button == 4:
@@ -170,7 +179,7 @@ def run():
                     else: SHOW_HP_BARS = True
 
 # keys that can be pressed multiple times
-        keys_pressed=pygame.key.get_pressed()
+        keys_pressed = pygame.key.get_pressed()
         # move
         move_speed = 5 / SCALE
         # move left
@@ -225,6 +234,15 @@ def run():
         # draw bullets
         for bullet in LIST_WITH_BULLETS:
             bullet.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
+
+
+# draw UI
+
+        # draw selection
+        if left_mouse_button_down:
+            unit_selection(WIN, LIST_WITH_UNITS, left_mouse_button_coord, pygame.mouse.get_pos(), OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE, -1)
+
+
 
         # flip the screen
         pygame.display.update()
