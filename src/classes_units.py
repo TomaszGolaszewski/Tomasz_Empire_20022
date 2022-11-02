@@ -41,16 +41,16 @@ class Unit:
     def draw_HP(self, win, offset_x, offset_y, scale):
     # draw HP bar        
         percentage_of_HP = self.HP / self.base_HP
-        start_point = [self.coord[0] - 10 * scale, self.coord[1] + 10 * scale]
+        start_point = [self.coord[0] - 12 * scale, self.coord[1] + 12 * scale]
         if percentage_of_HP > 0.5:
-            color = GREEN
+            color = LIME
         elif percentage_of_HP > 0.25:
             color = YELLOW
         else:
             color = RED
         pygame.draw.line(win, color, 
                     world2screen(start_point, offset_x, offset_y, scale), 
-                    world2screen([start_point[0] + 20 * percentage_of_HP * scale, start_point[1]], offset_x, offset_y, scale), 3 * int(scale))
+                    world2screen([start_point[0] + 24 * percentage_of_HP * scale, start_point[1]], offset_x, offset_y, scale), int(3 * scale))
 
 
 
@@ -97,14 +97,14 @@ class Light_tank(Land_unit):
         coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale)
 
         # draw level indicator
-        pygame.draw.line(win, BLACK, coord_on_screen, [coord_on_screen[0], coord_on_screen[1] + 8], 3)
-        pygame.draw.line(win, WHITE, coord_on_screen, [coord_on_screen[0], coord_on_screen[1] + 7], 1)
+        pygame.draw.line(win, BLACK, coord_on_screen, [coord_on_screen[0], coord_on_screen[1] + 9], 4)
+        pygame.draw.line(win, WHITE, coord_on_screen, [coord_on_screen[0], coord_on_screen[1] + 8], 2)
 
         # draw team circle
-        pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, 6, 0)
+        pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, 7, 0)
 
         # draw unit indicator
-        pygame.draw.circle(win, WHITE, coord_on_screen, 3, 1)
+        pygame.draw.circle(win, WHITE, coord_on_screen, 4, 1)
 
 
 class Main_battle_tank(Land_unit):
@@ -122,14 +122,14 @@ class Main_battle_tank(Land_unit):
         coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale)
 
         # draw level indicator
-        pygame.draw.line(win, BLACK, coord_on_screen, [coord_on_screen[0], coord_on_screen[1] + 8], 5)
-        pygame.draw.line(win, WHITE, [coord_on_screen[0] - 1, coord_on_screen[1]], [coord_on_screen[0] - 1, coord_on_screen[1] + 7], 1)
-        pygame.draw.line(win, WHITE, [coord_on_screen[0] + 1, coord_on_screen[1]], [coord_on_screen[0] + 1, coord_on_screen[1] + 7], 1)
+        pygame.draw.line(win, BLACK, coord_on_screen, [coord_on_screen[0], coord_on_screen[1] + 9], 7)
+        pygame.draw.line(win, WHITE, [coord_on_screen[0] - 2, coord_on_screen[1]], [coord_on_screen[0] - 2, coord_on_screen[1] + 8], 2)
+        pygame.draw.line(win, WHITE, [coord_on_screen[0] + 1, coord_on_screen[1]], [coord_on_screen[0] + 1, coord_on_screen[1] + 8], 2)
 
         # draw team circle
-        pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, 6, 0)
+        pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, 7, 0)
 
         # draw unit indicator
-        pygame.draw.circle(win, WHITE, coord_on_screen, 3, 1)
+        pygame.draw.circle(win, WHITE, coord_on_screen, 4, 1)
 
 

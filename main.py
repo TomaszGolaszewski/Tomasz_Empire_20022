@@ -65,9 +65,23 @@ def run():
         CURRENT_FRAME += 1
         if CURRENT_FRAME == FRAMERATE:
             CURRENT_FRAME = 0
+
+            # print empty line
+            print()
+
+            # print infos about fps and time
             print("FPS: %.2f" % CLOCK.get_fps(), end="\t")
             print("TIME: " + str(pygame.time.get_ticks() // 1000))
 
+            # print infos about view position
+            print("HORIZ:", end=" ")
+            print(OFFSET_HORIZONTAL, end="\t")
+            print("VERT:", end=" ")
+            print(OFFSET_VERTICAL, end="\t")
+            print("SCALE:", end=" ")
+            print(SCALE)
+
+            # print infos about amount of objects
             print("BULLETS:", end=" ")
             print(len(LIST_WITH_BULLETS), end="\t")
             print("UNITS:", end=" ")
@@ -204,7 +218,7 @@ def run():
             unit.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
         # show HP bars
-        if SHOW_HP_BARS and SCALE >= 0.5:
+        if SHOW_HP_BARS and SCALE >= 1:
             for unit in LIST_WITH_UNITS:
                 unit.draw_HP(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 

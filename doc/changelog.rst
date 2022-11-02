@@ -1,3 +1,8 @@
+v0.4.4 - 02.11.2022
+====
+* Small changes in draw_HP method
+* Unit symbols are now bigger
+
 v0.4.3 - 01.11.2022
 ====
 * Small fixes in aiming algorithm
