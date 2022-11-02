@@ -58,7 +58,7 @@ class Vehicle:
         pygame.draw.circle(win, RED, world2screen(self.coord, offset_x, offset_y, scale), self.hit_box_radius*scale, 1)
 
 
-    def run(self, map):
+    def run(self, map, list_with_units):
     # life-cycle of the vehicle
 
         if len(self.movement_target):
@@ -74,7 +74,7 @@ class Vehicle:
         else:
             self.decelerate()
 
-        self.move()
+        self.move(list_with_units)
 
         x_id, y_id = map.world2id(self.coord)
         map.BOARD[y_id][x_id].degrade(1)
@@ -103,10 +103,25 @@ class Vehicle:
             self.angle = turn_to_target_angle(self.angle, target_angle, self.turn_speed)
 
 
-    def move(self):
-    # move the vehicle forward
-        self.coord = move_point(self.coord, self.v_current, self.angle)
+    def is_collision(self, list_with_units, coord):
+    # return True if collision with other object occurs
+        for unit in list_with_units:
+            dist = dist_two_points(coord, unit.coord)
+            if dist < self.hit_box_radius + unit.hit_box_radius and dist > 5: # dist > 5 is to avoid a collision with yourself
+                return True
+        return False
+
+
+    def move(self, list_with_units):
+    # move the vehicle forward, if it is possible
+        new_coord = move_point(self.coord, self.v_current, self.angle)
+        if not self.is_collision(list_with_units, new_coord):
+            self.coord = new_coord
+        else:
+            self.angle += self.turn_speed # ------------------------------------------- :( this does'n work
    
+
+
     def get_position(self):
     # return coordinates
         return self.coord

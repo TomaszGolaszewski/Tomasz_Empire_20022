@@ -1,3 +1,8 @@
+v0.5.2 - 02.11.2022
+====
+* Added collision checking between units
+* Small changes in selection function
+
 v0.5.1 - 02.11.2022
 ====
 * Added mouse control of selected units

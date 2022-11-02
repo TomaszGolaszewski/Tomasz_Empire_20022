@@ -10,10 +10,12 @@ from classes_turrets import *
 
 
 class Unit:
+    Vehicle_class = Vehicle
+    Turret_class = Turret
     def __init__(self, coord, angle, player_id, team_id):
     # initialization of the unit
-        self.base = Vehicle(coord, angle, player_id, team_id)
-        self.weapon = Turret(coord, angle, player_id, team_id)
+        self.base = self.Vehicle_class(coord, angle, player_id, team_id)
+        self.weapon = self.Turret_class(coord, angle, player_id, team_id)
 
         self.hit_box_radius = self.base.hit_box_radius
         self.base_HP = self.base.base_HP
@@ -62,7 +64,7 @@ class Unit:
     # life-cycle of the unit
 
         if self.is_alive:
-            self.base.run(map)
+            self.base.run(map, list_with_units)
             self.coord = self.base.get_position()
             self.weapon.set_position(self.coord)
             self.angle = self.base.get_angle()
@@ -81,17 +83,19 @@ class Unit:
 
 
 class Land_unit(Unit):
-    def __init__(self, coord, angle, player_id, team_id):
-    # initialization of the land unit
-        Unit.__init__(self, coord, angle, player_id, team_id)
+    pass
+    # def __init__(self, coord, angle, player_id, team_id):
+    # # initialization of the land unit
+    #     Unit.__init__(self, coord, angle, player_id, team_id)
 
 
 class Light_tank(Land_unit):
-    def __init__(self, coord, angle, player_id, team_id):
-    # initialization of the light tank
-        Land_unit.__init__(self, coord, angle, player_id, team_id)
-        self.base = Light_track(coord, angle, player_id, team_id)
-        self.weapon = Light_cannon(coord, angle, player_id, team_id)
+    Vehicle_class = Light_track
+    Turret_class = Light_cannon
+
+    # def __init__(self, coord, angle, player_id, team_id):
+    # # initialization of the light tank
+    #     Land_unit.__init__(self, coord, angle, player_id, team_id)
 
 
     def draw(self, win, offset_x, offset_y, scale):
@@ -112,11 +116,12 @@ class Light_tank(Land_unit):
 
 
 class Main_battle_tank(Land_unit):
-    def __init__(self, coord, angle, player_id, team_id):
-    # initialization of the main battle tank
-        Land_unit.__init__(self, coord, angle, player_id, team_id)
-        self.base = Medium_track(coord, angle, player_id, team_id)
-        self.weapon = Medium_cannon(coord, angle, player_id, team_id)
+    Vehicle_class = Medium_track
+    Turret_class = Medium_cannon
+
+    # def __init__(self, coord, angle, player_id, team_id):
+    # # initialization of the main battle tank
+    #     Land_unit.__init__(self, coord, angle, player_id, team_id)
 
 
     def draw(self, win, offset_x, offset_y, scale):
