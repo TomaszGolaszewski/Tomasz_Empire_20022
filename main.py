@@ -58,6 +58,7 @@ def run():
     # MAP.BOARD[1][10].color = BLUE
 
     LIST_WITH_UNITS = make_test_units()
+    # LIST_WITH_UNITS = [Light_tank([500, 300], math.pi/2, 1, 1)]
     LIST_WITH_BULLETS = []
 
 

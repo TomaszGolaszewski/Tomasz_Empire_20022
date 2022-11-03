@@ -1,3 +1,8 @@
+v0.5.3 - 03.11.2022
+====
+* New algorithm used to calculate angle to target
+* New run method in Vehicle class
+
 v0.5.2 - 02.11.2022
 ====
 * Added collision checking between units

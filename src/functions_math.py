@@ -48,12 +48,46 @@ def turn_to_target_angle(origin_angle, target_angle, turn_speed, damping = 0.05)
 # return angle in radians - in the range of 0 to 2pi
 
     if abs(target_angle - origin_angle) > damping:
-        if origin_angle > target_angle:
-            origin_angle -= turn_speed
+
+        origin_quadrant = get_quadrant(origin_angle)
+        target_quadrant = get_quadrant(target_angle)
+
+        if target_quadrant == origin_quadrant:
+            if origin_angle > target_angle:
+                origin_angle -= turn_speed
+            else:
+                origin_angle += turn_speed
+
+        elif target_quadrant == 1:
+            if origin_angle > target_angle + math.pi:
+                origin_angle += turn_speed
+            else:
+                origin_angle -= turn_speed
+
+        elif target_quadrant == 4:
+            if origin_angle > target_angle - math.pi:
+                origin_angle += turn_speed
+            else:
+                origin_angle -= turn_speed
+                    
         else:
-            origin_angle += turn_speed
+            if origin_angle > target_angle:
+                origin_angle -= turn_speed
+            else:
+                origin_angle += turn_speed
 
         if origin_angle > 2*math.pi: origin_angle -= 2*math.pi
         elif origin_angle < 0: origin_angle += 2*math.pi
 
     return origin_angle
+
+
+def get_quadrant(angle):
+# return quadrant of the coordinate system
+
+    if angle < 0 : return 0
+    elif angle < math.pi / 2: return 1
+    elif angle < math.pi: return 2
+    elif angle < 3 * math.pi / 2 : return 3
+    elif angle < 2 * math.pi: return 4
+    else: return 5

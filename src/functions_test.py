@@ -12,8 +12,8 @@ def make_test_units():
     id = 0
     LIST_WITH_UNITS = []
     for i in range(number_of_test_vehicles):
-        LIST_WITH_UNITS.append(Light_tank(move_point([600, 350], 300, i*angle), i*angle, 1, 1)) # - math.pi
-        LIST_WITH_UNITS[i].base.movement_target = [[600, 350]]
+        LIST_WITH_UNITS.append(Light_tank(move_point([600, 500], 300, i*angle), i*angle, 1, 1)) # - math.pi
+        LIST_WITH_UNITS[i].base.movement_target = [[600, 500]]
         id += 1
 
     for i in range(10):

@@ -66,15 +66,24 @@ class Vehicle:
 
             if dist_to_target > 20:
                 self.accelerate()
-                self.turn_to_target()
+                # self.turn_to_target()
+                new_angle = self.get_new_angle()
             else:
                 self.decelerate()
+                new_angle = self.angle
                 self.movement_target.pop(0) # remove the achieved target
 
         else:
             self.decelerate()
+            new_angle = self.angle
 
-        self.move(list_with_units)
+        # self.move(list_with_units)
+        new_coord = move_point(self.coord, self.v_current, new_angle)
+        if not self.is_collision(list_with_units, new_coord):
+            self.coord = new_coord
+            self.angle = new_angle
+        else:
+            self.angle += self.turn_speed
 
         x_id, y_id = map.world2id(self.coord)
         map.BOARD[y_id][x_id].degrade(1)
@@ -94,13 +103,19 @@ class Vehicle:
         if self.v_current < 0: self.v_current = 0
 
 
-    def turn_to_target(self):
-    # change vehicle's angle to target the movement target
-        dist_to_target = dist_two_points(self.coord, self.movement_target[0])
+    # def turn_to_target(self):
+    # # change vehicle's angle to target the movement target
+    #     dist_to_target = dist_two_points(self.coord, self.movement_target[0])
 
-        if dist_to_target > 20:
-            target_angle = angle_to_target(self.coord, self.movement_target[0])
-            self.angle = turn_to_target_angle(self.angle, target_angle, self.turn_speed)
+    #     if dist_to_target > 20:
+    #         target_angle = angle_to_target(self.coord, self.movement_target[0])
+    #         self.angle = turn_to_target_angle(self.angle, target_angle, self.turn_speed)
+
+
+    def get_new_angle(self):
+    # return new angle closer to the movement target
+        target_angle = angle_to_target(self.coord, self.movement_target[0])
+        return turn_to_target_angle(self.angle, target_angle, self.turn_speed)
 
 
     def is_collision(self, list_with_units, coord):
@@ -112,13 +127,13 @@ class Vehicle:
         return False
 
 
-    def move(self, list_with_units):
-    # move the vehicle forward, if it is possible
-        new_coord = move_point(self.coord, self.v_current, self.angle)
-        if not self.is_collision(list_with_units, new_coord):
-            self.coord = new_coord
-        else:
-            self.angle += self.turn_speed # ------------------------------------------- :( this does'n work
+    # def move(self, list_with_units):
+    # # move the vehicle forward, if it is possible
+    #     new_coord = move_point(self.coord, self.v_current, self.angle)
+    #     if not self.is_collision(list_with_units, new_coord):
+    #         self.coord = new_coord
+    #     else:
+    #         self.angle += self.turn_speed # ------------------------------------------- :( this does'n work
    
 
 
