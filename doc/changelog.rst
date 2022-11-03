@@ -1,3 +1,8 @@
+v0.6.0 - 03.11.2022
+====
+* New sprites for future animated units: spider tanks and fighters
+
+
 v0.5.3 - 03.11.2022
 ====
 * New algorithm used to calculate angle to target
