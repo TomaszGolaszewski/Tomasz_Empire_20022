@@ -1,3 +1,10 @@
+v0.7.0 - 04.11.2022
+====
+* New class: Base_object - base for old unanimated objects
+* New class of units: Air unit
+* New unit: Fighter
+
+
 v0.6.3 - 04.11.2022
 ====
 * New unit: Spider tank

@@ -4,10 +4,11 @@ import random
 
 from settings import *
 from functions_math import *
-from classes_bullets import Bullet
+from classes_bullets import *
+from classes_base import *
 
 
-class Turret:
+class Turret(Base_object):
     path = TURRET_PATH
     
     turn_speed = 0.04
@@ -24,9 +25,9 @@ class Turret:
 
     def __init__(self, coord, base_angle, player_id, team_id):
     # initialization of the weapon
-        self.coord = coord
+        Base_object.__init__(self, coord, base_angle)
+
         self.base_angle = base_angle
-        self.turret_angle = base_angle
         self.player_id = player_id
         self.team_id = team_id
         
@@ -43,15 +44,15 @@ class Turret:
         self.body.set_colorkey(BLACK)
 
 
-    def draw(self, win, offset_x, offset_y, scale):
-    # draw the weapon on the screen
+    # def draw(self, win, offset_x, offset_y, scale):
+    # # draw the weapon on the screen
         
-        body = self.body.get_rect()
-        scaled_image = pygame.transform.scale(self.body, (scale*body.width, scale*body.height))
-        rotated_image = pygame.transform.rotate(scaled_image, -math.degrees(self.turret_angle))
-        new_rect = rotated_image.get_rect(center = world2screen(self.coord, offset_x, offset_y, scale))
-        win.blit(rotated_image, new_rect.topleft)
-        # win.blit(scaled_image, move_point(self.orgin, offset_x, offset_y, scale))
+    #     body = self.body.get_rect()
+    #     scaled_image = pygame.transform.scale(self.body, (scale*body.width, scale*body.height))
+    #     rotated_image = pygame.transform.rotate(scaled_image, -math.degrees(self.turret_angle))
+    #     new_rect = rotated_image.get_rect(center = world2screen(self.coord, offset_x, offset_y, scale))
+    #     win.blit(rotated_image, new_rect.topleft)
+    #     # win.blit(scaled_image, move_point(self.orgin, offset_x, offset_y, scale))
 
 
     def draw_extra_data(self, win, offset_x, offset_y, scale):
@@ -77,15 +78,15 @@ class Turret:
             self.countdown_to_search -= 1
 
         if not self.countdown_to_shot:
-            if self.target_locked and abs(self.turret_angle - self.angle_to_target) < 0.05:
+            if self.target_locked and abs(self.angle - self.angle_to_target) < 0.05:
                 # make and shot the bullet
-                bullet_coord = move_point(self.coord, self.barrel_length, self.turret_angle)
-                list_with_bullets.append(Bullet(bullet_coord, self.turret_angle, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id, self.power))
+                bullet_coord = move_point(self.coord, self.barrel_length, self.angle)
+                list_with_bullets.append(Bullet(bullet_coord, self.angle, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id, self.power))
                 self.countdown_to_shot = self.countdown_time_to_shot
         else:
             self.countdown_to_shot -= 1
 
-        self.turret_angle = turn_to_target_angle(self.turret_angle, self.angle_to_target, self.turn_speed, 0.02)
+        self.angle = turn_to_target_angle(self.angle, self.angle_to_target, self.turn_speed, 0.02)
 
 
     def find_target(self, list_with_units):
@@ -93,7 +94,7 @@ class Turret:
     # set new target_coord, angle_to_target and dist_to target
 
         temp_coord = [0, 0]
-        temp_angle = self.base_angle
+        # temp_angle = self.angle
         temp_dist = 9999
         temp_found_new_target = False
         
@@ -114,9 +115,9 @@ class Turret:
             self.target_coord = self.coord
             self.target_locked = False
 
-    def set_position(self, coord):
-    # set new position of weapon
-        self.coord = coord
+    # def set_position(self, coord):
+    # # set new position of weapon
+    #     self.coord = coord
 
     def set_angle(self, angle):
     # set new base angle of weapon

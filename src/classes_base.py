@@ -4,6 +4,9 @@ from settings import *
 from functions_math import *
 
 
+# ======================================================================
+
+
 class Base_animated_object:
     path = ANT_PATH
     number_of_frames = ANT_FRAMES
@@ -17,7 +20,7 @@ class Base_animated_object:
         self.coord = coord
         self.angle = angle
 
-        self.state = "move"
+        self.state = "stop"
 
         # load and prepare sprite sheet
         self.sprite_sheet = pygame.image.load(os.path.join(*self.path))
@@ -56,6 +59,7 @@ class Base_animated_object:
 
     def draw_sprite(self, win, offset_x, offset_y, scale):
     # draw currently loaded sprite of the object on the screen    
+
         scaled_image = pygame.transform.scale(self.frame_sprite, (scale * self.frame_width, scale * self.frame_height))
         rotated_image = pygame.transform.rotate(scaled_image, -math.degrees(self.angle))
         new_rect = rotated_image.get_rect(center = world2screen(self.coord, offset_x, offset_y, scale))
@@ -102,3 +106,64 @@ class Base_animated_object:
     def get_angle(self):
     # return angle
         return self.angle
+
+    def set_position(self, coord):
+    # set new position
+        self.coord = coord
+
+    def set_angle(self, angle):
+    # set new base angle
+        self.base_angle = angle
+
+
+# ======================================================================
+
+
+class Base_object:
+    path = TURRET_PATH
+
+    def __init__(self, coord, angle):
+    # initialization of the object
+
+        # basic variables
+        self.coord = coord
+        self.angle = angle
+
+        # load and prepare sprite
+        self.sprite = pygame.image.load(os.path.join(*self.path))
+        self.sprite.convert()
+        self.sprite.set_colorkey(BLACK)
+
+        # calculate frame size
+        sprite_rect = self.sprite.get_rect()
+        self.frame_width = sprite_rect.width
+        self.frame_height = sprite_rect.height
+
+
+    def draw(self, win, offset_x, offset_y, scale):
+    # draw the object on the screen
+        
+        scaled_image = pygame.transform.scale(self.sprite, (scale * self.frame_width, scale * self.frame_height))
+        rotated_image = pygame.transform.rotate(scaled_image, -math.degrees(self.angle))
+        new_rect = rotated_image.get_rect(center = world2screen(self.coord, offset_x, offset_y, scale))
+        win.blit(rotated_image, new_rect.topleft)
+
+
+    def get_position(self):
+    # return coordinates
+        return self.coord
+
+    def get_angle(self):
+    # return angle
+        return self.angle
+
+    def set_position(self, coord):
+    # set new position
+        self.coord = coord
+
+    def set_angle(self, angle):
+    # set new base angle
+        self.base_angle = angle
+
+
+# ======================================================================

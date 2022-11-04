@@ -36,6 +36,10 @@ def make_test_units():
         LIST_WITH_UNITS[id].base.movement_target = [[500 + 50*i, 400]]
         id += 1
         red_id += 1
+    
+    for i in range(5):
+        LIST_WITH_UNITS.append(Fighter([400 + 100*i, 2600], -math.pi/2, 2, 2))
+
 
     # test vehicles for red team
     LIST_WITH_UNITS.append(Light_tank([1700, 100], -math.pi, 3, 3))
@@ -44,5 +48,7 @@ def make_test_units():
     LIST_WITH_UNITS.append(Main_battle_tank([1700, 250], -math.pi, 3, 3))
     LIST_WITH_UNITS.append(Spider_tank([1700, 300], -math.pi, 3, 3))
     LIST_WITH_UNITS.append(Spider_tank([1700, 350], -math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Fighter([1700, 400], -math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Fighter([1700, 450], -math.pi, 3, 3))
 
     return LIST_WITH_UNITS
