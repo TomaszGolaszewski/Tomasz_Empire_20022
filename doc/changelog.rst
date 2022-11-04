@@ -1,3 +1,7 @@
+v0.6.2 - 04.11.2022
+====
+* New animated draw method in Base_animated_object class
+
 v0.6.1 - 04.11.2022
 ====
 * New class: Base_animated_object
