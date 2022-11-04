@@ -28,6 +28,8 @@ from functions_other import *
 from classes_map import *
 from classes_units import *
 
+from classes_base import *
+
 
 def run():
 # main function - runs the game
@@ -57,8 +59,9 @@ def run():
     MAP = Map(40, 60, 30)
     # MAP.BOARD[1][10].color = BLUE
 
-    LIST_WITH_UNITS = make_test_units()
-    # LIST_WITH_UNITS = [Light_tank([500, 300], math.pi/2, 1, 1)]
+    # LIST_WITH_UNITS = make_test_units()
+    LIST_WITH_UNITS = [Light_tank([500, 300], math.pi/2, 1, 1)]
+    test_object = Base_animated_object([500, 300], math.pi/2)
     LIST_WITH_BULLETS = []
 
 
@@ -235,6 +238,10 @@ def run():
         # draw bullets
         for bullet in LIST_WITH_BULLETS:
             bullet.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
+
+
+
+        test_object.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
 
 # draw UI

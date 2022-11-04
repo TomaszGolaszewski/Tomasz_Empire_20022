@@ -12,10 +12,15 @@ FRAMERATE = 60
 TANK_PATH = ["imgs","vehicles","tank.png"]
 LIGHT_TRACK_PATH = ["imgs","vehicles","light_track.bmp"]
 MEDIUM_TRACK_PATH = ["imgs","vehicles","medium_track.bmp"]
+ANT_PATH = ["imgs","vehicles","ant.bmp"]
+ANT_FRAMES = 5
 
 TURRET_PATH = ["imgs","vehicles","turret.png"]
 LIGHT_CANNON_PATH = ["imgs","vehicles","light_cannon.bmp"]
 MEDIUM_CANNON_PATH = ["imgs","vehicles","medium_cannon.bmp"]
+
+PLANE_PATH = ["imgs","vehicles","plane.bmp"]
+PLANE_FRAMES = 4
 
 # sprites - other
 ICON_PATH = ["imgs","other","icon.png"]

@@ -1,10 +1,11 @@
 import pygame
 import math
 import random
-from classes_bullets import Bullet
 
 from settings import *
 from functions_math import *
+from classes_bullets import Bullet
+
 
 class Turret:
     path = TURRET_PATH
@@ -125,7 +126,7 @@ class Turret:
 class Light_cannon(Turret): 
     path = LIGHT_CANNON_PATH
 
-    turn_speed = 0.06
+    turn_speed = 0.08
     max_radar_radius = 300
     min_radar_radius = 50
 
