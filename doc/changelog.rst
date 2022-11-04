@@ -1,3 +1,8 @@
+v0.7.2 - 04.11.2022
+====
+* New zoom mechanism
+* New sprites for future units: bomber
+
 v0.7.1 - 04.11.2022
 ====
 * New sprites to animate all units

@@ -131,7 +131,8 @@ def run():
                     old_scale = SCALE
                     # mouse_pos = pygame.mouse.get_pos()
 
-                    SCALE += 0.25
+                    # SCALE += 0.25
+                    SCALE *= 2
                     # if SCALE == 1.5: SCALE = 1
                     # elif SCALE == 1.25: SCALE = 0.5
                     if SCALE >= 4: SCALE = 4
@@ -148,7 +149,8 @@ def run():
                     old_scale = SCALE
                     mouse_pos = pygame.mouse.get_pos()
 
-                    SCALE -= 0.25
+                    # SCALE -= 0.25
+                    SCALE /= 2
                     # if SCALE == 0: SCALE = 0.5
                     # elif SCALE == -0.5: SCALE = 0.25
                     if SCALE <= 0.25: SCALE = 0.25
