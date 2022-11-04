@@ -4,10 +4,14 @@ import random
 
 from settings import *
 from functions_math import *
+from classes_base import *
 
 
-class Vehicle:
+class Vehicle(Base_animated_object):
     path = TANK_PATH
+    number_of_frames = TANK_FRAMES
+    number_of_frames_in_sequence = TANK_FRAMES - 1
+
     v_max = 1
     acceleration = 0.1
     turn_speed = 0.04
@@ -17,30 +21,28 @@ class Vehicle:
 
     def __init__(self, coord, angle, player_id, team_id):
     # initialization of the vehicle
-        self.coord = coord
-        self.angle = angle
+        Base_animated_object.__init__(self, coord, angle)
+
         self.player_id = player_id
         self.team_id = team_id
         
         self.v_current = 0
         self.movement_target = []
 
-        self.body = pygame.image.load(os.path.join(*self.path))
-        self.body.convert()
-        self.body.set_colorkey(BLACK)
-        # print(self.body.get_at((0,10)))
-        # self.rotated_image = pygame.transform.rotate(self.body, -math.degrees(self.angle))
+        # self.body = pygame.image.load(os.path.join(*self.path))
+        # self.body.convert()
+        # self.body.set_colorkey(BLACK)
 
 
-    def draw(self, win, offset_x, offset_y, scale):
-    # draw the vehicle on the screen
+    # def draw(self, win, offset_x, offset_y, scale):
+    # # draw the vehicle on the screen
         
-        body = self.body.get_rect()
-        scaled_image = pygame.transform.scale(self.body, (scale*body.width, scale*body.height))
-        rotated_image = pygame.transform.rotate(scaled_image, -math.degrees(self.angle))
-        new_rect = rotated_image.get_rect(center = world2screen(self.coord, offset_x, offset_y, scale))
-        win.blit(rotated_image, new_rect.topleft)
-        # win.blit(scaled_image, move_point(self.orgin, offset_x, offset_y, scale))
+    #     body = self.body.get_rect()
+    #     scaled_image = pygame.transform.scale(self.body, (scale*body.width, scale*body.height))
+    #     rotated_image = pygame.transform.rotate(scaled_image, -math.degrees(self.angle))
+    #     new_rect = rotated_image.get_rect(center = world2screen(self.coord, offset_x, offset_y, scale))
+    #     win.blit(rotated_image, new_rect.topleft)
+    #     # win.blit(scaled_image, move_point(self.orgin, offset_x, offset_y, scale))
 
 
     def draw_extra_data(self, win, offset_x, offset_y, scale):
@@ -92,6 +94,7 @@ class Vehicle:
     def accelerate(self):
     # accelerate the vehicle - calculate the current speed
         
+        self.state = "move"
         self.v_current += self.acceleration
         if self.v_current > self.v_max: self.v_current = self.v_max
 
@@ -100,7 +103,9 @@ class Vehicle:
     # decelerate the vehicle - calculate the current speed
         
         self.v_current -= self.acceleration
-        if self.v_current < 0: self.v_current = 0
+        if self.v_current < 0: 
+            self.v_current = 0
+            self.state = "stop"
 
 
     # def turn_to_target(self):
@@ -137,17 +142,20 @@ class Vehicle:
    
 
 
-    def get_position(self):
-    # return coordinates
-        return self.coord
+    # def get_position(self):
+    # # return coordinates
+    #     return self.coord
 
-    def get_angle(self):
-    # return angle
-        return self.angle
+    # def get_angle(self):
+    # # return angle
+    #     return self.angle
 
 
 class Light_track(Vehicle):
     path = LIGHT_TRACK_PATH
+    number_of_frames = LIGHT_TRACK_FRAMES
+    number_of_frames_in_sequence = LIGHT_TRACK_FRAMES - 1
+
     v_max = 1
     acceleration = 0.1
     turn_speed = 0.04
@@ -155,13 +163,16 @@ class Light_track(Vehicle):
     hit_box_radius = 13
     base_HP = 100
 
-    def __init__(self, coord, angle, player_id, team_id):
-    # initialization of the light track
-        Vehicle.__init__(self, coord, angle, player_id, team_id)
+    # def __init__(self, coord, angle, player_id, team_id):
+    # # initialization of the light track
+    #     Vehicle.__init__(self, coord, angle, player_id, team_id)
 
 
 class Medium_track(Vehicle):
     path = MEDIUM_TRACK_PATH
+    number_of_frames = MEDIUM_TRACK_FRAMES
+    number_of_frames_in_sequence = MEDIUM_TRACK_FRAMES - 1
+
     v_max = 0.75
     acceleration = 0.1
     turn_speed = 0.04
@@ -169,6 +180,19 @@ class Medium_track(Vehicle):
     hit_box_radius = 17
     base_HP = 200
 
-    def __init__(self, coord, angle, player_id, team_id):
-    # initialization of the medium track
-        Vehicle.__init__(self, coord, angle, player_id, team_id)
+    # def __init__(self, coord, angle, player_id, team_id):
+    # # initialization of the medium track
+    #     Vehicle.__init__(self, coord, angle, player_id, team_id)
+
+
+class Ant(Vehicle):
+    path = ANT_PATH
+    number_of_frames = ANT_FRAMES
+    number_of_frames_in_sequence = ANT_FRAMES - 1
+
+    v_max = 1
+    acceleration = 0.2
+    turn_speed = 0.04
+
+    hit_box_radius = 13
+    base_HP = 50

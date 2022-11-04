@@ -138,9 +138,9 @@ class Light_cannon(Turret):
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE
 
-    def __init__(self, coord, base_angle, player_id, team_id):
-    # initialization of the light cannon
-        Turret.__init__(self, coord, base_angle, player_id, team_id)
+    # def __init__(self, coord, base_angle, player_id, team_id):
+    # # initialization of the light cannon
+    #     Turret.__init__(self, coord, base_angle, player_id, team_id)
 
 
 class Medium_cannon(Turret): 
@@ -158,6 +158,22 @@ class Medium_cannon(Turret):
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE
 
-    def __init__(self, coord, base_angle, player_id, team_id):
-    # initialization of the light cannon
-        Turret.__init__(self, coord, base_angle, player_id, team_id)
+    # def __init__(self, coord, base_angle, player_id, team_id):
+    # # initialization of the light cannon
+    #     Turret.__init__(self, coord, base_angle, player_id, team_id)
+
+
+class Minigun(Turret): 
+    path = LIGHT_CANNON_PATH
+
+    turn_speed = 0.08
+    max_radar_radius = 400
+    min_radar_radius = 50
+
+    max_bullet_range = 600
+    barrel_length = 15
+
+    power = 10
+
+    countdown_time_to_search = FRAMERATE // 10
+    countdown_time_to_shot = FRAMERATE // 10

@@ -10,8 +10,11 @@ FRAMERATE = 60
 
 # sprites - units
 TANK_PATH = ["imgs","vehicles","tank.png"]
+TANK_FRAMES = 2
 LIGHT_TRACK_PATH = ["imgs","vehicles","light_track.bmp"]
+LIGHT_TRACK_FRAMES = 2
 MEDIUM_TRACK_PATH = ["imgs","vehicles","medium_track.bmp"]
+MEDIUM_TRACK_FRAMES = 2
 ANT_PATH = ["imgs","vehicles","ant.bmp"]
 ANT_FRAMES = 5
 
