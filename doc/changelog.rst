@@ -1,3 +1,8 @@
+v0.7.1 - 04.11.2022
+====
+* New sprites to animate all units
+* Fixes in degrade method in Map class 
+
 v0.7.0 - 04.11.2022
 ====
 * New class: Base_object - base for old unanimated objects

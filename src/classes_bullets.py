@@ -40,8 +40,7 @@ class Bullet:
                 self.is_alive = False    
 
         if self.distance > self.max_distance:
-            x_id, y_id = map.world2id(self.coord)
-            map.BOARD[y_id][x_id].degrade(2)
+            map.degrade(self.coord, 2)
             self.is_alive = False
         
         if self.is_alive:

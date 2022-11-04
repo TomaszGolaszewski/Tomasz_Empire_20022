@@ -87,8 +87,7 @@ class Vehicle(Base_animated_object):
         else:
             self.angle += self.turn_speed
 
-        x_id, y_id = map.world2id(self.coord)
-        map.BOARD[y_id][x_id].degrade(1)
+        map.degrade(self.coord, 1)
 
 
     def accelerate(self):
@@ -194,5 +193,5 @@ class Ant(Vehicle):
     acceleration = 0.2
     turn_speed = 0.04
 
-    hit_box_radius = 13
+    hit_box_radius = 10
     base_HP = 50

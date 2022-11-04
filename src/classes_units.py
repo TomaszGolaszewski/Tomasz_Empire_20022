@@ -72,8 +72,7 @@ class Unit:
             self.weapon.set_angle(self.angle)
             self.weapon.run(list_with_units, list_with_bullets)
         else:
-            x_id, y_id = map.world2id(self.coord)
-            map.BOARD[y_id][x_id].degrade(2)
+            map.degrade(self.coord, 2)
 
 
     def get_hit(self, power):

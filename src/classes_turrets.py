@@ -165,7 +165,7 @@ class Medium_cannon(Turret):
 
 
 class Minigun(Turret): 
-    path = LIGHT_CANNON_PATH
+    path = MINIGUN_PATH
 
     turn_speed = 0.08
     max_radar_radius = 400

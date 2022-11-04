@@ -47,6 +47,14 @@ class Map:
                 for tile in row:
                     tile.update_screen_corners(offset_x, offset_y, scale)
 
+
+    def degrade(self, coord, level):
+    # degrade the tile - it will be darker
+        x_id, y_id = self.world2id(coord)
+        if 0 <= x_id  and x_id < self.map_width and 0 <= y_id  and y_id < self.map_height:
+            self.BOARD[y_id][x_id].degrade(level)
+
+
     def id2world(self, id):
     # calculate coordinates from tile's id to world coordinate system
     # return coordinates in the world coordinate system

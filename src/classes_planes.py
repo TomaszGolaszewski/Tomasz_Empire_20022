@@ -16,7 +16,7 @@ class Plane(Vehicle):
     acceleration = 0.1
     turn_speed = 0.03
 
-    hit_box_radius = 13
+    hit_box_radius = 11
     base_HP = 100
 
 
@@ -33,6 +33,5 @@ class Plane(Vehicle):
                 self.movement_target.pop(0) # remove the achieved target
 
         if self.v_current < self.v_max:
-            x_id, y_id = map.world2id(self.coord)
-            map.BOARD[y_id][x_id].degrade(1)
+            map.degrade(self.coord, 1)
 
