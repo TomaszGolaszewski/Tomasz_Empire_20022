@@ -35,3 +35,29 @@ class Plane(Vehicle):
         if self.v_current < self.v_max:
             map.degrade(self.coord, 1)
 
+
+class Plane_bomber(Plane):
+    path = BOMBER_PATH
+    number_of_frames = BOMBER_FRAMES
+    number_of_frames_in_sequence = BOMBER_FRAMES - 1
+
+    v_max = 3
+    acceleration = 0.1
+    turn_speed = 0.03
+
+    hit_box_radius = 15
+    base_HP = 100
+
+
+class Plane_strategic_bomber(Plane):
+    path = STRATEGIC_BOMBER_PATH
+    number_of_frames = STRATEGIC_BOMBER_FRAMES
+    number_of_frames_in_sequence = STRATEGIC_BOMBER_FRAMES - 1
+
+    v_max = 2
+    acceleration = 0.05
+    turn_speed = 0.03
+
+    hit_box_radius = 20
+    base_HP = 300
+

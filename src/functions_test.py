@@ -50,5 +50,9 @@ def make_test_units():
     LIST_WITH_UNITS.append(Spider_tank([1700, 350], -math.pi, 3, 3))
     LIST_WITH_UNITS.append(Fighter([1700, 400], -math.pi, 3, 3))
     LIST_WITH_UNITS.append(Fighter([1700, 450], -math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Bomber([1700, 500], -math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Bomber([1700, 560], -math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Strategic_bomber([1700, 650], -math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Strategic_bomber([1700, 750], -math.pi, 3, 3))
 
     return LIST_WITH_UNITS

@@ -25,6 +25,10 @@ MINIGUN_PATH = ["imgs","vehicles","minigun.bmp"]
 
 PLANE_PATH = ["imgs","vehicles","plane.bmp"]
 PLANE_FRAMES = 4
+BOMBER_PATH = ["imgs","vehicles","bomber.bmp"]
+BOMBER_FRAMES = 4
+STRATEGIC_BOMBER_PATH = ["imgs","vehicles","strategic_bomber.bmp"]
+STRATEGIC_BOMBER_FRAMES = 4
 
 # sprites - other
 ICON_PATH = ["imgs","other","icon.png"]

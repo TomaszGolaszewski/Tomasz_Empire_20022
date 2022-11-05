@@ -1,3 +1,7 @@
+v0.7.3 - 05.11.2022
+====
+* New units: Bomber and Strategic bomber
+
 v0.7.2 - 04.11.2022
 ====
 * New zoom mechanism
