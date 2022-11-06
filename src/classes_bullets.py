@@ -61,3 +61,25 @@ class Bullet:
                 return True
         
         return False
+
+
+
+class Plasma(Bullet):
+    speed = 10
+    radius = 3 # width of beam
+    base_length = 6
+    hit_box_radius = 3
+
+    def __init__(self, coord, angle, max_distance, min_distance, player_id, team_id, power):
+    # initialization of the plasma beam
+        Bullet.__init__(self, coord, angle, max_distance, min_distance, player_id, team_id, power)
+
+        self.length = self.base_length * power // 10
+
+    
+    def draw(self, win, offset_x, offset_y, scale):
+    # draw the plasma beam on the screen
+        pygame.draw.line(win, YELLOW, 
+                    world2screen(self.coord, offset_x, offset_y, scale), 
+                    world2screen(move_point(self.coord, self.length, self.angle - math.pi), offset_x, offset_y, scale),
+                    int(self.radius * scale))

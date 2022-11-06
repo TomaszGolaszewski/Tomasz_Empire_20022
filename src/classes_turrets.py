@@ -10,6 +10,8 @@ from classes_base import *
 
 class Turret(Base_object):
     path = TURRET_PATH
+
+    Ammunition_class = Bullet
     
     turn_speed = 0.04
     max_radar_radius = 200
@@ -37,22 +39,10 @@ class Turret(Base_object):
         self.countdown_to_search = 0
         self.countdown_to_shot = 0
         self.target_locked = False
-        # self.show_target = False
 
-        self.body = pygame.image.load(os.path.join(*self.path))
-        self.body.convert()
-        self.body.set_colorkey(BLACK)
-
-
-    # def draw(self, win, offset_x, offset_y, scale):
-    # # draw the weapon on the screen
-        
-    #     body = self.body.get_rect()
-    #     scaled_image = pygame.transform.scale(self.body, (scale*body.width, scale*body.height))
-    #     rotated_image = pygame.transform.rotate(scaled_image, -math.degrees(self.turret_angle))
-    #     new_rect = rotated_image.get_rect(center = world2screen(self.coord, offset_x, offset_y, scale))
-    #     win.blit(rotated_image, new_rect.topleft)
-    #     # win.blit(scaled_image, move_point(self.orgin, offset_x, offset_y, scale))
+        # self.body = pygame.image.load(os.path.join(*self.path))
+        # self.body.convert()
+        # self.body.set_colorkey(BLACK)
 
 
     def draw_extra_data(self, win, offset_x, offset_y, scale):
@@ -81,7 +71,7 @@ class Turret(Base_object):
             if self.target_locked and abs(self.angle - self.angle_to_target) < 0.05:
                 # make and shot the bullet
                 bullet_coord = move_point(self.coord, self.barrel_length, self.angle)
-                list_with_bullets.append(Bullet(bullet_coord, self.angle, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id, self.power))
+                list_with_bullets.append(self.Ammunition_class(bullet_coord, self.angle, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id, self.power))
                 self.countdown_to_shot = self.countdown_time_to_shot
         else:
             self.countdown_to_shot -= 1
@@ -94,7 +84,6 @@ class Turret(Base_object):
     # set new target_coord, angle_to_target and dist_to target
 
         temp_coord = [0, 0]
-        # temp_angle = self.angle
         temp_dist = 9999
         temp_found_new_target = False
         
@@ -115,9 +104,6 @@ class Turret(Base_object):
             self.target_coord = self.coord
             self.target_locked = False
 
-    # def set_position(self, coord):
-    # # set new position of weapon
-    #     self.coord = coord
 
     def set_angle(self, angle):
     # set new base angle of weapon
@@ -126,6 +112,8 @@ class Turret(Base_object):
 
 class Light_cannon(Turret): 
     path = LIGHT_CANNON_PATH
+
+    Ammunition_class = Plasma
 
     turn_speed = 0.08
     max_radar_radius = 300
@@ -139,13 +127,11 @@ class Light_cannon(Turret):
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE
 
-    # def __init__(self, coord, base_angle, player_id, team_id):
-    # # initialization of the light cannon
-    #     Turret.__init__(self, coord, base_angle, player_id, team_id)
-
 
 class Medium_cannon(Turret): 
     path = MEDIUM_CANNON_PATH
+
+    Ammunition_class = Plasma
 
     turn_speed = 0.04
     max_radar_radius = 400
@@ -159,13 +145,11 @@ class Medium_cannon(Turret):
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE
 
-    # def __init__(self, coord, base_angle, player_id, team_id):
-    # # initialization of the light cannon
-    #     Turret.__init__(self, coord, base_angle, player_id, team_id)
-
 
 class Minigun(Turret): 
     path = MINIGUN_PATH
+
+    Ammunition_class = Plasma
 
     turn_speed = 0.08
     max_radar_radius = 400
@@ -176,5 +160,23 @@ class Minigun(Turret):
 
     power = 10
 
-    countdown_time_to_search = FRAMERATE // 10
+    countdown_time_to_search = FRAMERATE // 6
+    countdown_time_to_shot = FRAMERATE // 15
+
+
+class Plane_minigun(Turret): 
+    path = PLANE_MINIGUN_PATH
+
+    Ammunition_class = Plasma
+
+    turn_speed = 0.08
+    max_radar_radius = 400
+    min_radar_radius = 50
+
+    max_bullet_range = 600
+    barrel_length = 15
+
+    power = 10
+
+    countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE // 10

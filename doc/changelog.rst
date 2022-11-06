@@ -1,3 +1,8 @@
+v0.7.4 - 06.11.2022
+====
+* New wapon: Plane_minigun
+* New ammunition: Plasma beam
+
 v0.7.3 - 05.11.2022
 ====
 * New units: Bomber and Strategic bomber

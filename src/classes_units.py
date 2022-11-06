@@ -12,11 +12,12 @@ from classes_turrets import *
 
 class Unit:
     Vehicle_class = Vehicle
-    Turret_class = Turret
+    Main_weapon_class = Turret
+
     def __init__(self, coord, angle, player_id, team_id):
     # initialization of the unit
         self.base = self.Vehicle_class(coord, angle, player_id, team_id)
-        self.weapon = self.Turret_class(coord, angle, player_id, team_id)
+        self.weapon = self.Main_weapon_class(coord, angle, player_id, team_id)
 
         self.hit_box_radius = self.base.hit_box_radius
         self.base_HP = self.base.base_HP
@@ -87,19 +88,11 @@ class Unit:
 
 class Land_unit(Unit):
     pass
-    # def __init__(self, coord, angle, player_id, team_id):
-    # # initialization of the land unit
-    #     Unit.__init__(self, coord, angle, player_id, team_id)
 
 
 class Light_tank(Land_unit):
     Vehicle_class = Light_track
-    Turret_class = Light_cannon
-
-    # def __init__(self, coord, angle, player_id, team_id):
-    # # initialization of the light tank
-    #     Land_unit.__init__(self, coord, angle, player_id, team_id)
-
+    Main_weapon_class = Light_cannon
 
     def draw(self, win, offset_x, offset_y, scale):
     # draw the light tank on the screen
@@ -120,12 +113,7 @@ class Light_tank(Land_unit):
 
 class Main_battle_tank(Land_unit):
     Vehicle_class = Medium_track
-    Turret_class = Medium_cannon
-
-    # def __init__(self, coord, angle, player_id, team_id):
-    # # initialization of the main battle tank
-    #     Land_unit.__init__(self, coord, angle, player_id, team_id)
-
+    Main_weapon_class = Medium_cannon
 
     def draw(self, win, offset_x, offset_y, scale):
     # draw the main battle tank on the screen
@@ -147,8 +135,7 @@ class Main_battle_tank(Land_unit):
 
 class Spider_tank(Land_unit):
     Vehicle_class = Ant
-    Turret_class = Minigun
-
+    Main_weapon_class = Minigun
 
     def draw(self, win, offset_x, offset_y, scale):
     # draw the spider tank on the screen
@@ -178,7 +165,7 @@ class Air_unit(Unit):
 
 class Fighter(Air_unit):
     Vehicle_class = Plane
-    Turret_class = Minigun
+    Main_weapon_class = Plane_minigun
 
     def draw(self, win, offset_x, offset_y, scale):
     # draw the spider tank on the screen
@@ -201,7 +188,7 @@ class Fighter(Air_unit):
 
 class Bomber(Air_unit):
     Vehicle_class = Plane_bomber
-    Turret_class = Minigun
+    Main_weapon_class = Plane_minigun
 
     def draw(self, win, offset_x, offset_y, scale):
     # draw the spider tank on the screen
@@ -224,7 +211,7 @@ class Bomber(Air_unit):
 
 class Strategic_bomber(Air_unit):
     Vehicle_class = Plane_strategic_bomber
-    Turret_class = Minigun
+    Main_weapon_class = Plane_minigun
 
     def draw(self, win, offset_x, offset_y, scale):
     # draw the spider tank on the screen

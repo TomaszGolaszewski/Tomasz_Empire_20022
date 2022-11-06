@@ -29,21 +29,6 @@ class Vehicle(Base_animated_object):
         self.v_current = 0
         self.movement_target = []
 
-        # self.body = pygame.image.load(os.path.join(*self.path))
-        # self.body.convert()
-        # self.body.set_colorkey(BLACK)
-
-
-    # def draw(self, win, offset_x, offset_y, scale):
-    # # draw the vehicle on the screen
-        
-    #     body = self.body.get_rect()
-    #     scaled_image = pygame.transform.scale(self.body, (scale*body.width, scale*body.height))
-    #     rotated_image = pygame.transform.rotate(scaled_image, -math.degrees(self.angle))
-    #     new_rect = rotated_image.get_rect(center = world2screen(self.coord, offset_x, offset_y, scale))
-    #     win.blit(rotated_image, new_rect.topleft)
-    #     # win.blit(scaled_image, move_point(self.orgin, offset_x, offset_y, scale))
-
 
     def draw_extra_data(self, win, offset_x, offset_y, scale):
     # draw extra data about the vehicle on the screen
@@ -107,15 +92,6 @@ class Vehicle(Base_animated_object):
             self.state = "stop"
 
 
-    # def turn_to_target(self):
-    # # change vehicle's angle to target the movement target
-    #     dist_to_target = dist_two_points(self.coord, self.movement_target[0])
-
-    #     if dist_to_target > 20:
-    #         target_angle = angle_to_target(self.coord, self.movement_target[0])
-    #         self.angle = turn_to_target_angle(self.angle, target_angle, self.turn_speed)
-
-
     def get_new_angle(self):
     # return new angle closer to the movement target
         target_angle = angle_to_target(self.coord, self.movement_target[0])
@@ -131,25 +107,6 @@ class Vehicle(Base_animated_object):
         return False
 
 
-    # def move(self, list_with_units):
-    # # move the vehicle forward, if it is possible
-    #     new_coord = move_point(self.coord, self.v_current, self.angle)
-    #     if not self.is_collision(list_with_units, new_coord):
-    #         self.coord = new_coord
-    #     else:
-    #         self.angle += self.turn_speed # ------------------------------------------- :( this does'n work
-   
-
-
-    # def get_position(self):
-    # # return coordinates
-    #     return self.coord
-
-    # def get_angle(self):
-    # # return angle
-    #     return self.angle
-
-
 class Light_track(Vehicle):
     path = LIGHT_TRACK_PATH
     number_of_frames = LIGHT_TRACK_FRAMES
@@ -161,10 +118,6 @@ class Light_track(Vehicle):
 
     hit_box_radius = 13
     base_HP = 100
-
-    # def __init__(self, coord, angle, player_id, team_id):
-    # # initialization of the light track
-    #     Vehicle.__init__(self, coord, angle, player_id, team_id)
 
 
 class Medium_track(Vehicle):
@@ -178,10 +131,6 @@ class Medium_track(Vehicle):
 
     hit_box_radius = 17
     base_HP = 200
-
-    # def __init__(self, coord, angle, player_id, team_id):
-    # # initialization of the medium track
-    #     Vehicle.__init__(self, coord, angle, player_id, team_id)
 
 
 class Ant(Vehicle):

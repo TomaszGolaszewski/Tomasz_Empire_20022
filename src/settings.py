@@ -22,6 +22,7 @@ TURRET_PATH = ["imgs","vehicles","turret.png"]
 LIGHT_CANNON_PATH = ["imgs","vehicles","light_cannon.bmp"]
 MEDIUM_CANNON_PATH = ["imgs","vehicles","medium_cannon.bmp"]
 MINIGUN_PATH = ["imgs","vehicles","minigun.bmp"]
+PLANE_MINIGUN_PATH = ["imgs","vehicles","plane_minigun.bmp"]
 
 PLANE_PATH = ["imgs","vehicles","plane.bmp"]
 PLANE_FRAMES = 4
