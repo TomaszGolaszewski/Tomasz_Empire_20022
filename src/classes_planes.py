@@ -43,7 +43,7 @@ class Plane_bomber(Plane):
 
     v_max = 3
     acceleration = 0.1
-    turn_speed = 0.03
+    turn_speed = 0.02
 
     hit_box_radius = 15
     base_HP = 100
@@ -56,7 +56,7 @@ class Plane_strategic_bomber(Plane):
 
     v_max = 2
     acceleration = 0.05
-    turn_speed = 0.03
+    turn_speed = 0.01
 
     hit_box_radius = 20
     base_HP = 300

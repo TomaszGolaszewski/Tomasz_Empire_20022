@@ -180,3 +180,9 @@ class Plane_minigun(Turret):
 
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE // 10
+
+
+class Empty_slot(Turret): 
+    def draw(self, win, offset_x, offset_y, scale): pass
+    def draw_extra_data(self, win, offset_x, offset_y, scale): pass
+    def run(self, list_with_units, list_with_bullets): pass

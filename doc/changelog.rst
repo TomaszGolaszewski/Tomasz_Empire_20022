@@ -1,3 +1,7 @@
+v0.7.5 - 06.11.2022
+====
+* New number and location of miniguns on bombers
+
 v0.7.4 - 06.11.2022
 ====
 * New wapon: Plane_minigun
