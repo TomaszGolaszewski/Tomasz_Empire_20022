@@ -1,3 +1,8 @@
+v0.7.6 - 07.11.2022
+====
+* Cleaning and optimisation in draw method in Unit class
+* New unit type icon for air units 
+
 v0.7.5 - 06.11.2022
 ====
 * New number and location of miniguns on bombers
