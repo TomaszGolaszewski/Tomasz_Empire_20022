@@ -1,3 +1,8 @@
+v0.7.8 - 07.11.2022
+====
+* Fixes in collision detection
+* New sprites for future units: heavy tank
+
 v0.7.7 - 07.11.2022
 ====
 * Color of bullets now indicates target type: air / land

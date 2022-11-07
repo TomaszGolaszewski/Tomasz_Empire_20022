@@ -31,11 +31,11 @@ class Bullet:
     def draw(self, win, offset_x, offset_y, scale):
     # draw the bullet on the screen
         if self.target_type == "air":
-            color = SILVER # BLUE
+            color = RED # SILVER # BLUE
         elif self.target_type == "land":
             color = YELLOW
         else:
-            color = RED
+            color = BLUE # RED
         pygame.draw.circle(win, color, world2screen(self.coord, offset_x, offset_y, scale), self.radius*scale, 0)
 
 
@@ -94,10 +94,10 @@ class Plasma(Bullet):
             end_point = world2screen(move_point(self.coord, self.length, self.angle - math.pi), offset_x, offset_y, scale)
 
         if self.target_type == "air":
-            color = SILVER # BLUE
+            color = RED # SILVER # BLUE
         elif self.target_type == "land":
             color = YELLOW
         else:
-            color = RED
+            color = BLUE # RED
 
         pygame.draw.line(win, color, start_point, end_point, int(self.radius * scale))
