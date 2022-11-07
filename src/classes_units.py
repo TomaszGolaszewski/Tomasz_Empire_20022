@@ -96,7 +96,6 @@ class Unit:
                     world2screen([start_point[0] + 24 * percentage_of_HP * scale, start_point[1]], offset_x, offset_y, scale), int(3 * scale))
 
 
-
     def run(self, map, list_with_units, list_with_bullets):
     # life-cycle of the unit
 
@@ -135,22 +134,6 @@ class Light_tank(Land_unit):
 
     unit_level = 1
 
-    # def draw(self, win, offset_x, offset_y, scale):
-    # # draw the light tank on the screen
-    #     Land_unit.draw(self, win, offset_x, offset_y, scale)
-
-    #     coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale)
-
-    #     # draw level indicator
-    #     pygame.draw.line(win, BLACK, coord_on_screen, [coord_on_screen[0], coord_on_screen[1] + 9], 4)
-    #     pygame.draw.line(win, WHITE, coord_on_screen, [coord_on_screen[0], coord_on_screen[1] + 8], 2)
-
-    #     # draw team circle
-    #     pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, 7, 0)
-
-    #     # draw unit indicator
-    #     pygame.draw.circle(win, WHITE, coord_on_screen, 4, 1)
-
     def draw_unit_application_icon(self, win, coord_on_screen):
     # draw unit application icon - tank / anti-aircraft / bomber / etc.
         # o
@@ -163,23 +146,6 @@ class Main_battle_tank(Land_unit):
 
     unit_level = 2
 
-    # def draw(self, win, offset_x, offset_y, scale):
-    # # draw the main battle tank on the screen
-    #     Land_unit.draw(self, win, offset_x, offset_y, scale)
-
-    #     coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale)
-
-    #     # draw level indicator
-    #     pygame.draw.line(win, BLACK, coord_on_screen, [coord_on_screen[0], coord_on_screen[1] + 9], 7)
-    #     pygame.draw.line(win, WHITE, [coord_on_screen[0] - 2, coord_on_screen[1]], [coord_on_screen[0] - 2, coord_on_screen[1] + 8], 2)
-    #     pygame.draw.line(win, WHITE, [coord_on_screen[0] + 1, coord_on_screen[1]], [coord_on_screen[0] + 1, coord_on_screen[1] + 8], 2)
-
-    #     # draw team circle
-    #     pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, 7, 0)
-
-    #     # draw unit indicator
-    #     pygame.draw.circle(win, WHITE, coord_on_screen, 4, 1)
-
     def draw_unit_application_icon(self, win, coord_on_screen):
     # draw unit application icon - tank / anti-aircraft / bomber / etc.
         # o
@@ -191,24 +157,6 @@ class Spider_tank(Land_unit):
     Main_weapon_class = Minigun
 
     unit_level = 2
-
-    # def draw(self, win, offset_x, offset_y, scale):
-    # # draw the spider tank on the screen
-    #     Land_unit.draw(self, win, offset_x, offset_y, scale)
-
-    #     coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale)
-
-    #     # draw level indicator
-    #     pygame.draw.line(win, BLACK, coord_on_screen, [coord_on_screen[0], coord_on_screen[1] + 9], 7)
-    #     pygame.draw.line(win, WHITE, [coord_on_screen[0] - 2, coord_on_screen[1]], [coord_on_screen[0] - 2, coord_on_screen[1] + 8], 2)
-    #     pygame.draw.line(win, WHITE, [coord_on_screen[0] + 1, coord_on_screen[1]], [coord_on_screen[0] + 1, coord_on_screen[1] + 8], 2)
-
-    #     # draw team circle
-    #     pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, 7, 0)
-
-    #     # draw unit indicator
-    #     pygame.draw.line(win, WHITE, [coord_on_screen[0] - 3, coord_on_screen[1]], [coord_on_screen[0] + 3, coord_on_screen[1]], 1) # -
-    #     pygame.draw.line(win, WHITE, [coord_on_screen[0], coord_on_screen[1] - 3], [coord_on_screen[0], coord_on_screen[1] + 3], 1) # |
 
     def draw_unit_application_icon(self, win, coord_on_screen):
     # draw unit application icon - tank / anti-aircraft / bomber / etc.
@@ -228,10 +176,9 @@ class Air_unit(Unit):
 
         pygame.draw.polygon(win, player_color(self.player_id), [
             (coord_on_screen[0], coord_on_screen[1] - 8),
-            (coord_on_screen[0] - 7, coord_on_screen[1] + 6),
-            (coord_on_screen[0] + 7, coord_on_screen[1] + 6)
+            (coord_on_screen[0] - 6, coord_on_screen[1] + 5),
+            (coord_on_screen[0] + 6, coord_on_screen[1] + 5)
         ], 0)    
-        # pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, 7, 0)
 
 
 class Fighter(Air_unit):
@@ -239,24 +186,6 @@ class Fighter(Air_unit):
     Main_weapon_class = Empty_slot
 
     unit_level = 2
-
-    # def draw(self, win, offset_x, offset_y, scale):
-    # # draw the fighter on the screen
-    #     Air_unit.draw(self, win, offset_x, offset_y, scale)
-
-    #     coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale)
-
-    #     # draw level indicator
-    #     pygame.draw.line(win, BLACK, coord_on_screen, [coord_on_screen[0], coord_on_screen[1] + 9], 7)
-    #     pygame.draw.line(win, WHITE, [coord_on_screen[0] - 2, coord_on_screen[1]], [coord_on_screen[0] - 2, coord_on_screen[1] + 8], 2)
-    #     pygame.draw.line(win, WHITE, [coord_on_screen[0] + 1, coord_on_screen[1]], [coord_on_screen[0] + 1, coord_on_screen[1] + 8], 2)
-
-    #     # draw team circle
-    #     pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, 7, 0)
-
-    #     # draw unit indicator
-    #     pygame.draw.line(win, WHITE, [coord_on_screen[0] - 3, coord_on_screen[1] + 3], [coord_on_screen[0], coord_on_screen[1] - 3], 1) # /
-    #     pygame.draw.line(win, WHITE, [coord_on_screen[0] + 3, coord_on_screen[1] + 3], [coord_on_screen[0], coord_on_screen[1] - 3], 1) # \
 
     def draw_unit_application_icon(self, win, coord_on_screen):
     # draw unit application icon - tank / anti-aircraft / bomber / etc.
@@ -279,7 +208,7 @@ class Bomber(Air_unit):
 
     def draw(self, win, offset_x, offset_y, scale):
     # draw the bomber on the screen
-        # Air_unit.draw(self, win, offset_x, offset_y, scale)
+       
         self.base.draw(win, offset_x, offset_y, scale)
         self.weapon.draw(win, offset_x, offset_y, scale)
         self.weapon2.draw(win, offset_x, offset_y, scale)
@@ -292,17 +221,6 @@ class Bomber(Air_unit):
         if self.is_selected:
             pygame.draw.circle(win, LIME, coord_on_screen, 20, 3)
 
-        # # draw level indicator
-        # pygame.draw.line(win, BLACK, coord_on_screen, [coord_on_screen[0], coord_on_screen[1] + 9], 7)
-        # pygame.draw.line(win, WHITE, [coord_on_screen[0] - 2, coord_on_screen[1]], [coord_on_screen[0] - 2, coord_on_screen[1] + 8], 2)
-        # pygame.draw.line(win, WHITE, [coord_on_screen[0] + 1, coord_on_screen[1]], [coord_on_screen[0] + 1, coord_on_screen[1] + 8], 2)
-
-        # # draw team circle
-        # pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, 7, 0)
-
-        # # draw unit indicator
-        # pygame.draw.line(win, WHITE, [coord_on_screen[0] - 3, coord_on_screen[1] - 3], [coord_on_screen[0], coord_on_screen[1] + 3], 1) # \
-        # pygame.draw.line(win, WHITE, [coord_on_screen[0] + 3, coord_on_screen[1] - 3], [coord_on_screen[0], coord_on_screen[1] + 3], 1) # /
 
     def draw_unit_application_icon(self, win, coord_on_screen):
     # draw unit application icon - tank / anti-aircraft / bomber / etc.
@@ -340,14 +258,11 @@ class Strategic_bomber(Air_unit):
 
     def draw(self, win, offset_x, offset_y, scale):
     # draw the strategic bomber on the screen
-        # Air_unit.draw(self, win, offset_x, offset_y, scale)
+
         self.base.draw(win, offset_x, offset_y, scale)
         self.weapon.draw(win, offset_x, offset_y, scale)
         self.weapon2.draw(win, offset_x, offset_y, scale)
         self.weapon3.draw(win, offset_x, offset_y, scale)
-
-        # if self.is_selected:
-        #     pygame.draw.circle(win, LIME, world2screen(self.coord, offset_x, offset_y, scale), 20, 3)
 
         coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale)
         self.draw_level_indicator(win, coord_on_screen)
@@ -357,18 +272,6 @@ class Strategic_bomber(Air_unit):
         if self.is_selected:
             pygame.draw.circle(win, LIME, coord_on_screen, 20, 3)
 
-        # # draw level indicator
-        # pygame.draw.line(win, BLACK, coord_on_screen, [coord_on_screen[0], coord_on_screen[1] + 9], 10)
-        # pygame.draw.line(win, WHITE, [coord_on_screen[0] - 3, coord_on_screen[1]], [coord_on_screen[0] - 3, coord_on_screen[1] + 8], 2)
-        # pygame.draw.line(win, WHITE, coord_on_screen, [coord_on_screen[0], coord_on_screen[1] + 8], 2)
-        # pygame.draw.line(win, WHITE, [coord_on_screen[0] + 3, coord_on_screen[1]], [coord_on_screen[0] + 3, coord_on_screen[1] + 8], 2)
-
-        # # draw team circle
-        # pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, 7, 0)
-
-        # # draw unit indicator
-        # pygame.draw.line(win, WHITE, [coord_on_screen[0] - 3, coord_on_screen[1] - 3], [coord_on_screen[0], coord_on_screen[1] + 3], 1) # \
-        # pygame.draw.line(win, WHITE, [coord_on_screen[0] + 3, coord_on_screen[1] - 3], [coord_on_screen[0], coord_on_screen[1] + 3], 1) # /
 
     def draw_unit_application_icon(self, win, coord_on_screen):
     # draw unit application icon - tank / anti-aircraft / bomber / etc.

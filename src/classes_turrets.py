@@ -40,10 +40,6 @@ class Turret(Base_object):
         self.countdown_to_shot = 0
         self.target_locked = False
 
-        # self.body = pygame.image.load(os.path.join(*self.path))
-        # self.body.convert()
-        # self.body.set_colorkey(BLACK)
-
 
     def draw_extra_data(self, win, offset_x, offset_y, scale):
     # draw extra data about the weapon on the screen
@@ -71,7 +67,7 @@ class Turret(Base_object):
             if self.target_locked and abs(self.angle - self.angle_to_target) < 0.05:
                 # make and shot the bullet
                 bullet_coord = move_point(self.coord, self.barrel_length, self.angle)
-                list_with_bullets.append(self.Ammunition_class(bullet_coord, self.angle, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id, self.power))
+                list_with_bullets.append(self.Ammunition_class(bullet_coord, self.angle, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id, self.power, self.target_type))
                 self.countdown_to_shot = self.countdown_time_to_shot
         else:
             self.countdown_to_shot -= 1
@@ -90,19 +86,27 @@ class Turret(Base_object):
         for unit in list_with_units:
             if unit.team_id != self.team_id:
                 dist = dist_two_points(unit.coord, self.coord)
-                if dist < self.max_radar_radius and dist < temp_dist and dist > self.min_radar_radius:
+                if self.is_valid_target(unit.unit_type) and dist < self.max_radar_radius and dist < temp_dist and dist > self.min_radar_radius:
                     temp_coord = unit.coord
                     temp_dist = dist
+                    temp_target_type = unit.unit_type
                     temp_found_new_target = True
         
         if temp_found_new_target:
             self.target_coord = temp_coord
             self.angle_to_target = angle_to_target(self.coord, temp_coord)
             self.dist_to_target = temp_dist
+            self.target_type = temp_target_type
             self.target_locked = True
         else:
             self.target_coord = self.coord
             self.target_locked = False
+
+    
+    def is_valid_target(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        return True
 
 
     def set_angle(self, angle):
@@ -127,6 +131,13 @@ class Light_cannon(Turret):
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE
 
+    def is_valid_target(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        # anti land units
+        if unit_type == "land": return True
+        else: return False
+
 
 class Medium_cannon(Turret): 
     path = MEDIUM_CANNON_PATH
@@ -144,6 +155,13 @@ class Medium_cannon(Turret):
 
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE
+
+    def is_valid_target(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        # anti land units
+        if unit_type == "land": return True
+        else: return False
 
 
 class Minigun(Turret): 
@@ -163,6 +181,8 @@ class Minigun(Turret):
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE // 15
 
+    # minigun is for all targets
+
 
 class Plane_minigun(Turret): 
     path = PLANE_MINIGUN_PATH
@@ -180,6 +200,13 @@ class Plane_minigun(Turret):
 
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE // 10
+
+    def is_valid_target(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        # anti-aircrafts
+        if unit_type == "air": return True
+        else: return False
 
 
 class Empty_slot(Turret): 

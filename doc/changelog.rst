@@ -1,3 +1,8 @@
+v0.7.7 - 07.11.2022
+====
+* Color of bullets now indicates target type: air / land
+* Wapons only shots at a specific target type
+
 v0.7.6 - 07.11.2022
 ====
 * Cleaning and optimisation in draw method in Unit class
