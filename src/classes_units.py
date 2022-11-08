@@ -240,7 +240,7 @@ class Air_unit(Unit):
 
 class Fighter(Air_unit):
     Vehicle_class = Plane
-    Main_weapon_class = Empty_slot
+    Main_weapon_class = Plane_fixed_gun
 
     unit_level = 2
 

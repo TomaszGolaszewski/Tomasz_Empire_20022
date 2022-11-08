@@ -16,7 +16,7 @@ LIGHT_TRACK_FRAMES = 5
 MEDIUM_TRACK_PATH = ["imgs","vehicles","medium_track.bmp"]
 MEDIUM_TRACK_FRAMES = 5
 HEAVY_TRACK_PATH = ["imgs","vehicles","heavy_track.bmp"]
-HEAVY_TRACK_FRAMES = 4
+HEAVY_TRACK_FRAMES = 7
 ANT_PATH = ["imgs","vehicles","ant.bmp"]
 ANT_FRAMES = 5
 

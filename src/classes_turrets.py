@@ -64,10 +64,9 @@ class Turret(Base_object):
             self.countdown_to_search -= 1
 
         if not self.countdown_to_shot:
-            if self.target_locked and abs(self.angle - self.angle_to_target) < 0.05:
+            if self.target_locked and abs(self.angle - self.angle_to_target) < 0.02:
                 # make and shot the bullet
-                bullet_coord = move_point(self.coord, self.barrel_length, self.angle)
-                list_with_bullets.append(self.Ammunition_class(bullet_coord, self.angle, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id, self.power, self.target_type))
+                self.make_bullets(list_with_bullets)
                 self.countdown_to_shot = self.countdown_time_to_shot
         else:
             self.countdown_to_shot -= 1
@@ -104,6 +103,14 @@ class Turret(Base_object):
         else:
             self.target_coord = self.coord
             self.target_locked = False
+
+    
+    def make_bullets(self, list_with_bullets):
+    # function makes ant shoot the bullet
+    # return list_with_bullets
+        bullet_coord = move_point(self.coord, self.barrel_length, self.angle)
+        list_with_bullets.append(self.Ammunition_class(bullet_coord, self.angle, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id, self.power, self.target_type))            
+        return list_with_bullets
 
     
     def is_valid_target(self, unit_type):
@@ -235,6 +242,68 @@ class Plane_minigun(Turret):
         # anti-aircrafts
         if unit_type == "air": return True
         else: return False
+
+
+class Plane_fixed_gun(Turret):
+    Ammunition_class = Plasma
+
+    turn_speed = 0.2
+    max_radar_radius = 400
+    min_radar_radius = 100
+
+    max_bullet_range = 600
+    barrel_length = 15
+
+    power = 20
+
+    countdown_time_to_search = 1
+    countdown_time_to_shot = FRAMERATE // 20
+
+    def draw(self, win, offset_x, offset_y, scale): pass
+
+
+    def find_target(self, list_with_units):
+    # find closest target in front of gun
+    # set new target_coord, angle_to_target and dist_to target
+
+        temp_coord = move_point(self.coord, self.min_radar_radius, self.base_angle)
+        temp_dist = self.min_radar_radius
+        temp_found_new_target = False 
+        step = 15
+        search_radius = 50
+        
+        while temp_dist <= self.max_radar_radius:
+            for unit in list_with_units:
+                if unit.team_id != self.team_id and self.is_valid_target(unit.unit_type):
+                    dist = dist_two_points(unit.coord, temp_coord)
+                    if dist < search_radius:
+                        temp_target_type = unit.unit_type
+                        temp_found_new_target = True
+                        break
+            if temp_found_new_target:
+                break
+            else:
+                temp_dist += step
+                temp_coord = move_point(temp_coord, step, self.base_angle)
+        
+        if temp_found_new_target:
+            self.target_coord = temp_coord
+            self.angle_to_target = self.base_angle # angle_to_target(self.coord, temp_coord)
+            self.dist_to_target = temp_dist
+            self.target_type = temp_target_type
+            self.target_locked = True
+        else:
+            self.target_coord = self.coord
+            self.target_locked = False
+
+
+    def is_valid_target(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        # anti-aircrafts
+        if unit_type == "air": return True
+        else: return False
+
 
 
 class Empty_slot(Turret): 

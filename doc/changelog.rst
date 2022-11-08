@@ -1,3 +1,8 @@
+v0.7.10 - 08.11.2022
+====
+* Some changes in sprites: heavy track and bomber
+* New weapon: Plane_fixed_gun
+
 v0.7.9 - 08.11.2022
 ====
 * New unit: Heavy tank with two Side turrets 
