@@ -152,6 +152,63 @@ class Main_battle_tank(Land_unit):
         pygame.draw.circle(win, WHITE, coord_on_screen, 4, 1)
 
 
+class Heavy_tank(Land_unit):
+    Vehicle_class = Heavy_track
+    Main_weapon_class = Minigun
+
+    unit_level = 3
+
+    def __init__(self, coord, angle, player_id, team_id):
+    # initialization of the heavy tank
+        Land_unit.__init__(self, coord, angle, player_id, team_id)
+        self.weapon2 = Side_cannon(coord, angle, player_id, team_id)
+        self.weapon3 = Side_cannon(coord, angle, player_id, team_id)
+
+
+    def draw(self, win, offset_x, offset_y, scale):
+    # draw the heavy tank on the screen
+
+        self.base.draw(win, offset_x, offset_y, scale)
+        self.weapon.draw(win, offset_x, offset_y, scale)
+        self.weapon2.draw(win, offset_x, offset_y, scale)
+        self.weapon3.draw(win, offset_x, offset_y, scale)
+
+        coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale)
+        self.draw_level_indicator(win, coord_on_screen)
+        self.draw_unit_type_icon(win, coord_on_screen)
+        self.draw_unit_application_icon(win, coord_on_screen)
+
+        if self.is_selected:
+            pygame.draw.circle(win, LIME, coord_on_screen, 20, 3)
+
+
+    def draw_unit_application_icon(self, win, coord_on_screen):
+    # draw unit application icon - tank / anti-aircraft / bomber / etc.
+        # o
+        pygame.draw.circle(win, WHITE, coord_on_screen, 4, 1)
+
+    
+    def draw_extra_data(self, win, offset_x, offset_y, scale):
+    # draw extra data about the heavy tank on the screen
+        Air_unit.draw_extra_data(self, win, offset_x, offset_y, scale)
+        self.weapon2.draw_extra_data(win, offset_x, offset_y, scale)
+        self.weapon3.draw_extra_data(win, offset_x, offset_y, scale)
+
+    
+    def run(self, map, list_with_units, list_with_bullets):
+    # life-cycle of the heavy tank
+        Air_unit.run(self, map, list_with_units, list_with_bullets)
+        if self.is_alive:
+            x = 0
+            y = 16          
+            self.weapon2.set_position((self.coord[0] + x * math.cos(self.angle) + y * math.sin(self.angle), self.coord[1] + x * math.sin(self.angle) - y * math.cos(self.angle)))
+            self.weapon3.set_position((self.coord[0] + x * math.cos(self.angle) - y * math.sin(self.angle), self.coord[1] + x * math.sin(self.angle) + y * math.cos(self.angle)))
+            self.weapon2.set_angle(self.angle)
+            self.weapon3.set_angle(self.angle)
+            self.weapon2.run(list_with_units, list_with_bullets)
+            self.weapon3.run(list_with_units, list_with_bullets)
+
+
 class Spider_tank(Land_unit):
     Vehicle_class = Ant
     Main_weapon_class = Minigun

@@ -42,12 +42,12 @@ def angle_to_target(origin, target):
     return angle
 
 
-def turn_to_target_angle(origin_angle, target_angle, turn_speed, damping = 0.05):
+def turn_to_target_angle(origin_angle, target_angle, turn_speed): # , damping = 0.05):
 # function that slowly (by turn_speed) changes origin_angle in target_angle_direction
 # optional vibration damping
 # return angle in radians - in the range of 0 to 2pi
 
-    if abs(target_angle - origin_angle) > damping:
+    if abs(target_angle - origin_angle) > turn_speed: # damping:
 
         origin_quadrant = get_quadrant(origin_angle)
         target_quadrant = get_quadrant(target_angle)
@@ -76,8 +76,11 @@ def turn_to_target_angle(origin_angle, target_angle, turn_speed, damping = 0.05)
             else:
                 origin_angle += turn_speed
 
-        if origin_angle > 2*math.pi: origin_angle -= 2*math.pi
-        elif origin_angle < 0: origin_angle += 2*math.pi
+    else:
+        origin_angle = target_angle
+
+    if origin_angle > 2*math.pi: origin_angle -= 2*math.pi
+    elif origin_angle < 0: origin_angle += 2*math.pi
 
     return origin_angle
 

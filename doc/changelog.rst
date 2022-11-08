@@ -1,3 +1,9 @@
+v0.7.9 - 08.11.2022
+====
+* New unit: Heavy tank with two Side turrets 
+* Turrets are now moving back to start position without target
+* Fixes in function turn_to_target_angle
+
 v0.7.8 - 07.11.2022
 ====
 * Fixes in collision detection

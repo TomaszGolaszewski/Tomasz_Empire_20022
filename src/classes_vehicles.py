@@ -128,10 +128,23 @@ class Medium_track(Vehicle):
 
     v_max = 0.75
     acceleration = 0.1
-    turn_speed = 0.04
+    turn_speed = 0.02
 
     hit_box_radius = 17
     base_HP = 200
+
+
+class Heavy_track(Vehicle):
+    path = HEAVY_TRACK_PATH
+    number_of_frames = HEAVY_TRACK_FRAMES
+    number_of_frames_in_sequence = HEAVY_TRACK_FRAMES - 1
+
+    v_max = 0.5
+    acceleration = 0.1
+    turn_speed = 0.01
+
+    hit_box_radius = 22
+    base_HP = 500
 
 
 class Ant(Vehicle):

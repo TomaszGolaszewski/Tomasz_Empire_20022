@@ -73,7 +73,7 @@ class Bullet:
 
 
 class Plasma(Bullet):
-    speed = 10
+    speed = 15
     radius = 3 # width of beam
     base_length = 6
     hit_box_radius = 3

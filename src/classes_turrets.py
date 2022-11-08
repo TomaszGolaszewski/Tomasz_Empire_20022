@@ -72,7 +72,10 @@ class Turret(Base_object):
         else:
             self.countdown_to_shot -= 1
 
-        self.angle = turn_to_target_angle(self.angle, self.angle_to_target, self.turn_speed, 0.02)
+        if not self.target_locked:
+            self.angle_to_target = self.base_angle
+
+        self.angle = turn_to_target_angle(self.angle, self.angle_to_target, self.turn_speed) # , 0.02) # damping
 
 
     def find_target(self, list_with_units):
@@ -141,6 +144,31 @@ class Light_cannon(Turret):
 
 class Medium_cannon(Turret): 
     path = MEDIUM_CANNON_PATH
+
+    Ammunition_class = Plasma
+
+    turn_speed = 0.04
+    max_radar_radius = 400
+    min_radar_radius = 75
+
+    max_bullet_range = 800
+    barrel_length = 25
+
+    power = 80
+
+    countdown_time_to_search = FRAMERATE // 6
+    countdown_time_to_shot = FRAMERATE
+
+    def is_valid_target(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        # anti land units
+        if unit_type == "land": return True
+        else: return False
+
+
+class Side_cannon(Turret): 
+    path = SIDE_CANNON_PATH
 
     Ammunition_class = Plasma
 

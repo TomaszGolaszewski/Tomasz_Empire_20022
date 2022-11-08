@@ -15,6 +15,8 @@ LIGHT_TRACK_PATH = ["imgs","vehicles","light_track.bmp"]
 LIGHT_TRACK_FRAMES = 5
 MEDIUM_TRACK_PATH = ["imgs","vehicles","medium_track.bmp"]
 MEDIUM_TRACK_FRAMES = 5
+HEAVY_TRACK_PATH = ["imgs","vehicles","heavy_track.bmp"]
+HEAVY_TRACK_FRAMES = 4
 ANT_PATH = ["imgs","vehicles","ant.bmp"]
 ANT_FRAMES = 5
 
@@ -23,6 +25,7 @@ LIGHT_CANNON_PATH = ["imgs","vehicles","light_cannon.bmp"]
 MEDIUM_CANNON_PATH = ["imgs","vehicles","medium_cannon.bmp"]
 MINIGUN_PATH = ["imgs","vehicles","minigun.bmp"]
 PLANE_MINIGUN_PATH = ["imgs","vehicles","plane_minigun.bmp"]
+SIDE_CANNON_PATH = ["imgs","vehicles","side_cannon.bmp"]
 
 PLANE_PATH = ["imgs","vehicles","plane.bmp"]
 PLANE_FRAMES = 4
