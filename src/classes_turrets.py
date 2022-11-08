@@ -106,7 +106,7 @@ class Turret(Base_object):
 
     
     def make_bullets(self, list_with_bullets):
-    # function makes ant shoot the bullet
+    # function makes and shoot the bullet
     # return list_with_bullets
         bullet_coord = move_point(self.coord, self.barrel_length, self.angle)
         list_with_bullets.append(self.Ammunition_class(bullet_coord, self.angle, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id, self.power, self.target_type))            
@@ -304,6 +304,40 @@ class Plane_fixed_gun(Turret):
         if unit_type == "air": return True
         else: return False
 
+
+class Bomb_dispenser(Plane_fixed_gun):
+    Ammunition_class = Bomb
+
+    turn_speed = 0.2
+    max_radar_radius = 200
+    min_radar_radius = 100
+
+    max_bullet_range = 200
+    barrel_length = 0
+
+    power = 100
+
+    countdown_time_to_search = FRAMERATE // 2
+    countdown_time_to_shot = FRAMERATE
+
+    number_of_bombs = 5
+
+    def make_bullets(self, list_with_bullets):
+    # function makes and shoot the bullet
+    # return list_with_bullets
+        bullet_coord = move_point(self.coord, self.barrel_length, self.angle)
+        for _ in range(self.number_of_bombs):
+            drift = random.randint(0,2) - 1
+            list_with_bullets.append(self.Ammunition_class(bullet_coord, self.angle + drift * 0.05, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id, self.power, self.target_type))            
+        return list_with_bullets
+
+
+    def is_valid_target(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        # anti-aircrafts
+        if unit_type == "land": return True
+        else: return False
 
 
 class Empty_slot(Turret): 

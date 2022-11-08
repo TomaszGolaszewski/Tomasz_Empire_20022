@@ -1,3 +1,8 @@
+v0.7.11 - 08.11.2022
+====
+* New weapon: Bomb_dispenser
+* New ammunition: Bomb
+
 v0.7.10 - 08.11.2022
 ====
 * Some changes in sprites: heavy track and bomber

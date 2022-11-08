@@ -101,3 +101,9 @@ class Plasma(Bullet):
             color = BLUE # RED
 
         pygame.draw.line(win, color, start_point, end_point, int(self.radius * scale))
+
+
+class Bomb(Bullet):
+    speed = 1
+    radius = 3
+    hit_box_radius = 10

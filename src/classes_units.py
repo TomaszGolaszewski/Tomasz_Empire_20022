@@ -253,7 +253,7 @@ class Fighter(Air_unit):
 
 class Bomber(Air_unit):
     Vehicle_class = Plane_bomber
-    Main_weapon_class = Empty_slot
+    Main_weapon_class = Bomb_dispenser
 
     unit_level = 2
 
