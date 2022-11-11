@@ -250,6 +250,7 @@ class Plane_fixed_gun(Turret):
     turn_speed = 0.2
     max_radar_radius = 400
     min_radar_radius = 100
+    search_radius = 50
 
     max_bullet_range = 600
     barrel_length = 15
@@ -270,13 +271,12 @@ class Plane_fixed_gun(Turret):
         temp_dist = self.min_radar_radius
         temp_found_new_target = False 
         step = 15
-        search_radius = 50
         
         while temp_dist <= self.max_radar_radius:
             for unit in list_with_units:
                 if unit.team_id != self.team_id and self.is_valid_target(unit.unit_type):
                     dist = dist_two_points(unit.coord, temp_coord)
-                    if dist < search_radius:
+                    if dist < self.search_radius:
                         temp_target_type = unit.unit_type
                         temp_found_new_target = True
                         break
@@ -310,14 +310,16 @@ class Bomb_dispenser(Plane_fixed_gun):
 
     turn_speed = 0.2
     max_radar_radius = 200
-    min_radar_radius = 100
+    min_radar_radius = 170
+    search_radius = 30
 
-    max_bullet_range = 200
+    max_bullet_range = 230
     barrel_length = 0
 
     power = 100
+    drift_steps = 2
 
-    countdown_time_to_search = FRAMERATE // 2
+    countdown_time_to_search = FRAMERATE // 20
     countdown_time_to_shot = FRAMERATE
 
     number_of_bombs = 5
@@ -327,7 +329,7 @@ class Bomb_dispenser(Plane_fixed_gun):
     # return list_with_bullets
         bullet_coord = move_point(self.coord, self.barrel_length, self.angle)
         for _ in range(self.number_of_bombs):
-            drift = random.randint(0,2) - 1
+            drift = random.randint(0, 2 * self.drift_steps) - self.drift_steps
             list_with_bullets.append(self.Ammunition_class(bullet_coord, self.angle + drift * 0.05, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id, self.power, self.target_type))            
         return list_with_bullets
 
@@ -338,6 +340,13 @@ class Bomb_dispenser(Plane_fixed_gun):
         # anti-aircrafts
         if unit_type == "land": return True
         else: return False
+
+
+class Advanced_bomb_dispenser(Bomb_dispenser):
+    max_bullet_range = 270
+    power = 100
+    number_of_bombs = 15
+    drift_steps = 4
 
 
 class Empty_slot(Turret): 

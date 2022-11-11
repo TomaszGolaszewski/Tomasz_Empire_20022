@@ -1,3 +1,8 @@
+v0.7.12 - 11.11.2022
+====
+* Some changes in Bomb and Bomb_dispenser mechanics
+* New weapon: Advanced_bomb_dispenser
+
 v0.7.11 - 08.11.2022
 ====
 * New weapon: Bomb_dispenser

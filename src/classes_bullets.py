@@ -106,4 +106,9 @@ class Plasma(Bullet):
 class Bomb(Bullet):
     speed = 1
     radius = 3
-    hit_box_radius = 10
+    hit_box_radius = 15
+
+    def __init__(self, coord, angle, max_distance, min_distance, player_id, team_id, power, target_type):
+    # initialization of the bomb
+        self.speed += random.randint(0, 2) * 0.1
+        Bullet.__init__(self, coord, angle, max_distance, min_distance, player_id, team_id, power, target_type)

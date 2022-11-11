@@ -302,7 +302,7 @@ class Bomber(Air_unit):
 
 class Strategic_bomber(Air_unit):
     Vehicle_class = Plane_strategic_bomber
-    Main_weapon_class = Empty_slot
+    Main_weapon_class = Advanced_bomb_dispenser
 
     unit_level = 3
 
