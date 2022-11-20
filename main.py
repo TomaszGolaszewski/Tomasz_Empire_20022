@@ -227,9 +227,13 @@ def run():
             for unit in LIST_WITH_UNITS:
                 unit.draw_extra_data(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
-        # draw vehicles
+        # draw land units
         for unit in LIST_WITH_UNITS:
-            unit.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
+            if unit.unit_type == "land": unit.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
+
+        # draw air units
+        for unit in LIST_WITH_UNITS:
+            if unit.unit_type == "air": unit.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
         # show HP bars
         if SHOW_HP_BARS and SCALE >= 1:
