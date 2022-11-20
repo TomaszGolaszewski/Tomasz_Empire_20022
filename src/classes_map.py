@@ -5,6 +5,7 @@ from settings import *
 from classes_hex import *
 
 class Map:
+    Tile_generation = HexTile
 
     def __init__(self, map_width, map_height, tile_edge_length):
     # initialization of the map
@@ -20,7 +21,7 @@ class Map:
         for y in range(map_height):
             row = []
             for x in range(map_width):
-                row.append(HexTile((x, y), self.id2world((x, y)), tile_edge_length))
+                row.append(self.Tile_generation((x, y), self.id2world((x, y)), tile_edge_length))
             self.BOARD.append(row)
 
         self.old_offset_x = 0
@@ -85,3 +86,13 @@ class Map:
             x_id = int(x_world / self.inner_tile_radius / 2 + 0.5)
 
         return (x_id, y_id)
+
+
+class Map_v2(Map):
+    Tile_generation = HexTile_v2
+
+    def draw(self, win, offset_x, offset_y, scale):
+    # draw the Map on the screen
+        for row in self.BOARD:
+            for tile in row:
+                tile.draw(win, offset_x, offset_y, scale)

@@ -79,3 +79,65 @@ class HexTile:
             #     self.color[i_rgb] = 20
 
             # self.color = BLUE
+
+
+
+class HexTile_v2(HexTile):
+
+    def __init__(self, coord_id, coord_world, edge_length):
+    # initialization of the HexTile
+        HexTile.__init__(self, coord_id, coord_world, edge_length)
+
+        self.width = self.edge_length_world * SQRT3 + 1
+        self.height = 2 * self.edge_length_world + 1
+
+        # load and prepare sprite
+        self.sprite = pygame.Surface([self.width, self.height])
+        self.sprite.fill(BLACK)
+        self.sprite.convert()
+        self.sprite.set_colorkey(BLACK)
+
+        self.color = [SNOW_WHITE[0] - random.randint(0, 40), SNOW_WHITE[1] - random.randint(0, 10), SNOW_WHITE[2] - random.randint(0, 5)]
+
+        self.sprite_update()
+
+        # # load and prepare sprite
+        # self.sprite = pygame.image.load(os.path.join(*self.path))
+
+    def draw(self, win, offset_x, offset_y, scale):
+    # draw the HexTile on the screen
+        if self.is_on_screen:
+            scaled_image = pygame.transform.scale(self.sprite, (scale * self.width, scale * self.height))
+            # new_rect = scaled_image.get_rect(center = world2screen(self.coord_screen, offset_x, offset_y, scale))
+            new_rect = scaled_image.get_rect(center = self.coord_screen)
+            win.blit(scaled_image, new_rect.topleft)
+    
+    def sprite_update(self):
+    # draw the HexTile on the sprite surface
+        # corners_sprite = self.compute_corners([self.edge_length_world * SQRT3 / 2, self.edge_length_world], self.edge_length_world)
+        corners_sprite = [
+                (self.width / 2, 0),
+                (self.width, self.edge_length_world / 2),
+                (self.width, self.edge_length_world * 3 / 2),
+                (self.width / 2, self.height),
+                (0, self.edge_length_world * 3 / 2),
+                (0, self.edge_length_world / 2),
+            ]
+        pygame.draw.polygon(self.sprite, self.color, corners_sprite)
+
+    def update_screen_corners(self, offset_x, offset_y, scale = 1):
+    # update the hexagon's corners' coordinates in screen coordinate system
+        self.coord_screen = world2screen(self.coord_world, offset_x, offset_y, scale)  
+
+        margin = self.edge_length_world * scale
+        x, y = self.coord_screen
+        if x < -margin or y < -margin or x > WIN_WIDTH+margin or y > WIN_HEIGHT+margin:
+            self.is_on_screen = False
+        else:
+            # self.corners_screen = self.compute_corners(self.coord_screen, self.edge_length_world * scale)
+            self.is_on_screen = True
+
+    def degrade(self, level):
+    # degrade the tile - it will be darker
+        HexTile.degrade(self, level)
+        self.sprite_update()

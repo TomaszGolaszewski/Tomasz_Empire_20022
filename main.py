@@ -57,10 +57,13 @@ def run():
 
     # initialize the game
     MAP = Map(40, 60, 30)
-    # MAP.BOARD[1][10].color = BLUE
+    # MAP = Map(11, 20, 30)
+    # MAP2 = Map_v2(50, 70, 30)
+    MAP2 = Map_v2(5, 10, 30)
+    MAP.BOARD[1][10].color = BLUE
 
-    LIST_WITH_UNITS = make_test_units()
-    # LIST_WITH_UNITS = [Light_tank([500, 300], math.pi/2, 1, 1)]
+    # LIST_WITH_UNITS = make_test_units()
+    LIST_WITH_UNITS = [Light_tank([500, 300], math.pi/2, 1, 1)]
     LIST_WITH_BULLETS = []
 
 
@@ -219,8 +222,10 @@ def run():
 
         # calculate new position of the map on the screen
         MAP.update_screen_corners(OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
+        MAP2.update_screen_corners(OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
         # draw the map
         MAP.draw(WIN)
+        MAP2.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
         # show extra data
         if SHOW_EXTRA_DATA:

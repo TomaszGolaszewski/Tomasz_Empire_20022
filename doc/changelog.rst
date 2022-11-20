@@ -1,174 +1,179 @@
+v0.8 - Map stage II - 20.11.2022
+======
+* Experimenting with drawing a map using spraits.
+
+
 v0.7.13 - 20.11.2022
 ----
-* Fixes in units drawing order
-* Changes in changelog structure
+* Fixes in units drawing order;
+* Changes in changelog structure.
 
 v0.7.12 - 11.11.2022
 ----
-* Some changes in Bomb and Bomb_dispenser mechanics
-* New weapon: Advanced_bomb_dispenser
+* Some changes in Bomb and Bomb_dispenser mechanics;
+* New weapon: Advanced_bomb_dispenser.
 
 v0.7.11 - 08.11.2022
 ----
-* New weapon: Bomb_dispenser
-* New ammunition: Bomb
+* New weapon: Bomb_dispenser;
+* New ammunition: Bomb.
 
 v0.7.10 - 08.11.2022
 ----
-* Some changes in sprites: heavy track and bomber
-* New weapon: Plane_fixed_gun
+* Some changes in sprites: heavy track and bomber;
+* New weapon: Plane_fixed_gun.
 
 v0.7.9 - 08.11.2022
 ----
-* New unit: Heavy tank with two Side turrets 
-* Turrets are now moving back to start position without target
-* Fixes in function turn_to_target_angle
+* New unit: Heavy tank with two Side turrets;
+* Turrets are now moving back to start position without target;
+* Fixes in function turn_to_target_angle.
 
 v0.7.8 - 07.11.2022
 ----
-* Fixes in collision detection
-* New sprites for future units: heavy tank
+* Fixes in collision detection;
+* New sprites for future units: heavy tank.
 
 v0.7.7 - 07.11.2022
 ----
-* Color of bullets now indicates target type: air / land
-* Wapons only shots at a specific target type
+* Color of bullets now indicates target type: air / land;
+* Wapons only shots at a specific target type.
 
 v0.7.6 - 07.11.2022
 ----
-* Cleaning and optimisation in draw method in Unit class
-* New unit type icon for air units 
+* Cleaning and optimisation in draw method in Unit class;
+* New unit type icon for air units.
 
 v0.7.5 - 06.11.2022
 ----
-* New number and location of miniguns on bombers
+* New number and location of miniguns on bombers.
 
 v0.7.4 - 06.11.2022
 ----
-* New wapon: Plane_minigun
-* New ammunition: Plasma beam
+* New wapon: Plane_minigun;
+* New ammunition: Plasma beam.
 
 v0.7.3 - 05.11.2022
 ----
-* New units: Bomber and Strategic bomber
+* New units: Bomber and Strategic bomber.
 
 v0.7.2 - 04.11.2022
 ----
-* New zoom mechanism
-* New sprites for future units: bomber
+* New zoom mechanism;
+* New sprites for future units: bomber.
 
 v0.7.1 - 04.11.2022
 ----
-* New sprites to animate all units
-* Fixes in degrade method in Map class 
+* New sprites to animate all units;
+* Fixes in degrade method in Map class.
 
 v0.7 - Planes - 04.11.2022
-====
-* New class: Base_object - base for old unanimated objects
-* New class of units: Air unit
-* New unit: Fighter
+======
+* New class: Base_object - base for old unanimated objects;
+* New class of units: Air unit;
+* New unit: Fighter.
 
 
 v0.6.3 - 04.11.2022
 ----
-* New unit: Spider tank
+* New unit: Spider tank.
 
 v0.6.2 - 04.11.2022
 ----
-* New animated draw method in Base_animated_object class
+* New animated draw method in Base_animated_object class.
 
 v0.6.1 - 04.11.2022
 ----
-* New class: Base_animated_object
-* New initialization method to prepare list of sprites for further animation process
+* New class: Base_animated_object;
+* New initialization method to prepare list of sprites for further animation process.
 
 v0.6 - Animation - 03.11.2022
-====
-* New sprites for future animated units: spider tanks and fighters
+======
+* New sprites for future animated units: spider tanks and fighters.
 
 
 v0.5.3 - 03.11.2022
 ----
-* New algorithm used to calculate angle to target
-* New run method in Vehicle class
+* New algorithm used to calculate angle to target;
+* New run method in Vehicle class.
 
 v0.5.2 - 02.11.2022
 ----
-* Added collision checking between units
-* Small changes in selection function
+* Added collision checking between units;
+* Small changes in selection function.
 
 v0.5.1 - 02.11.2022
 ----
-* Added mouse control of selected units
+* Added mouse control of selected units.
 
 v0.5 - Mouse control - 02.11.2022
-====
-* The target of vehicle movement is now a list
+======
+* The target of vehicle movement is now a list.
 
 
 v0.4.4 - 02.11.2022
 ----
-* Small changes in draw_HP method
-* Unit symbols are now bigger
+* Small changes in draw_HP method;
+* Unit symbols are now bigger.
 
 v0.4.3 - 01.11.2022
 ----
-* Small fixes in aiming algorithm
-* Bullets are checking now if they hit units
-* Units are getting now damage
-* Added draw_HP method to Unit class
+* Small fixes in aiming algorithm;
+* Bullets are checking now if they hit units;
+* Units are getting now damage;
+* Added draw_HP method to Unit class.
 
 v0.4.2 - 31.10.2022
 ----
-* Added deletion of old bullets
+* Added deletion of old bullets.
 
 v0.4.1 - 31.10.2022
 ----
-* New units: Light tank and Main battle tank
-* Lots of small fixes
+* New units: Light tank and Main battle tank;
+* Lots of small fixes.
 
 v0.4 - Units - 31.10.2022
-====
-* Added Bullet class with draw and run methods
-* Turrets are shooting bullets now
-* Small changes in ground degradation
+======
+* Added Bullet class with draw and run methods;
+* Turrets are shooting bullets now;
+* Small changes in ground degradation.
 
 
 v0.3.3 - 31.10.2022
 ----
-* Added rotating the tower to run method in Turret class
+* Added rotating the tower to run method in Turret class.
 
 v0.3.2 - 31.10.2022
 ----
-* Added method find_target to Turret class
+* Added method find_target to Turret class.
 
 v0.3.1 - 29.10.2022
 ----
-* Added team and unit class indicator
+* Added team and unit class indicator.
 
 v0.3 - Weapons - 28.10.2022
-====
-* Added Turret class with draw method
-* Added Unit class which is made of Vehicle and Turret objects
+======
+* Added Turret class with draw method;
+* Added Unit class which is made of Vehicle and Turret objects.
 
 
 v0.2.2 - 24.10.2022
 ----
-* Added ground degradation
+* Added ground degradation.
 
 v0.2.1 - 24.10.2022
 ----
-* Performance optimisation in HexTile class
-* Bugfixes in Vehicle class
+* Performance optimisation in HexTile class;
+* Bugfixes in Vehicle class.
 
 v0.2 - Vehicles - 23.10.2022
-====
-* Created Vehicle class with draw, move, accelerate methods
+======
+* Created Vehicle class with draw, move, accelerate methods.
 
 
 v0.1.2 - 23.10.2022
 ----
-* Performance optimisation in HexTile class
+* Performance optimisation in HexTile class.
 
 v0.1.1 - 22.10.2022
 ----
@@ -178,7 +183,7 @@ v0.1.1 - 22.10.2022
 * Added manipulation of the map view using mouse and keyboard.
 
 v0.1 - Map stage I - 21.10.2022
-====
+======
 * Project initialization;
 * Created HexTile class with draw method;
 * Created Map class with draw method.
