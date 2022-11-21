@@ -18,9 +18,9 @@ class Map:
 
         self.BOARD = [] # 2D list with HexTiles
 
-        for y in range(map_height):
+        for y in range(self.map_height):
             row = []
-            for x in range(map_width):
+            for x in range(self.map_width):
                 row.append(self.Tile_generation((x, y), self.id2world((x, y)), tile_edge_length))
             self.BOARD.append(row)
 
@@ -90,9 +90,55 @@ class Map:
 
 class Map_v2(Map):
     Tile_generation = HexTile_v2
+    
+    def __init__(self, map_width, map_height, tile_edge_length):
+    # initialization of the map
+        Map.__init__(self, map_width, map_height, tile_edge_length)
+
+        self.map_sprite_width_world = (self.map_width * 2 - 1) * self.inner_tile_radius
+        self.map_sprite_height_world = (self.map_height - 1) * self.outer_tile_radius * 3 / 2
+
+        # load and prepare mipmap sprites
+        self.MIPMAP_BOARD = []
+        for mipmap_level in range(5):
+            scale = self.mipmap2scale(mipmap_level)
+            sprite = pygame.Surface([self.map_sprite_width_world * scale, self.map_sprite_height_world * scale])
+            # sprite.fill(GREEN)
+            # sprite.fill(BLACK)
+            sprite.convert()
+            # sprite.set_colorkey(BLACK)
+
+            for row in self.BOARD:
+                for tile in row:
+                    tile.draw(sprite, scale)
+            self.MIPMAP_BOARD.append(sprite)
+
 
     def draw(self, win, offset_x, offset_y, scale):
     # draw the Map on the screen
-        for row in self.BOARD:
-            for tile in row:
-                tile.draw(win, offset_x, offset_y, scale)
+        win.blit(self.MIPMAP_BOARD[self.scale2mipmap(scale)], (0, 0), (- offset_x * scale, - offset_y * scale, WIN_WIDTH - 1, WIN_HEIGHT - 1))
+
+
+    def degrade(self, coord, level):
+    # degrade the tile - it will be darker
+        x_id, y_id = self.world2id(coord)
+        if 0 <= x_id  and x_id < self.map_width and 0 <= y_id  and y_id < self.map_height:
+            if self.BOARD[y_id][x_id].degradation_level < level:
+                self.BOARD[y_id][x_id].degrade(level)
+                for mipmap_level in range(5):
+                    scale = self.mipmap2scale(mipmap_level)
+                    self.BOARD[y_id][x_id].draw(self.MIPMAP_BOARD[mipmap_level], scale)
+
+
+    def scale2mipmap(self, scale):
+    # calculate scale from regular scale to mipmap level
+    # return mipmap level
+        mipmap_level = int(math.log(scale, 2)) + 2
+        return mipmap_level
+
+
+    def mipmap2scale(self, mipmap_level):
+    # calculate scale from mipmap level to regular scale
+    # return regular scale
+        scale = pow(2, mipmap_level - 2)
+        return scale

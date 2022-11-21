@@ -1,6 +1,14 @@
-v0.8 - Map stage II - 20.11.2022
-======
+v0.8.1 - 21.11.2022
+----
+* New class Map_v2 which stores tiles in sprites and draws the map using mipmap technology.
+
+v0.8.0 - 20.11.2022
+----
+* New class HexTile_v2 - for further optimisation;
 * Experimenting with drawing a map using spraits.
+
+v0.8 - Map stage II
+======
 
 
 v0.7.13 - 20.11.2022
@@ -67,11 +75,14 @@ v0.7.1 - 04.11.2022
 * New sprites to animate all units;
 * Fixes in degrade method in Map class.
 
-v0.7 - Planes - 04.11.2022
-======
+v0.7.0 - 04.11.2022
+----
 * New class: Base_object - base for old unanimated objects;
 * New class of units: Air unit;
 * New unit: Fighter.
+
+v0.7 - Planes
+======
 
 
 v0.6.3 - 04.11.2022
@@ -87,9 +98,12 @@ v0.6.1 - 04.11.2022
 * New class: Base_animated_object;
 * New initialization method to prepare list of sprites for further animation process.
 
-v0.6 - Animation - 03.11.2022
-======
+v0.6.0 - 03.11.2022
+----
 * New sprites for future animated units: spider tanks and fighters.
+
+v0.6 - Animation
+======
 
 
 v0.5.3 - 03.11.2022
@@ -106,9 +120,12 @@ v0.5.1 - 02.11.2022
 ----
 * Added mouse control of selected units.
 
-v0.5 - Mouse control - 02.11.2022
-======
+v0.5.0 - 02.11.2022
+----
 * The target of vehicle movement is now a list.
+
+v0.5 - Mouse control
+======
 
 
 v0.4.4 - 02.11.2022
@@ -132,11 +149,14 @@ v0.4.1 - 31.10.2022
 * New units: Light tank and Main battle tank;
 * Lots of small fixes.
 
-v0.4 - Units - 31.10.2022
-======
+v0.4.0 - 31.10.2022
+----
 * Added Bullet class with draw and run methods;
 * Turrets are shooting bullets now;
 * Small changes in ground degradation.
+
+v0.4 - Units
+======
 
 
 v0.3.3 - 31.10.2022
@@ -151,10 +171,13 @@ v0.3.1 - 29.10.2022
 ----
 * Added team and unit class indicator.
 
-v0.3 - Weapons - 28.10.2022
-======
+v0.3.0 - 28.10.2022
+----
 * Added Turret class with draw method;
 * Added Unit class which is made of Vehicle and Turret objects.
+
+v0.3 - Weapons
+======
 
 
 v0.2.2 - 24.10.2022
@@ -166,9 +189,12 @@ v0.2.1 - 24.10.2022
 * Performance optimisation in HexTile class;
 * Bugfixes in Vehicle class.
 
-v0.2 - Vehicles - 23.10.2022
-======
+v0.2.0 - 23.10.2022
+----
 * Created Vehicle class with draw, move, accelerate methods.
+
+v0.2 - Vehicles
+======
 
 
 v0.1.2 - 23.10.2022
@@ -182,8 +208,11 @@ v0.1.1 - 22.10.2022
 * New math functions, e.g. world2screen, screen2world;
 * Added manipulation of the map view using mouse and keyboard.
 
-v0.1 - Map stage I - 21.10.2022
-======
+v0.1.0 - 21.10.2022
+----
 * Project initialization;
 * Created HexTile class with draw method;
 * Created Map class with draw method.
+
+v0.1 - Map stage I
+======

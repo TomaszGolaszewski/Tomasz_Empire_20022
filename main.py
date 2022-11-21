@@ -56,14 +56,16 @@ def run():
     left_mouse_button_down = False
 
     # initialize the game
-    MAP = Map(40, 60, 30)
+    # MAP = Map(40, 60, 30)
     # MAP = Map(11, 20, 30)
-    # MAP2 = Map_v2(50, 70, 30)
-    MAP2 = Map_v2(5, 10, 30)
-    MAP.BOARD[1][10].color = BLUE
+    # MAP2 = Map_v2(5, 10, 30)
+    # MAP2 = Map_v2(40, 60, 30)
+    MAP2 = Map_v2(80, 100, 25)
+    # MAP2 = Map_v2(120, 150, 25)
+    # MAP.BOARD[1][10].color = BLUE
 
-    # LIST_WITH_UNITS = make_test_units()
-    LIST_WITH_UNITS = [Light_tank([500, 300], math.pi/2, 1, 1)]
+    LIST_WITH_UNITS = make_test_units()
+    # LIST_WITH_UNITS = [Light_tank([500, 300], math.pi/2, 1, 1)]
     LIST_WITH_BULLETS = []
 
 
@@ -208,11 +210,11 @@ def run():
 
         # life-cycles of bullets
         for bullet in LIST_WITH_BULLETS:
-            bullet.run(MAP, LIST_WITH_UNITS)
+            bullet.run(MAP2, LIST_WITH_UNITS)
 
         # life-cycles of units
         for unit in LIST_WITH_UNITS:
-            unit.run(MAP, LIST_WITH_UNITS, LIST_WITH_BULLETS)
+            unit.run(MAP2, LIST_WITH_UNITS, LIST_WITH_BULLETS)
         
 
 # draw the screen
@@ -221,10 +223,9 @@ def run():
         WIN.fill(BLACK)
 
         # calculate new position of the map on the screen
-        MAP.update_screen_corners(OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
-        MAP2.update_screen_corners(OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
+        # MAP.update_screen_corners(OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
         # draw the map
-        MAP.draw(WIN)
+        # MAP.draw(WIN)
         MAP2.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
         # show extra data
