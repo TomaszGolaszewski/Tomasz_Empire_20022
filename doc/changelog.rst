@@ -1,3 +1,11 @@
+Changelog
+======
+
+v0.8.2 - 23.11.2022
+----
+* Merge of both HexTile classes, code cleaning;
+* Added new types of tile: snow, grass, sand, mars soil, water and other.
+
 v0.8.1 - 21.11.2022
 ----
 * New class Map_v2 which stores tiles in sprites and draws the map using mipmap technology.
