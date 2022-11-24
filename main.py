@@ -36,7 +36,7 @@ def run():
     
     # initialize the pygame
     pygame.init()
-    pygame.display.set_caption("Trains 2022")
+    pygame.display.set_caption("Tomasz Empire 20022")
     ICON_IMGS = pygame.image.load(os.path.join(*ICON_PATH))
     pygame.display.set_icon(ICON_IMGS)
     WIN = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT))
@@ -44,25 +44,20 @@ def run():
     CURRENT_FRAME = 0
 
     # window variables
-    # OFFSET_VERTICAL = 100
-    # OFFSET_HORIZONTAL = 1000
-    # SCALE = 0.25
     OFFSET_VERTICAL = 150
     OFFSET_HORIZONTAL = 200
     SCALE = 0.5
-    SHOW_EXTRA_DATA = True
+    SHOW_EXTRA_DATA = False # True
     SHOW_HP_BARS = True
 
     left_mouse_button_down = False
 
     # initialize the game
-    # MAP = Map(40, 60, 30)
-    # MAP = Map(11, 20, 30)
-    # MAP2 = Map_v2(5, 10, 30)
-    # MAP2 = Map_v2(40, 60, 30)
-    MAP2 = Map_v2(80, 100, 25)
-    # MAP2 = Map_v2(120, 150, 25)
-    # MAP.BOARD[1][10].color = BLUE
+    # MAP = Map(40, 60, tile_edge_length=30)
+    # MAP2 = Map_v2(5, 10, tile_edge_length=30)
+    MAP2 = Map_v2(45, 75, type="mars_poles")
+    # MAP2 = Map_v2(80, 100, type="")
+    # MAP2 = Map_v2(120, 150)
 
     LIST_WITH_UNITS = make_test_units()
     # LIST_WITH_UNITS = [Light_tank([500, 300], math.pi/2, 1, 1)]

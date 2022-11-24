@@ -1,6 +1,11 @@
 Changelog
 ======
 
+v0.8.3 - 24.11.2022
+----
+* New map types: snow plains, grass plains, concrete floor and mars poles;
+* New tile type: concrete.
+
 v0.8.2 - 23.11.2022
 ----
 * Merge of both HexTile classes, code cleaning;
