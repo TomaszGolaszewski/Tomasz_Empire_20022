@@ -53,11 +53,18 @@ def run():
     left_mouse_button_down = False
 
     # initialize the game
+    size = "M"
+    type_of_map = "bridge" # "lake" "bridge" "island"
+
+    if size == "S": dimensions = (30, 40)
+    elif size == "M": dimensions = (45, 75)
+    elif size == "L": dimensions = (80, 100)
+    elif size == "XL": dimensions = (120, 150)
+    elif size == "XXL": dimensions = (150, 200)
+
     # MAP = Map(40, 60, tile_edge_length=30)
     # MAP2 = Map_v2(5, 10, tile_edge_length=30)
-    MAP2 = Map_v2(45, 75, type="mars_poles")
-    # MAP2 = Map_v2(80, 100, type="")
-    # MAP2 = Map_v2(120, 150)
+    MAP2 = Map_v2(*dimensions, type=type_of_map)
 
     LIST_WITH_UNITS = make_test_units()
     # LIST_WITH_UNITS = [Light_tank([500, 300], math.pi/2, 1, 1)]

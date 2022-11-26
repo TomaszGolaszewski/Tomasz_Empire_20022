@@ -1,6 +1,11 @@
 Changelog
 ======
 
+v0.8.4 - 26.11.2022
+----
+* Further optimisation of the map display - for the biggest scale map is not stored but scaled up from the smaller one;
+* New map types: lake, island and bridge.
+
 v0.8.3 - 24.11.2022
 ----
 * New map types: snow plains, grass plains, concrete floor and mars poles;

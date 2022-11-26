@@ -24,6 +24,8 @@ class Map:
         # preparing the board
         if self.type == "mars_poles": self.make_mars_poles()
         elif self.type == "lake": self.make_lake()
+        elif self.type == "island": self.make_island()
+        elif self.type == "bridge": self.make_bridge()
         else: self.make_plain()
 
     def make_plain(self):
@@ -56,23 +58,47 @@ class Map:
                 row.append(HexTile((x, y), self.id2world((x, y)), self.tile_edge_length, tile_type))
             self.BOARD.append(row)
 
+    def make_bridge(self):
+    # method preparing the board in shape of bridge
+        center_x = self.map_width // 2
+        center_y = self.map_height // 2
+        factor = (center_x * center_y) // 2 * 1.5
+        for y in range(self.map_height):
+            row = []
+            for x in range(self.map_width):
+                tile_type = self.decide_type_tile(center_x * center_y - (abs(center_x - x)) * (center_y - abs(center_y - y)) * 1.5, factor)
+                row.append(HexTile((x, y), self.id2world((x, y)), self.tile_edge_length, tile_type))
+            self.BOARD.append(row)
+
+    def make_island(self):
+    # method preparing the board in shape of island
+        center_x = self.map_width // 2
+        center_y = self.map_height // 2
+        factor = (center_x * center_y) // 2 * 0.5
+        for y in range(self.map_height):
+            row = []
+            for x in range(self.map_width):
+                tile_type = self.decide_type_tile((center_x - abs(center_x - x)) * (center_y - abs(center_y - y)), factor)
+                row.append(HexTile((x, y), self.id2world((x, y)), self.tile_edge_length, tile_type))
+            self.BOARD.append(row)
+
     def make_lake(self):
     # method preparing the board in shape of lake
         center_x = self.map_width // 2
         center_y = self.map_height // 2
-        factor = (center_x * center_y) // 2
+        factor = (center_x * center_y) // 2 * 1.7
         for y in range(self.map_height):
             row = []
             for x in range(self.map_width):
-                tile_type = self.decide_type_tile(abs(center_x - x) * abs(center_y - y), factor)
+                tile_type = self.decide_type_tile(center_x * center_y - (center_x - abs(center_x - x)) * (center_y - abs(center_y - y)), factor)
                 row.append(HexTile((x, y), self.id2world((x, y)), self.tile_edge_length, tile_type))
             self.BOARD.append(row)
 
     def decide_type_tile(self, fun, factor):
     # return type of tile depending on the result of the function
-        if fun > factor * 1.5: return "grass"
+        if fun > factor * 1.1: return "grass"
         elif fun > factor: return "sand"
-        elif fun > factor / 2: return "shallow"
+        elif fun > factor * 0.9: return "shallow"
         else: return "water"
 
     def draw(self, win):
@@ -126,6 +152,7 @@ class Map:
 
         return (x_id, y_id)
 
+# ==========================================================
 
 class Map_v2(Map):
     def __init__(self, map_width, map_height, type="snow_plain", tile_edge_length=25):
@@ -137,7 +164,7 @@ class Map_v2(Map):
 
         # load and prepare mipmap sprites
         self.MIPMAP_BOARD = []
-        for mipmap_level in range(5):
+        for mipmap_level in range(4): # 5
             scale = self.mipmap2scale(mipmap_level)
             sprite = pygame.Surface([self.map_sprite_width_world * scale, self.map_sprite_height_world * scale])
             # sprite.fill(GREEN)
@@ -152,7 +179,14 @@ class Map_v2(Map):
 
     def draw(self, win, offset_x, offset_y, scale):
     # draw the Map on the screen
-        win.blit(self.MIPMAP_BOARD[self.scale2mipmap(scale)], (1, 1), (- offset_x * scale, - offset_y * scale, WIN_WIDTH - 2, WIN_HEIGHT - 2))
+        if scale == 4:
+            temp_surface_S = pygame.Surface((WIN_WIDTH // 2, WIN_HEIGHT // 2))
+            temp_surface_S.blit(self.MIPMAP_BOARD[3], (0, 0), (- offset_x * 2, - offset_y * 2, WIN_WIDTH // 2, WIN_HEIGHT // 2)) # 2 is scale for used surface
+            temp_surface_L = pygame.transform.scale2x(temp_surface_S)      
+            win.blit(temp_surface_L, (0, 0))
+            # print(str(temp_surface_L.get_width()))
+        else:
+            win.blit(self.MIPMAP_BOARD[self.scale2mipmap(scale)], (0, 0), (- offset_x * scale, - offset_y * scale, WIN_WIDTH, WIN_HEIGHT))
 
     def degrade(self, coord, level):
     # degrade the tile - it will be darker
@@ -160,7 +194,7 @@ class Map_v2(Map):
         if 0 <= x_id  and x_id < self.map_width and 0 <= y_id  and y_id < self.map_height:
             if self.BOARD[y_id][x_id].degradation_level < level:
                 self.BOARD[y_id][x_id].degrade(level)
-                for mipmap_level in range(5):
+                for mipmap_level in range(4): # 5
                     scale = self.mipmap2scale(mipmap_level)
                     self.BOARD[y_id][x_id].draw(self.MIPMAP_BOARD[mipmap_level], scale)
 

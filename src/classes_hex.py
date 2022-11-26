@@ -66,13 +66,13 @@ class HexTile:
         self.type = type
         if type == "mars": self.color = [MARS_RED[0] - random.randint(0, 20), MARS_RED[1] + random.randint(0, 20), MARS_RED[2]]
         elif type == "snow": self.color = [SNOW_WHITE[0] - random.randint(0, 40), SNOW_WHITE[1] - random.randint(0, 10), SNOW_WHITE[2] - random.randint(0, 5)]
-        elif type == "sand": self.color = [SAND[0] - random.randint(0, 10), SAND[1] - random.randint(0, 10), SAND[2] - random.randint(0, 10)]
+        elif type == "sand": self.color = [SAND[0] - random.randint(0, 15), SAND[1] - random.randint(0, 15), SAND[2] - random.randint(0, 15)]
         elif type == "grass": self.color = [GRASS[0], GRASS[1] - random.randint(0, 10), GRASS[2] - random.randint(0, 10)]
         elif type == "forest": self.color = [GREEN[0], GREEN[1] - random.randint(0, 20), GREEN[2]]
         elif type == "concrete": 
             rand = random.randint(0, 10)
             self.color = [GRAY[0] - rand, GRAY[1] - rand, GRAY[2] - rand]
-        elif type == "water": self.color = BLUE
+        elif type == "water": self.color = WATER
         elif type == "shallow": self.color = SHALLOW
         else: self.color = RED
 
