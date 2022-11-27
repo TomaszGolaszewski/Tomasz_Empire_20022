@@ -53,7 +53,7 @@ def run():
     left_mouse_button_down = False
 
     # initialize the game
-    size = "M"
+    size = "L"
     type_of_map = "bridge" # "lake" "bridge" "island"
 
     if size == "S": dimensions = (30, 40)

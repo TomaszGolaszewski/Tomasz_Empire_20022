@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.8.5 - 27.11.2022
+----
+* Further optimisation of the board preparing method for based on an ellipse map types: lake, island and bridge.
+
 v0.8.4 - 26.11.2022
 ----
 * Further optimisation of the map display - for the biggest scale map is not stored but scaled up from the smaller one;

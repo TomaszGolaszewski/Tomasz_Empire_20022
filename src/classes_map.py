@@ -18,14 +18,11 @@ class Map:
         self.old_offset_y = 0
         self.old_scale = 1
         
+        # preparing the board
         self.type = type
         self.BOARD = [] # 2D list with HexTiles
-
-        # preparing the board
         if self.type == "mars_poles": self.make_mars_poles()
-        elif self.type == "lake": self.make_lake()
-        elif self.type == "island": self.make_island()
-        elif self.type == "bridge": self.make_bridge()
+        elif self.type == "lake" or self.type == "island" or self.type == "bridge": self.make_map_based_on_ellipse()
         else: self.make_plain()
 
     def make_plain(self):
@@ -58,47 +55,36 @@ class Map:
                 row.append(HexTile((x, y), self.id2world((x, y)), self.tile_edge_length, tile_type))
             self.BOARD.append(row)
 
-    def make_bridge(self):
-    # method preparing the board in shape of bridge
+    def make_map_based_on_ellipse(self):
+    # method preparing the board with an ellipse-based shape
         center_x = self.map_width // 2
         center_y = self.map_height // 2
-        factor = (center_x * center_y) // 2 * 1.5
+        if self.type == "lake": 
+            # method preparing the board in shape of lake
+            function = lambda x, y: abs(center_x - x)**2 / (center_x**2) + abs(center_y - y)**2 / (center_y**2)
+            factor = 0.6
+        elif self.type == "island": 
+            # method preparing the board in shape of island
+            function = lambda x, y: 1 - abs(center_x - x)**2 / (center_x**2) - abs(center_y - y)**2 / (center_y**2)
+            factor = 0.6
+        elif self.type == "bridge":
+            # method preparing the board in shape of bridge
+            function = lambda x, y: (center_x - abs(center_x - x))**2 / (center_x**2) * 0.5 + 1 * abs(center_y - y)**2 / (center_y**2) #\
+                    # + 0.1 * (1 - abs(center_x - x)**2 / (center_x**2) - abs(center_y - y)**2 / (center_y**2))
+                    # + 0.1 * (center_y - abs(center_y - y)) / center_y
+            factor = 0.6
         for y in range(self.map_height):
             row = []
             for x in range(self.map_width):
-                tile_type = self.decide_type_tile(center_x * center_y - (abs(center_x - x)) * (center_y - abs(center_y - y)) * 1.5, factor)
-                row.append(HexTile((x, y), self.id2world((x, y)), self.tile_edge_length, tile_type))
-            self.BOARD.append(row)
-
-    def make_island(self):
-    # method preparing the board in shape of island
-        center_x = self.map_width // 2
-        center_y = self.map_height // 2
-        factor = (center_x * center_y) // 2 * 0.5
-        for y in range(self.map_height):
-            row = []
-            for x in range(self.map_width):
-                tile_type = self.decide_type_tile((center_x - abs(center_x - x)) * (center_y - abs(center_y - y)), factor)
-                row.append(HexTile((x, y), self.id2world((x, y)), self.tile_edge_length, tile_type))
-            self.BOARD.append(row)
-
-    def make_lake(self):
-    # method preparing the board in shape of lake
-        center_x = self.map_width // 2
-        center_y = self.map_height // 2
-        factor = (center_x * center_y) // 2 * 1.7
-        for y in range(self.map_height):
-            row = []
-            for x in range(self.map_width):
-                tile_type = self.decide_type_tile(center_x * center_y - (center_x - abs(center_x - x)) * (center_y - abs(center_y - y)), factor)
+                tile_type = self.decide_type_tile(function(x, y), factor)
                 row.append(HexTile((x, y), self.id2world((x, y)), self.tile_edge_length, tile_type))
             self.BOARD.append(row)
 
     def decide_type_tile(self, fun, factor):
     # return type of tile depending on the result of the function
-        if fun > factor * 1.1: return "grass"
+        if fun > factor * 1.3: return "grass"
         elif fun > factor: return "sand"
-        elif fun > factor * 0.9: return "shallow"
+        elif fun > factor * 0.7: return "shallow"
         else: return "water"
 
     def draw(self, win):
