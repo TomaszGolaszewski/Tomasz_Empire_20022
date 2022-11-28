@@ -53,8 +53,8 @@ def run():
     left_mouse_button_down = False
 
     # initialize the game
-    size = "XL"
-    type_of_map = "bridge" # "lake" "bridge" "island"
+    size = "M"
+    type_of_map = "island" # "lake" "bridge" "island"
 
     if size == "S": dimensions = (30, 40)
     elif size == "M": dimensions = (45, 75)
@@ -134,14 +134,10 @@ def run():
 
                 # 4 - scroll up
                 if event.button == 4:
-
                     old_scale = SCALE
                     # mouse_pos = pygame.mouse.get_pos()
 
-                    # SCALE += 0.25
                     SCALE *= 2
-                    # if SCALE == 1.5: SCALE = 1
-                    # elif SCALE == 1.25: SCALE = 0.5
                     if SCALE >= 4: SCALE = 4
 
                     if old_scale - SCALE:
@@ -152,15 +148,12 @@ def run():
 
                 # 5 - scroll down
                 if event.button == 5:
-
                     old_scale = SCALE
-                    mouse_pos = pygame.mouse.get_pos()
+                    # mouse_pos = pygame.mouse.get_pos()
 
-                    # SCALE -= 0.25
                     SCALE /= 2
-                    # if SCALE == 0: SCALE = 0.5
-                    # elif SCALE == -0.5: SCALE = 0.25
-                    if SCALE <= 0.25: SCALE = 0.25
+                    # if SCALE <= 0.25: SCALE = 0.25
+                    if SCALE <= 0.125: SCALE = 0.125
 
                     if old_scale - SCALE:
                         # OFFSET_HORIZONTAL -= mouse_pos[0] / old_scale - WIN_WIDTH/2 / SCALE

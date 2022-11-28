@@ -1,6 +1,11 @@
 Changelog
 ======
 
+v0.8.7 - 28.11.2022
+----
+* Added scale 0.125;
+* Fixes id depth drawing.
+
 v0.8.6 - 28.11.2022
 ----
 * Added depth to water and shallow tiles.

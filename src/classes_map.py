@@ -75,6 +75,7 @@ class Map:
             row = []
             for x in range(self.map_width):
                 tile_type, depth = self.decide_type_tile(function(x, y), factor)
+                if depth > 20: depth = 20
                 row.append(HexTile((x, y), self.id2world((x, y)), self.tile_edge_length, tile_type, depth))
             self.BOARD.append(row)
 
@@ -151,7 +152,7 @@ class Map_v2(Map):
 
         # load and prepare mipmap sprites
         self.MIPMAP_BOARD = []
-        for mipmap_level in range(4): # 5
+        for mipmap_level in range(5):
             scale = self.mipmap2scale(mipmap_level)
             sprite = pygame.Surface([self.map_sprite_width_world * scale, self.map_sprite_height_world * scale])
             # sprite.fill(GREEN)
@@ -168,7 +169,7 @@ class Map_v2(Map):
     # draw the Map on the screen
         if scale == 4:
             temp_surface_S = pygame.Surface((WIN_WIDTH // 2, WIN_HEIGHT // 2))
-            temp_surface_S.blit(self.MIPMAP_BOARD[3], (0, 0), (- offset_x * 2, - offset_y * 2, WIN_WIDTH // 2, WIN_HEIGHT // 2)) # 2 is scale for used surface
+            temp_surface_S.blit(self.MIPMAP_BOARD[4], (0, 0), (- offset_x * 2, - offset_y * 2, WIN_WIDTH // 2, WIN_HEIGHT // 2)) # 2 is scale for used surface
             temp_surface_L = pygame.transform.scale2x(temp_surface_S)      
             win.blit(temp_surface_L, (0, 0))
             # print(str(temp_surface_L.get_width()))
@@ -181,18 +182,18 @@ class Map_v2(Map):
         if 0 <= x_id  and x_id < self.map_width and 0 <= y_id  and y_id < self.map_height:
             if self.BOARD[y_id][x_id].degradation_level < level:
                 self.BOARD[y_id][x_id].degrade(level)
-                for mipmap_level in range(4): # 5
+                for mipmap_level in range(5):
                     scale = self.mipmap2scale(mipmap_level)
                     self.BOARD[y_id][x_id].draw(self.MIPMAP_BOARD[mipmap_level], scale)
 
     def scale2mipmap(self, scale):
     # calculate scale from regular scale to mipmap level
     # return mipmap level
-        mipmap_level = int(math.log(scale, 2)) + 2
+        mipmap_level = int(math.log(scale, 2)) + 3
         return mipmap_level
 
     def mipmap2scale(self, mipmap_level):
     # calculate scale from mipmap level to regular scale
     # return regular scale
-        scale = pow(2, mipmap_level - 2)
+        scale = pow(2, mipmap_level - 3)
         return scale

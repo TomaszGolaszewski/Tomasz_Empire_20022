@@ -77,8 +77,7 @@ class HexTile:
             depth -= 5
             self.color = [WATER[0], WATER[1] - 4 * depth, WATER[2] - 8 * depth]
         elif type == "shallow": 
-            self.color = [SHALLOW[0]- 4 * depth, SHALLOW[1] - 8 * depth, SHALLOW[2] - 8 * depth]
-            print(depth)
+            self.color = [SHALLOW[0]- 4 * depth, SHALLOW[1] - 8 * depth, SHALLOW[2] - 8 * depth]        
         else: self.color = RED
 
     def degrade(self, level):
