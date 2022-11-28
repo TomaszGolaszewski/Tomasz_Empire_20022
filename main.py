@@ -53,7 +53,7 @@ def run():
     left_mouse_button_down = False
 
     # initialize the game
-    size = "L"
+    size = "XL"
     type_of_map = "bridge" # "lake" "bridge" "island"
 
     if size == "S": dimensions = (30, 40)
@@ -66,8 +66,8 @@ def run():
     # MAP2 = Map_v2(5, 10, tile_edge_length=30)
     MAP2 = Map_v2(*dimensions, type=type_of_map)
 
-    LIST_WITH_UNITS = make_test_units()
-    # LIST_WITH_UNITS = [Light_tank([500, 300], math.pi/2, 1, 1)]
+    # LIST_WITH_UNITS = make_test_units()
+    LIST_WITH_UNITS = [Light_tank([500, 300], math.pi/2, 1, 1)]
     LIST_WITH_BULLETS = []
 
 

@@ -69,23 +69,24 @@ class Map:
             factor = 0.6
         elif self.type == "bridge":
             # method preparing the board in shape of bridge
-            function = lambda x, y: (center_x - abs(center_x - x))**2 / (center_x**2) * 0.5 + 1 * abs(center_y - y)**2 / (center_y**2) #\
-                    # + 0.1 * (1 - abs(center_x - x)**2 / (center_x**2) - abs(center_y - y)**2 / (center_y**2))
-                    # + 0.1 * (center_y - abs(center_y - y)) / center_y
+            function = lambda x, y: (center_x - abs(center_x - x))**2 / (center_x**2) * 0.5 + 1 * abs(center_y - y)**2 / (center_y**2)
             factor = 0.6
         for y in range(self.map_height):
             row = []
             for x in range(self.map_width):
-                tile_type = self.decide_type_tile(function(x, y), factor)
-                row.append(HexTile((x, y), self.id2world((x, y)), self.tile_edge_length, tile_type))
+                tile_type, depth = self.decide_type_tile(function(x, y), factor)
+                row.append(HexTile((x, y), self.id2world((x, y)), self.tile_edge_length, tile_type, depth))
             self.BOARD.append(row)
 
     def decide_type_tile(self, fun, factor):
     # return type of tile depending on the result of the function
-        if fun > factor * 1.3: return "grass"
-        elif fun > factor: return "sand"
-        elif fun > factor * 0.7: return "shallow"
-        else: return "water"
+        depth = int(abs(factor - fun) * 20 / factor)
+        if fun > factor * 1.3: tile_type = "grass"
+        elif fun > factor: tile_type = "sand"
+        elif fun > factor * 0.7: tile_type = "shallow"
+        else: tile_type = "water"
+
+        return tile_type, depth
 
     def draw(self, win):
     # draw the Map on the screen

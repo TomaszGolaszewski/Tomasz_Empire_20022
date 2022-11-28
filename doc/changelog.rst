@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.8.6 - 28.11.2022
+----
+* Added depth to water and shallow tiles.
+
 v0.8.5 - 27.11.2022
 ----
 * Further optimisation of the board preparing method for based on an ellipse map types: lake, island and bridge.
@@ -18,7 +22,7 @@ v0.8.3 - 24.11.2022
 v0.8.2 - 23.11.2022
 ----
 * Merge of both HexTile classes, code cleaning;
-* Added new types of tile: snow, grass, sand, mars soil, water and other.
+* Added new types of tile: snow, grass, sand, mars soil, water and others.
 
 v0.8.1 - 21.11.2022
 ----

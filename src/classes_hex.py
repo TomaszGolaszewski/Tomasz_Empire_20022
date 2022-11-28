@@ -5,7 +5,7 @@ from settings import *
 from functions_math import *
 
 class HexTile:
-    def __init__(self, coord_id, coord_world, edge_length, type="mars"):
+    def __init__(self, coord_id, coord_world, edge_length, type="mars", depth=0):
     # initialization of the HexTile
         self.coord_id = coord_id
         self.coord_world = coord_world
@@ -18,7 +18,7 @@ class HexTile:
         self.is_on_screen = True
    
         self.degradation_level = 0
-        self.set_type(type)
+        self.set_type(type, depth)
 
     def draw(self, win, scale):
     # draw the HexTile on the screen
@@ -61,9 +61,10 @@ class HexTile:
                 (x - inner_tile_radius, y - outer_tile_radius / 2),
             ]
 
-    def set_type(self, type):
+    def set_type(self, type, depth=0):
     # set color of the tile depending on the type of terrain
         self.type = type
+        self.depth = depth
         if type == "mars": self.color = [MARS_RED[0] - random.randint(0, 20), MARS_RED[1] + random.randint(0, 20), MARS_RED[2]]
         elif type == "snow": self.color = [SNOW_WHITE[0] - random.randint(0, 40), SNOW_WHITE[1] - random.randint(0, 10), SNOW_WHITE[2] - random.randint(0, 5)]
         elif type == "sand": self.color = [SAND[0] - random.randint(0, 15), SAND[1] - random.randint(0, 15), SAND[2] - random.randint(0, 15)]
@@ -72,8 +73,12 @@ class HexTile:
         elif type == "concrete": 
             rand = random.randint(0, 10)
             self.color = [GRAY[0] - rand, GRAY[1] - rand, GRAY[2] - rand]
-        elif type == "water": self.color = WATER
-        elif type == "shallow": self.color = SHALLOW
+        elif type == "water": 
+            depth -= 5
+            self.color = [WATER[0], WATER[1] - 4 * depth, WATER[2] - 8 * depth]
+        elif type == "shallow": 
+            self.color = [SHALLOW[0]- 4 * depth, SHALLOW[1] - 8 * depth, SHALLOW[2] - 8 * depth]
+            print(depth)
         else: self.color = RED
 
     def degrade(self, level):
