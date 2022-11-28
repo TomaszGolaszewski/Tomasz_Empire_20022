@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.8.8 - 28.11.2022
+----
+* New map based on Perlin Noise.
+
 v0.8.7 - 28.11.2022
 ----
 * Added scale 0.125;

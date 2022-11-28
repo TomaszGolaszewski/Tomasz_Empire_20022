@@ -1,6 +1,8 @@
 import pygame
 import math
 
+from perlin_noise import PerlinNoise
+
 from settings import *
 from classes_hex import *
 
@@ -23,6 +25,7 @@ class Map:
         self.BOARD = [] # 2D list with HexTiles
         if self.type == "mars_poles": self.make_mars_poles()
         elif self.type == "lake" or self.type == "island" or self.type == "bridge": self.make_map_based_on_ellipse()
+        elif self.type == "noise": self.make_noise_map()
         else: self.make_plain()
 
     def make_plain(self):
@@ -75,6 +78,37 @@ class Map:
             row = []
             for x in range(self.map_width):
                 tile_type, depth = self.decide_type_tile(function(x, y), factor)
+                if depth > 20: depth = 20
+                row.append(HexTile((x, y), self.id2world((x, y)), self.tile_edge_length, tile_type, depth))
+            self.BOARD.append(row)
+
+    # def make_noise_map(self):
+    # # method preparing the board based on Perlin Noise
+    #     noise = PerlinNoise(octaves=9, seed=1)
+    #     factor = 0.5
+    #     for y in range(self.map_height):
+    #         row = []
+    #         for x in range(self.map_width):
+    #             tile_type, depth = self.decide_type_tile(3 * noise([x / self.map_width, y / self.map_height]), factor)
+    #             if depth > 20: depth = 20
+    #             row.append(HexTile((x, y), self.id2world((x, y)), self.tile_edge_length, tile_type, depth))
+    #         self.BOARD.append(row)
+
+    def make_noise_map(self):
+    # method preparing the board based on Perlin Noise
+        noise1 = PerlinNoise(octaves=3)
+        noise2 = PerlinNoise(octaves=6)
+        noise3 = PerlinNoise(octaves=12)
+        noise4 = PerlinNoise(octaves=24)
+        factor = 0.5
+        for y in range(self.map_height):
+            row = []
+            for x in range(self.map_width):
+                noise_val = noise1([x / self.map_width, y / self.map_height])
+                noise_val += 0.5 * noise2([x / self.map_width, y / self.map_height])
+                noise_val += 0.25 * noise3([x / self.map_width, y / self.map_height])
+                noise_val += 0.125 * noise4([x / self.map_width, y / self.map_height])
+                tile_type, depth = self.decide_type_tile(2 * noise_val + 0.3, factor)
                 if depth > 20: depth = 20
                 row.append(HexTile((x, y), self.id2world((x, y)), self.tile_edge_length, tile_type, depth))
             self.BOARD.append(row)
