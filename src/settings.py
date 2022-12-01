@@ -34,6 +34,9 @@ BOMBER_FRAMES = 4
 STRATEGIC_BOMBER_PATH = ["imgs","vehicles","strategic_bomber.bmp"]
 STRATEGIC_BOMBER_FRAMES = 4
 
+# sprites - map
+TREES_PATH = ["imgs","map","trees.bmp"]
+
 # sprites - other
 ICON_PATH = ["imgs","other","icon.png"]
 

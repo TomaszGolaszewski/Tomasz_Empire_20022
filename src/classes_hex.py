@@ -20,10 +20,35 @@ class HexTile:
         self.degradation_level = 0
         self.set_type(type, depth)
 
+        # prepare sprite for forests
+        if self.type == "forest" or self.type == "snow_forest":
+            
+            # load and prepare sprite sheet
+            sprite_sheet = pygame.image.load(os.path.join(*TREES_PATH))
+
+            # calculate frame size
+            sprite_sheet_rect = sprite_sheet.get_rect()
+            self.frame_width = sprite_sheet_rect.width // 2
+            self.frame_height = sprite_sheet_rect.height
+
+            # prepare sprite for forests
+            if self.type == "forest": no_of_frame = 1
+            elif self.type == "snow_forest": no_of_frame = 0
+            self.sprite = pygame.Surface((self.frame_width, self.frame_height))
+            self.sprite.blit(sprite_sheet, (0, 0), (no_of_frame * self.frame_width, 0, self.frame_width, self.frame_height))
+            self.sprite.convert()
+            self.sprite.set_colorkey(LIME)
+
     def draw(self, win, scale):
     # draw the HexTile on the screen
         corners = self.compute_corners([self.coord_world[0] * scale, self.coord_world[1] * scale], self.edge_length_world * scale)
         pygame.draw.polygon(win, self.color, corners)
+
+        # draw the tree
+        if not self.degradation_level:
+            if self.type == "forest" or self.type == "snow_forest":
+                scaled_image = pygame.transform.scale(self.sprite, (scale * self.frame_width * 1.1, scale * self.frame_height * 1.1))
+                win.blit(scaled_image, [(self.coord_world[0] - self.frame_width // 2) * scale, (self.coord_world[1] - self.frame_height // 2) * scale])
 
     def draw_only(self, win):
     # draw the HexTile on the screen
@@ -69,7 +94,9 @@ class HexTile:
         elif type == "snow": self.color = [SNOW_WHITE[0] - random.randint(0, 40), SNOW_WHITE[1] - random.randint(0, 10), SNOW_WHITE[2] - random.randint(0, 5)]
         elif type == "sand": self.color = [SAND[0] - random.randint(0, 15), SAND[1] - random.randint(0, 15), SAND[2] - random.randint(0, 15)]
         elif type == "grass": self.color = [GRASS[0], GRASS[1] - random.randint(0, 10), GRASS[2] - random.randint(0, 10)]
-        elif type == "forest": self.color = [GREEN[0], GREEN[1] - random.randint(0, 20), GREEN[2]]
+        # elif type == "forest": self.color = [GREEN[0], GREEN[1] - random.randint(0, 20), GREEN[2]]
+        elif type == "forest": self.color = [GRASS[0], GRASS[1] - random.randint(0, 10) - 10, GRASS[2] - random.randint(0, 10)]
+        elif type == "snow_forest": self.color = [SNOW_WHITE[0] - random.randint(0, 40) - 20, SNOW_WHITE[1] - random.randint(0, 10) - 10, SNOW_WHITE[2] - random.randint(0, 5)]
         elif type == "concrete": 
             rand = random.randint(0, 10)
             self.color = [GRAY[0] - rand, GRAY[1] - rand, GRAY[2] - rand]

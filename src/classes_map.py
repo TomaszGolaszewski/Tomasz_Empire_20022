@@ -25,6 +25,7 @@ class Map:
         self.BOARD = [] # 2D list with HexTiles
         if self.type == "mars_poles": self.make_mars_poles()
         elif self.type == "lake" or self.type == "island" or self.type == "bridge": self.make_map_based_on_ellipse()
+        elif self.type == "forest" or self.type == "snow_forest": self.make_forest_map()
         elif self.type == "noise": self.make_noise_map()
         else: self.make_plain()
 
@@ -80,6 +81,25 @@ class Map:
                 tile_type, depth = self.decide_type_tile(function(x, y), factor)
                 if depth > 20: depth = 20
                 row.append(HexTile((x, y), self.id2world((x, y)), self.tile_edge_length, tile_type, depth))
+            self.BOARD.append(row)
+
+    def make_forest_map(self):
+    # method preparing the board with forest
+        if self.type == "forest":
+            empty_tile = "grass"
+            trees_tile = "forest"
+        elif self.type == "snow_forest":
+            empty_tile = "snow"
+            trees_tile = "snow_forest"
+
+        noise = PerlinNoise(octaves=12)
+
+        for y in range(self.map_height):
+            row = []
+            for x in range(self.map_width):
+                if noise([x / self.map_width, y / self.map_height]) > 0.02: tile_type = trees_tile
+                else: tile_type = empty_tile
+                row.append(HexTile((x, y), self.id2world((x, y)), self.tile_edge_length, tile_type))
             self.BOARD.append(row)
 
     # def make_noise_map(self):

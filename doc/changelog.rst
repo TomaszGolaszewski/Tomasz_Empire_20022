@@ -1,6 +1,12 @@
 Changelog
 ======
 
+v0.8.9 - 01.12.2022
+----
+* Now forest draws tree sprite;
+* New tile: snow_forest;
+* New maps: forest and snow_forest.
+
 v0.8.8 - 28.11.2022
 ----
 * New map based on Perlin Noise.
@@ -8,7 +14,7 @@ v0.8.8 - 28.11.2022
 v0.8.7 - 28.11.2022
 ----
 * Added scale 0.125;
-* Fixes id depth drawing.
+* Fixes in depth drawing.
 
 v0.8.6 - 28.11.2022
 ----
