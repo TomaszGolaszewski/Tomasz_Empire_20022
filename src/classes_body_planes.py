@@ -4,7 +4,7 @@ import random
 
 from settings import *
 from functions_math import *
-from classes_vehicles import *
+from classes_body_vehicles import *
 
 
 class Plane(Vehicle):

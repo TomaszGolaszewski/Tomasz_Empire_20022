@@ -57,4 +57,9 @@ def make_test_units():
     LIST_WITH_UNITS.append(Heavy_tank([1700, 840], math.pi, 3, 3))
     LIST_WITH_UNITS.append(Heavy_tank([1700, 890], math.pi, 3, 3))
 
+    LIST_WITH_UNITS.append(Small_artillery_ship([1900, 100], math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Small_artillery_ship([1900, 150], math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Small_AA_ship([1900, 200], math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Small_AA_ship([1900, 250], math.pi, 3, 3))
+
     return LIST_WITH_UNITS

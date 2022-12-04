@@ -5,8 +5,9 @@ import random
 from settings import *
 from functions_math import *
 from functions_player import *
-from classes_vehicles import *
-from classes_planes import *
+from classes_body_vehicles import *
+from classes_body_ships import *
+from classes_body_planes import *
 from classes_turrets import *
 
 
@@ -355,3 +356,39 @@ class Strategic_bomber(Air_unit):
             self.weapon3.set_angle(self.angle)
             self.weapon2.run(list_with_units, list_with_bullets)
             self.weapon3.run(list_with_units, list_with_bullets)
+
+
+# ======================================================================
+
+
+class Naval_unit(Unit):
+    unit_type = "navy"
+
+    def draw_unit_type_icon(self, win, coord_on_screen):
+    # draw unit type icon - LAND / air / navy / etc.
+        pygame.draw.circle(win, player_color(self.player_id), [coord_on_screen[0], coord_on_screen[1]+4], 9, 0, draw_top_left=True, draw_top_right=True)
+
+
+class Small_artillery_ship(Naval_unit):
+    Vehicle_class = Small_ship
+    Main_weapon_class = Medium_cannon
+
+    unit_level = 1
+
+    def draw_unit_application_icon(self, win, coord_on_screen):
+    # draw unit application icon - tank / anti-aircraft / bomber / etc.
+        # o
+        pygame.draw.circle(win, WHITE, coord_on_screen, 4, 1)
+
+
+class Small_AA_ship(Naval_unit):
+    Vehicle_class = Small_ship
+    Main_weapon_class = Minigun
+
+    unit_level = 1
+
+    def draw_unit_application_icon(self, win, coord_on_screen):
+    # draw unit application icon - tank / anti-aircraft / bomber / etc.
+        # +
+        pygame.draw.line(win, WHITE, [coord_on_screen[0] - 3, coord_on_screen[1]], [coord_on_screen[0] + 3, coord_on_screen[1]], 1) # -
+        pygame.draw.line(win, WHITE, [coord_on_screen[0], coord_on_screen[1] - 3], [coord_on_screen[0], coord_on_screen[1] + 3], 1) # |

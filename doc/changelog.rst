@@ -1,6 +1,15 @@
 Changelog
 ======
 
+v0.9.0 - 04.12.2022
+----
+* New class of units: Naval unit;
+* New units: Small artillery ship and Small AA ship. 
+
+v0.9 - Ships
+======
+
+
 v0.8.12 - 04.12.2022
 ----
 * Bullets can no longer fly through trees - the tree tile will be destroyed.

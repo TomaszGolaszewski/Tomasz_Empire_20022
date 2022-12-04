@@ -20,6 +20,9 @@ HEAVY_TRACK_FRAMES = 7
 ANT_PATH = ["imgs","vehicles","ant.bmp"]
 ANT_FRAMES = 5
 
+SMALL_SHIP_PATH = ["imgs","vehicles","small_ship.bmp"]
+SMALL_SHIP_FRAMES = 4
+
 TURRET_PATH = ["imgs","vehicles","turret.png"]
 LIGHT_CANNON_PATH = ["imgs","vehicles","light_cannon.bmp"]
 MEDIUM_CANNON_PATH = ["imgs","vehicles","medium_cannon.bmp"]

@@ -53,8 +53,8 @@ def run():
     left_mouse_button_down = False
 
     # initialize the game
-    size = "M"
-    type_of_map = "forest" # "lake" "bridge" "island" "noise" "forest" "snow_forest"
+    size = "L"
+    type_of_map = "island" # "lake" "bridge" "island" "noise" "forest" "snow_forest"
 
     if size == "S": dimensions = (30, 40)
     elif size == "M": dimensions = (45, 75)
@@ -228,9 +228,9 @@ def run():
             for unit in LIST_WITH_UNITS:
                 unit.draw_extra_data(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
-        # draw land units
+        # draw land and naval units
         for unit in LIST_WITH_UNITS:
-            if unit.unit_type == "land": unit.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
+            if unit.unit_type == "land" or unit.unit_type == "navy": unit.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
         # draw air units
         for unit in LIST_WITH_UNITS:
