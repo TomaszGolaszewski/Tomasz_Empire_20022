@@ -313,7 +313,7 @@ class Bomb_dispenser(Plane_fixed_gun):
     min_radar_radius = 170
     search_radius = 30
 
-    max_bullet_range = 230
+    max_bullet_range = 210
     barrel_length = 0
 
     power = 100

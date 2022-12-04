@@ -166,8 +166,13 @@ class Map:
     def degrade(self, coord, level):
     # degrade the tile - it will be darker
         x_id, y_id = self.world2id(coord)
-        if 0 <= x_id  and x_id < self.map_width and 0 <= y_id  and y_id < self.map_height:
+        if 0 <= x_id  and x_id < self.map_width and 0 <= y_id and y_id < self.map_height:
             self.BOARD[y_id][x_id].degrade(level)
+
+    def get_tile_type(self, coord):
+    # return the tile type
+        x_id, y_id = self.world2id(coord)
+        return self.BOARD[y_id][x_id].type
 
     def id2world(self, id):
     # calculate coordinates from tile's id to world coordinate system

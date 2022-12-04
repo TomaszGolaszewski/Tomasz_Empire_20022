@@ -66,7 +66,7 @@ class Vehicle(Base_animated_object):
 
         # self.move(list_with_units)
         new_coord = move_point(self.coord, self.v_current, new_angle)
-        if not self.is_collision(list_with_units, new_coord):
+        if not self.is_obstacle(map, new_coord) and not self.is_collision(list_with_units, new_coord):
             self.coord = new_coord
             self.angle = new_angle
         else:
@@ -76,16 +76,14 @@ class Vehicle(Base_animated_object):
 
 
     def accelerate(self):
-    # accelerate the vehicle - calculate the current speed
-        
+    # accelerate the vehicle - calculate the current speed     
         self.state = "move"
         self.v_current += self.acceleration
         if self.v_current > self.v_max: self.v_current = self.v_max
 
 
     def decelerate(self):
-    # decelerate the vehicle - calculate the current speed
-        
+    # decelerate the vehicle - calculate the current speed       
         self.v_current -= self.acceleration
         if self.v_current < 0: 
             self.v_current = 0
@@ -106,6 +104,11 @@ class Vehicle(Base_animated_object):
                 if dist < self.hit_box_radius + unit.hit_box_radius and dist > 5: # dist > 5 is to avoid a collision with yourself
                     return True
         return False
+
+    def is_obstacle(self, map, coord):
+    # return True if collision with map occurs
+        if map.get_tile_type(coord) == "water": return True
+        else: return False
 
 
 class Light_track(Vehicle):

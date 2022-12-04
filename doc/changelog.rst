@@ -1,6 +1,11 @@
 Changelog
 ======
 
+v0.8.11 - 04.12.2022
+----
+* Land units can no longer move on deep water;
+* Deep water can't be degraded
+
 v0.8.10 - 04.12.2022
 ----
 * Added more sprites for forest tile;
