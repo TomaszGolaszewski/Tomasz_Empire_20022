@@ -174,6 +174,11 @@ class Map:
         x_id, y_id = self.world2id(coord)
         return self.BOARD[y_id][x_id].type
 
+    def get_tile_degradation_level(self, coord):
+    # return the tile degradation level
+        x_id, y_id = self.world2id(coord)
+        return self.BOARD[y_id][x_id].degradation_level
+
     def id2world(self, id):
     # calculate coordinates from tile's id to world coordinate system
     # return coordinates in the world coordinate system

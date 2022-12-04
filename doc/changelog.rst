@@ -1,10 +1,14 @@
 Changelog
 ======
 
+v0.8.12 - 04.12.2022
+----
+* Bullets can no longer fly through trees - the tree tile will be destroyed.
+
 v0.8.11 - 04.12.2022
 ----
 * Land units can no longer move on deep water;
-* Deep water can't be degraded
+* Deep water can't be degraded.
 
 v0.8.10 - 04.12.2022
 ----

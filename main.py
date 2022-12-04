@@ -54,7 +54,7 @@ def run():
 
     # initialize the game
     size = "M"
-    type_of_map = "lake" # "lake" "bridge" "island" "noise" "forest" "snow_forest"
+    type_of_map = "forest" # "lake" "bridge" "island" "noise" "forest" "snow_forest"
 
     if size == "S": dimensions = (30, 40)
     elif size == "M": dimensions = (45, 75)

@@ -41,16 +41,21 @@ class Bullet:
 
     def run(self, map, list_of_units):
     # life-cycle of the bullet 
-     
+        # checks collision with units
         for unit in list_of_units:
             if self.is_hit(unit):
                 unit.get_hit(self.power)
                 self.is_alive = False    
-
+        # checks end of life span
         if self.distance > self.max_distance:
             if self.target_type == "land": map.degrade(self.coord, 2)
             self.is_alive = False
-        
+        # checks collision with trees
+        if map.get_tile_type(self.coord) == "forest" or map.get_tile_type(self.coord) == "snow_forest":
+            if not map.get_tile_degradation_level(self.coord):
+                map.degrade(self.coord, 2)
+                self.is_alive = False
+        # if the bullet is still alive - move it
         if self.is_alive:
             self.move()
 
