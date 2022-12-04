@@ -1,6 +1,11 @@
 Changelog
 ======
 
+v0.8.10 - 04.12.2022
+----
+* Added more sprites for forest tile;
+* Added more randomization for maps based on an ellipse.
+
 v0.8.9 - 01.12.2022
 ----
 * Now forest draws tree sprite;

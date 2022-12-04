@@ -61,6 +61,7 @@ class Map:
 
     def make_map_based_on_ellipse(self):
     # method preparing the board with an ellipse-based shape
+        noise = PerlinNoise(octaves=12)
         center_x = self.map_width // 2
         center_y = self.map_height // 2
         if self.type == "lake": 
@@ -75,10 +76,11 @@ class Map:
             # method preparing the board in shape of bridge
             function = lambda x, y: (center_x - abs(center_x - x))**2 / (center_x**2) * 0.5 + 1 * abs(center_y - y)**2 / (center_y**2)
             factor = 0.6
+
         for y in range(self.map_height):
             row = []
             for x in range(self.map_width):
-                tile_type, depth = self.decide_type_tile(function(x, y), factor)
+                tile_type, depth = self.decide_type_tile(function(x, y) + 0.125 * noise([x / self.map_width, y / self.map_height]), factor)
                 if depth > 20: depth = 20
                 row.append(HexTile((x, y), self.id2world((x, y)), self.tile_edge_length, tile_type, depth))
             self.BOARD.append(row)
@@ -133,10 +135,11 @@ class Map:
                 row.append(HexTile((x, y), self.id2world((x, y)), self.tile_edge_length, tile_type, depth))
             self.BOARD.append(row)
 
-    def decide_type_tile(self, fun, factor):
+    def decide_type_tile(self, fun, factor, forest_on = True):
     # return type of tile depending on the result of the function
         depth = int(abs(factor - fun) * 20 / factor)
-        if fun > factor * 1.3: tile_type = "grass"
+        if fun > factor * 1.9 and forest_on: tile_type = "forest"
+        elif fun > factor * 1.3: tile_type = "grass"
         elif fun > factor: tile_type = "sand"
         elif fun > factor * 0.7: tile_type = "shallow"
         else: tile_type = "water"

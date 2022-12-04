@@ -28,14 +28,14 @@ class HexTile:
 
             # calculate frame size
             sprite_sheet_rect = sprite_sheet.get_rect()
-            self.frame_width = sprite_sheet_rect.width // 2
+            self.frame_width = sprite_sheet_rect.width // 8
             self.frame_height = sprite_sheet_rect.height
 
             # prepare sprite for forests
-            if self.type == "forest": no_of_frame = 1
+            if self.type == "forest": no_of_frame = 4
             elif self.type == "snow_forest": no_of_frame = 0
             self.sprite = pygame.Surface((self.frame_width, self.frame_height))
-            self.sprite.blit(sprite_sheet, (0, 0), (no_of_frame * self.frame_width, 0, self.frame_width, self.frame_height))
+            self.sprite.blit(sprite_sheet, (0, 0), ((no_of_frame + random.randint(0,3)) * self.frame_width, 0, self.frame_width, self.frame_height))
             self.sprite.convert()
             self.sprite.set_colorkey(LIME)
 
