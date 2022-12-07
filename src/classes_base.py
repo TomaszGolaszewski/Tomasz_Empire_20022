@@ -120,7 +120,7 @@ class Base_animated_object:
 
 
 class Base_object:
-    path = TURRET_PATH
+    path = MINIGUN_PATH
 
     def __init__(self, coord, angle):
     # initialization of the object

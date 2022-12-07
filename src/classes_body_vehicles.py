@@ -8,9 +8,9 @@ from classes_base import *
 
 
 class Vehicle(Base_animated_object):
-    path = TANK_PATH
-    number_of_frames = TANK_FRAMES
-    number_of_frames_in_sequence = TANK_FRAMES - 1
+    path = LIGHT_TRACK_PATH
+    number_of_frames = LIGHT_TRACK_FRAMES
+    number_of_frames_in_sequence = LIGHT_TRACK_FRAMES - 1
 
     v_max = 1
     acceleration = 0.1
@@ -148,6 +148,11 @@ class Heavy_track(Vehicle):
 
     hit_box_radius = 22
     base_HP = 500
+
+class Heavy_track_basic(Heavy_track):
+    path = HEAVY_TRACK_BASIC_PATH
+    number_of_frames = HEAVY_TRACK_BASIC_FRAMES
+    number_of_frames_in_sequence = HEAVY_TRACK_BASIC_FRAMES - 1
 
 
 class Ant(Vehicle):

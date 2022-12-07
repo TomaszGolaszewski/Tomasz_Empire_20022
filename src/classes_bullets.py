@@ -21,7 +21,7 @@ class Bullet:
         self.team_id = team_id
         self.power = power
 
-        self.target_type = target_type # land / air
+        self.target_type = target_type # land / air / navy
 
         self.distance = 0
         self.max_distance = max_distance
@@ -32,8 +32,10 @@ class Bullet:
     # draw the bullet on the screen
         if self.target_type == "air":
             color = RED # SILVER # BLUE
-        elif self.target_type == "land":
+        elif self.target_type == "land": # or self.target_type == "navy":
             color = YELLOW
+        elif self.target_type == "navy":
+            color = SILVER
         else:
             color = BLUE # RED
         pygame.draw.circle(win, color, world2screen(self.coord, offset_x, offset_y, scale), self.radius*scale, 0)
@@ -48,7 +50,7 @@ class Bullet:
                 self.is_alive = False    
         # checks end of life span
         if self.distance > self.max_distance:
-            if self.target_type == "land": map.degrade(self.coord, 2)
+            if self.target_type == "land" or self.target_type == "navy": map.degrade(self.coord, 2)
             self.is_alive = False
         # checks collision with trees
         if map.get_tile_type(self.coord) == "forest" or map.get_tile_type(self.coord) == "snow_forest":
@@ -102,6 +104,8 @@ class Plasma(Bullet):
             color = RED # SILVER # BLUE
         elif self.target_type == "land":
             color = YELLOW
+        elif self.target_type == "navy":
+            color = SILVER
         else:
             color = BLUE # RED
 

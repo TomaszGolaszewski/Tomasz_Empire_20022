@@ -31,8 +31,8 @@ def make_test_units():
     # test vehicles for green team
     red_id = 0
     for i in range(15):
-        if red_id == 6 or red_id == 7: LIST_WITH_UNITS.append(Main_battle_tank([300 + 100*i, 2000], -math.pi/2, 2, 2)) # 2500      
-        else: LIST_WITH_UNITS.append(Light_tank([300 + 100*i, 2500], -math.pi/2, 2, 2))
+        if red_id == 6 or red_id == 7: LIST_WITH_UNITS.append(Main_battle_tank([600 + 100*i, 2000], -math.pi/2, 2, 2)) # 2500      
+        else: LIST_WITH_UNITS.append(Light_tank([600 + 100*i, 2500], -math.pi/2, 2, 2))
         LIST_WITH_UNITS[id].base.movement_target = [[500 + 50*i, 400]]
         id += 1
         red_id += 1
@@ -42,24 +42,29 @@ def make_test_units():
 
 
     # test vehicles for red team
-    LIST_WITH_UNITS.append(Light_tank([1700, 100], math.pi, 3, 3))
-    LIST_WITH_UNITS.append(Light_tank([1700, 150], math.pi, 3, 3))
-    LIST_WITH_UNITS.append(Main_battle_tank([1700, 200], math.pi, 3, 3))
-    LIST_WITH_UNITS.append(Main_battle_tank([1700, 250], math.pi, 3, 3))
-    LIST_WITH_UNITS.append(Spider_tank([1700, 300], math.pi, 3, 3))
-    LIST_WITH_UNITS.append(Spider_tank([1700, 350], math.pi, 3, 3))
-    LIST_WITH_UNITS.append(Fighter([1700, 400], math.pi, 3, 3))
-    LIST_WITH_UNITS.append(Fighter([1700, 450], math.pi, 3, 3))
-    LIST_WITH_UNITS.append(Bomber([1700, 500], math.pi, 3, 3))
-    LIST_WITH_UNITS.append(Bomber([1700, 560], math.pi, 3, 3))
-    LIST_WITH_UNITS.append(Strategic_bomber([1700, 650], math.pi, 3, 3))
-    LIST_WITH_UNITS.append(Strategic_bomber([1700, 750], math.pi, 3, 3))
-    LIST_WITH_UNITS.append(Heavy_tank([1700, 840], math.pi, 3, 3))
-    LIST_WITH_UNITS.append(Heavy_tank([1700, 890], math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Light_tank([1700, 700], math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Light_tank([1700, 750], math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Main_battle_tank([1700, 800], math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Main_battle_tank([1700, 850], math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Spider_tank([1700, 900], math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Spider_tank([1700, 950], math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Heavy_tank([1700, 1010], math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Heavy_tank([1700, 1070], math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Heavy_artillery([1700, 1130], math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Heavy_artillery([1700, 1190], math.pi, 3, 3))
 
     LIST_WITH_UNITS.append(Small_artillery_ship([1900, 100], math.pi, 3, 3))
     LIST_WITH_UNITS.append(Small_artillery_ship([1900, 150], math.pi, 3, 3))
     LIST_WITH_UNITS.append(Small_AA_ship([1900, 200], math.pi, 3, 3))
     LIST_WITH_UNITS.append(Small_AA_ship([1900, 250], math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Battle_cruiser([1900, 320], math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Battle_cruiser([1900, 400], math.pi, 3, 3))
+
+    LIST_WITH_UNITS.append(Fighter([2300, 100], math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Fighter([2300, 150], math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Bomber([2300, 200], math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Bomber([2300, 260], math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Strategic_bomber([2300, 350], math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Strategic_bomber([2300, 450], math.pi, 3, 3))
 
     return LIST_WITH_UNITS

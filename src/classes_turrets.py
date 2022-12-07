@@ -9,7 +9,7 @@ from classes_base import *
 
 
 class Turret(Base_object):
-    path = TURRET_PATH
+    path = MINIGUN_PATH
 
     Ammunition_class = Bullet
     
@@ -145,7 +145,7 @@ class Light_cannon(Turret):
     # checks (by unit type) if the target can be targeted
     # return True if target is valid
         # anti land units
-        if unit_type == "land": return True
+        if unit_type == "land" or unit_type == "navy": return True
         else: return False
 
 
@@ -170,7 +170,7 @@ class Medium_cannon(Turret):
     # checks (by unit type) if the target can be targeted
     # return True if target is valid
         # anti land units
-        if unit_type == "land": return True
+        if unit_type == "land" or unit_type == "navy": return True
         else: return False
 
 
@@ -195,7 +195,7 @@ class Side_cannon(Turret):
     # checks (by unit type) if the target can be targeted
     # return True if target is valid
         # anti land units
-        if unit_type == "land": return True
+        if unit_type == "land" or unit_type == "navy": return True
         else: return False
 
 
@@ -338,7 +338,7 @@ class Bomb_dispenser(Plane_fixed_gun):
     # checks (by unit type) if the target can be targeted
     # return True if target is valid
         # anti-aircrafts
-        if unit_type == "land": return True
+        if unit_type == "land" or unit_type == "navy": return True
         else: return False
 
 

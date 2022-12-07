@@ -153,6 +153,21 @@ class Main_battle_tank(Land_unit):
         pygame.draw.circle(win, WHITE, coord_on_screen, 4, 1)
 
 
+class Heavy_artillery(Land_unit):
+    Vehicle_class = Heavy_track_basic
+    Main_weapon_class = Minigun
+
+    unit_level = 3
+
+    def draw_unit_application_icon(self, win, coord_on_screen):
+    # draw unit application icon - tank / anti-aircraft / bomber / etc.
+        # o
+        pygame.draw.circle(win, WHITE, coord_on_screen, 4, 1)
+        # +
+        pygame.draw.line(win, WHITE, [coord_on_screen[0] - 3, coord_on_screen[1]], [coord_on_screen[0] + 3, coord_on_screen[1]], 1) # -
+        pygame.draw.line(win, WHITE, [coord_on_screen[0], coord_on_screen[1] - 3], [coord_on_screen[0], coord_on_screen[1] + 3], 1) # |
+
+
 class Heavy_tank(Land_unit):
     Vehicle_class = Heavy_track
     Main_weapon_class = Minigun
@@ -392,3 +407,10 @@ class Small_AA_ship(Naval_unit):
         # +
         pygame.draw.line(win, WHITE, [coord_on_screen[0] - 3, coord_on_screen[1]], [coord_on_screen[0] + 3, coord_on_screen[1]], 1) # -
         pygame.draw.line(win, WHITE, [coord_on_screen[0], coord_on_screen[1] - 3], [coord_on_screen[0], coord_on_screen[1] + 3], 1) # |
+
+
+class Battle_cruiser(Small_artillery_ship):
+    Vehicle_class = Medium_ship
+    Main_weapon_class = Empty_slot
+
+    unit_level = 2

@@ -1,6 +1,12 @@
 Changelog
 ======
 
+v0.9.1 - 07.12.2022
+----
+* New units: Heavy artillery and Battle cruiser;
+* New imgs folder structure;
+* Fixes in weapons and bullets methods regarding naval units.
+
 v0.9.0 - 04.12.2022
 ----
 * New class of units: Naval unit;
