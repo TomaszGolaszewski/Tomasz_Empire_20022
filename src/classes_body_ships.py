@@ -16,7 +16,7 @@ class Small_ship(Vehicle):
     acceleration = 0.1
     turn_speed = 0.01
 
-    hit_box_radius = 25
+    hit_box_radius = 22
     base_HP = 200
 
     def is_obstacle(self, map, coord):

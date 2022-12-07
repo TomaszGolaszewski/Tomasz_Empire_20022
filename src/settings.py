@@ -9,8 +9,6 @@ WIN_WIDTH, WIN_HEIGHT = 1600, 900
 FRAMERATE = 60
 
 # sprites - units
-# TANK_PATH = ["imgs","vehicles","tank.png"]
-# TANK_FRAMES = 2
 # land units
 LIGHT_TRACK_PATH = ["imgs","vehicles","light_track.bmp"]
 LIGHT_TRACK_FRAMES = 5
@@ -38,12 +36,14 @@ STRATEGIC_BOMBER_PATH = ["imgs","vehicles","strategic_bomber.bmp"]
 STRATEGIC_BOMBER_FRAMES = 4
 
 #weapons
-# TURRET_PATH = ["imgs","vehicles","turret.png"]
 LIGHT_CANNON_PATH = ["imgs","weapons","light_cannon.bmp"]
 MEDIUM_CANNON_PATH = ["imgs","weapons","medium_cannon.bmp"]
 MINIGUN_PATH = ["imgs","weapons","minigun.bmp"]
 PLANE_MINIGUN_PATH = ["imgs","weapons","plane_minigun.bmp"]
 SIDE_CANNON_PATH = ["imgs","weapons","side_cannon.bmp"]
+HEAVY_CANNON_PATH = ["imgs","weapons","heavy_cannon.bmp"]
+MEDIUM_NAVAL_CANNON_PATH = ["imgs","weapons","medium_naval_cannon.bmp"]
+
 
 # sprites - map
 TREES_PATH = ["imgs","map","trees.bmp"]

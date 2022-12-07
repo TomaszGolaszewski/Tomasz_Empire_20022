@@ -155,7 +155,7 @@ class Main_battle_tank(Land_unit):
 
 class Heavy_artillery(Land_unit):
     Vehicle_class = Heavy_track_basic
-    Main_weapon_class = Minigun
+    Main_weapon_class = Heavy_cannon
 
     unit_level = 3
 
@@ -411,6 +411,6 @@ class Small_AA_ship(Naval_unit):
 
 class Battle_cruiser(Small_artillery_ship):
     Vehicle_class = Medium_ship
-    Main_weapon_class = Empty_slot
+    Main_weapon_class = Medium_naval_cannon
 
     unit_level = 2

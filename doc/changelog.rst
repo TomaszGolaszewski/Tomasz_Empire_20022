@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.9.2 - 07.12.2022
+----
+* New weapons: Heavy cannon and medium naval cannon.
+
 v0.9.1 - 07.12.2022
 ----
 * New units: Heavy artillery and Battle cruiser;

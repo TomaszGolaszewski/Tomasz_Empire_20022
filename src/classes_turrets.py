@@ -173,6 +173,55 @@ class Medium_cannon(Turret):
         if unit_type == "land" or unit_type == "navy": return True
         else: return False
 
+class Heavy_cannon(Turret): 
+    path = HEAVY_CANNON_PATH
+
+    Ammunition_class = Plasma
+
+    turn_speed = 0.02
+    max_radar_radius = 700
+    min_radar_radius = 100
+
+    max_bullet_range = 1000
+    barrel_length = 30
+
+    power = 150
+
+    countdown_time_to_search = FRAMERATE // 6
+    countdown_time_to_shot = FRAMERATE * 2
+
+    def is_valid_target(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        # anti land units
+        if unit_type == "land" or unit_type == "navy": return True
+        else: return False
+
+
+class Medium_naval_cannon(Turret): 
+    path = MEDIUM_NAVAL_CANNON_PATH
+
+    Ammunition_class = Plasma
+
+    turn_speed = 0.02
+    max_radar_radius = 700
+    min_radar_radius = 100
+
+    max_bullet_range = 1000
+    barrel_length = 32
+
+    power = 150
+
+    countdown_time_to_search = FRAMERATE // 6
+    countdown_time_to_shot = FRAMERATE
+
+    def is_valid_target(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        # anti land units
+        if unit_type == "land" or unit_type == "navy": return True
+        else: return False
+
 
 class Side_cannon(Turret): 
     path = SIDE_CANNON_PATH
