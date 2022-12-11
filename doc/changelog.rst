@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.9.3 - 11.12.2022
+----
+* Refactoring of the unit classes.
+
 v0.9.2 - 07.12.2022
 ----
 * New weapons: Heavy cannon and medium naval cannon.

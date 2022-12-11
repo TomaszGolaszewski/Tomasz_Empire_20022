@@ -35,6 +35,7 @@ class Turret(Base_object):
         
         self.target_coord = coord
         self.angle_to_target = base_angle
+        self.initial_angle = base_angle
         self.dist_to_target = 0
         self.countdown_to_search = 0
         self.countdown_to_shot = 0
@@ -72,7 +73,8 @@ class Turret(Base_object):
             self.countdown_to_shot -= 1
 
         if not self.target_locked:
-            self.angle_to_target = self.base_angle
+            self.angle_to_target = self.base_angle + self.initial_angle
+            if self.angle_to_target > 2*math.pi: self.angle_to_target -= 2*math.pi
 
         self.angle = turn_to_target_angle(self.angle, self.angle_to_target, self.turn_speed) # , 0.02) # damping
 
