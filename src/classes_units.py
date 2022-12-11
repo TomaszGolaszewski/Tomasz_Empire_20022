@@ -36,14 +36,12 @@ class Unit:
 
         # initialization of the weapon
         self.Weapons = []
-        # self.Weapons_coords = []
         for weapon_class in self.Weapon_classes:
             x = weapon_class[1][0]
             y = weapon_class[1][1]
-            # self.Weapons_coords.append((x, y), weapon_class[1][2])
             weapon_x = self.coord[0] + x * math.cos(self.angle) + y * math.sin(self.angle)
             weapon_y = self.coord[1] + x * math.sin(self.angle) - y * math.cos(self.angle)
-            self.Weapons.append(weapon_class[0]((weapon_x, weapon_y), weapon_class[1][2], player_id, team_id))
+            self.Weapons.append(weapon_class[0]((weapon_x, weapon_y), angle, weapon_class[1][2], player_id, team_id))
 
         # other variables
         self.is_alive = True
@@ -150,8 +148,6 @@ class Land_unit(Unit):
 class Light_tank(Land_unit):
     Vehicle_class = Light_track
     Weapon_classes = [(Light_cannon, (0, 0, 0))]
-    # Main_weapon_class = Light_cannon
-
     unit_level = 1
 
     def draw_unit_application_icon(self, win, coord_on_screen):
@@ -163,8 +159,6 @@ class Light_tank(Land_unit):
 class Main_battle_tank(Land_unit):
     Vehicle_class = Medium_track
     Weapon_classes = [(Medium_cannon, (0, 0, 0))]
-    # Main_weapon_class = Medium_cannon
-
     unit_level = 2
 
     def draw_unit_application_icon(self, win, coord_on_screen):
@@ -176,8 +170,6 @@ class Main_battle_tank(Land_unit):
 class Heavy_artillery(Land_unit):
     Vehicle_class = Heavy_track_basic
     Weapon_classes = [(Heavy_cannon, (0, 0, 0))]
-    # Main_weapon_class = Heavy_cannon
-
     unit_level = 3
 
     def draw_unit_application_icon(self, win, coord_on_screen):
@@ -194,66 +186,17 @@ class Heavy_tank(Land_unit):
     Weapon_classes = [(Minigun, (0, 0, 0)),
                     (Side_cannon, (0, 16, 0)),
                     (Side_cannon, (0, -16, 0))]
-    # Main_weapon_class = Minigun
-
     unit_level = 3
-
-    # def __init__(self, coord, angle, player_id, team_id):
-    # # initialization of the heavy tank
-    #     Land_unit.__init__(self, coord, angle, player_id, team_id)
-    #     self.weapon2 = Side_cannon(coord, angle, player_id, team_id)
-    #     self.weapon3 = Side_cannon(coord, angle, player_id, team_id)
-
-
-    # def draw(self, win, offset_x, offset_y, scale):
-    # # draw the heavy tank on the screen
-
-    #     self.base.draw(win, offset_x, offset_y, scale)
-    #     self.weapon.draw(win, offset_x, offset_y, scale)
-    #     self.weapon2.draw(win, offset_x, offset_y, scale)
-    #     self.weapon3.draw(win, offset_x, offset_y, scale)
-
-    #     coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale)
-    #     self.draw_level_indicator(win, coord_on_screen)
-    #     self.draw_unit_type_icon(win, coord_on_screen)
-    #     self.draw_unit_application_icon(win, coord_on_screen)
-
-    #     if self.is_selected:
-    #         pygame.draw.circle(win, LIME, coord_on_screen, 20, 3)
-
 
     def draw_unit_application_icon(self, win, coord_on_screen):
     # draw unit application icon - tank / anti-aircraft / bomber / etc.
         # o
         pygame.draw.circle(win, WHITE, coord_on_screen, 4, 1)
 
-    
-    # def draw_extra_data(self, win, offset_x, offset_y, scale):
-    # # draw extra data about the heavy tank on the screen
-    #     Air_unit.draw_extra_data(self, win, offset_x, offset_y, scale)
-    #     self.weapon2.draw_extra_data(win, offset_x, offset_y, scale)
-    #     self.weapon3.draw_extra_data(win, offset_x, offset_y, scale)
-
-    
-    # def run(self, map, list_with_units, list_with_bullets):
-    # # life-cycle of the heavy tank
-    #     Air_unit.run(self, map, list_with_units, list_with_bullets)
-    #     if self.is_alive:
-    #         x = 0
-    #         y = 16          
-    #         self.weapon2.set_position((self.coord[0] + x * math.cos(self.angle) + y * math.sin(self.angle), self.coord[1] + x * math.sin(self.angle) - y * math.cos(self.angle)))
-    #         self.weapon3.set_position((self.coord[0] + x * math.cos(self.angle) - y * math.sin(self.angle), self.coord[1] + x * math.sin(self.angle) + y * math.cos(self.angle)))
-    #         self.weapon2.set_angle(self.angle)
-    #         self.weapon3.set_angle(self.angle)
-    #         self.weapon2.run(list_with_units, list_with_bullets)
-    #         self.weapon3.run(list_with_units, list_with_bullets)
-
 
 class Spider_tank(Land_unit):
     Vehicle_class = Ant
     Weapon_classes = [(Minigun, (0, 0, 0))]
-    # Main_weapon_class = Minigun
-
     unit_level = 2
 
     def draw_unit_application_icon(self, win, coord_on_screen):
@@ -282,8 +225,6 @@ class Air_unit(Unit):
 class Fighter(Air_unit):
     Vehicle_class = Plane
     Weapon_classes = [(Plane_fixed_gun, (0, 0, 0))]
-    # Main_weapon_class = Plane_fixed_gun
-
     unit_level = 2
 
     def draw_unit_application_icon(self, win, coord_on_screen):
@@ -297,51 +238,13 @@ class Bomber(Air_unit):
     Vehicle_class = Plane_bomber
     Weapon_classes = [(Bomb_dispenser, (0, 0, 0)),
                     (Plane_minigun, (0, 0, 0))]
-    # Main_weapon_class = Bomb_dispenser
-
     unit_level = 2
-
-    def __init__(self, coord, angle, player_id, team_id):
-    # initialization of the bomber
-        Air_unit.__init__(self, coord, angle, player_id, team_id)
-        self.weapon2 = Plane_minigun(coord, angle, player_id, team_id)
-
-
-    # def draw(self, win, offset_x, offset_y, scale):
-    # # draw the bomber on the screen
-       
-    #     self.base.draw(win, offset_x, offset_y, scale)
-    #     self.weapon.draw(win, offset_x, offset_y, scale)
-    #     self.weapon2.draw(win, offset_x, offset_y, scale)
-
-    #     coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale)
-    #     self.draw_level_indicator(win, coord_on_screen)
-    #     self.draw_unit_type_icon(win, coord_on_screen)
-    #     self.draw_unit_application_icon(win, coord_on_screen)
-
-    #     if self.is_selected:
-    #         pygame.draw.circle(win, LIME, coord_on_screen, 20, 3)
 
 
     def draw_unit_application_icon(self, win, coord_on_screen):
     # draw unit application icon - tank / anti-aircraft / bomber / etc.
         pygame.draw.line(win, WHITE, [coord_on_screen[0] - 3, coord_on_screen[1] - 3], [coord_on_screen[0], coord_on_screen[1] + 3], 1) # \
         pygame.draw.line(win, WHITE, [coord_on_screen[0] + 3, coord_on_screen[1] - 3], [coord_on_screen[0], coord_on_screen[1] + 3], 1) # /
-
-
-    # def draw_extra_data(self, win, offset_x, offset_y, scale):
-    # # draw extra data about the bomber on the screen
-    #     Air_unit.draw_extra_data(self, win, offset_x, offset_y, scale)
-    #     self.weapon2.draw_extra_data(win, offset_x, offset_y, scale)
-
-    
-    # def run(self, map, list_with_units, list_with_bullets):
-    # # life-cycle of the bomber
-    #     Air_unit.run(self, map, list_with_units, list_with_bullets)
-    #     if self.is_alive:
-    #         self.weapon2.set_position(self.coord)
-    #         self.weapon2.set_angle(self.angle)
-    #         self.weapon2.run(list_with_units, list_with_bullets)
 
 
 class Strategic_bomber(Air_unit):
@@ -349,59 +252,12 @@ class Strategic_bomber(Air_unit):
     Weapon_classes = [(Advanced_bomb_dispenser, (0, 0, 0)),
                     (Plane_minigun, (-6, 16, 0)),
                     (Plane_minigun, (-6, -16, 0))]
-    # Main_weapon_class = Advanced_bomb_dispenser
-
     unit_level = 3
-
-    # def __init__(self, coord, angle, player_id, team_id):
-    # # initialization of the strategic bomber
-    #     Air_unit.__init__(self, coord, angle, player_id, team_id)
-    #     self.weapon2 = Plane_minigun(coord, angle, player_id, team_id)
-    #     self.weapon3 = Plane_minigun(coord, angle, player_id, team_id)
-
-
-    # def draw(self, win, offset_x, offset_y, scale):
-    # # draw the strategic bomber on the screen
-
-    #     self.base.draw(win, offset_x, offset_y, scale)
-    #     self.weapon.draw(win, offset_x, offset_y, scale)
-    #     self.weapon2.draw(win, offset_x, offset_y, scale)
-    #     self.weapon3.draw(win, offset_x, offset_y, scale)
-
-    #     coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale)
-    #     self.draw_level_indicator(win, coord_on_screen)
-    #     self.draw_unit_type_icon(win, coord_on_screen)
-    #     self.draw_unit_application_icon(win, coord_on_screen)
-
-    #     if self.is_selected:
-    #         pygame.draw.circle(win, LIME, coord_on_screen, 20, 3)
-
 
     def draw_unit_application_icon(self, win, coord_on_screen):
     # draw unit application icon - tank / anti-aircraft / bomber / etc.
         pygame.draw.line(win, WHITE, [coord_on_screen[0] - 3, coord_on_screen[1] - 3], [coord_on_screen[0], coord_on_screen[1] + 3], 1) # \
         pygame.draw.line(win, WHITE, [coord_on_screen[0] + 3, coord_on_screen[1] - 3], [coord_on_screen[0], coord_on_screen[1] + 3], 1) # /
-
-
-    # def draw_extra_data(self, win, offset_x, offset_y, scale):
-    # # draw extra data about the strategic bomber on the screen
-    #     Air_unit.draw_extra_data(self, win, offset_x, offset_y, scale)
-    #     self.weapon2.draw_extra_data(win, offset_x, offset_y, scale)
-    #     self.weapon3.draw_extra_data(win, offset_x, offset_y, scale)
-
-    
-    # def run(self, map, list_with_units, list_with_bullets):
-    # # life-cycle of the strategic bomber
-    #     Air_unit.run(self, map, list_with_units, list_with_bullets)
-    #     if self.is_alive:
-    #         x = -6
-    #         y = 16          
-    #         self.weapon2.set_position((self.coord[0] + x * math.cos(self.angle) + y * math.sin(self.angle), self.coord[1] + x * math.sin(self.angle) - y * math.cos(self.angle)))
-    #         self.weapon3.set_position((self.coord[0] + x * math.cos(self.angle) - y * math.sin(self.angle), self.coord[1] + x * math.sin(self.angle) + y * math.cos(self.angle)))
-    #         self.weapon2.set_angle(self.angle)
-    #         self.weapon3.set_angle(self.angle)
-    #         self.weapon2.run(list_with_units, list_with_bullets)
-    #         self.weapon3.run(list_with_units, list_with_bullets)
 
 
 # ======================================================================
@@ -418,8 +274,6 @@ class Naval_unit(Unit):
 class Small_artillery_ship(Naval_unit):
     Vehicle_class = Small_ship
     Weapon_classes = [(Medium_cannon, (0, 0, 0))]
-    # Main_weapon_class = Medium_cannon
-
     unit_level = 1
 
     def draw_unit_application_icon(self, win, coord_on_screen):
@@ -431,8 +285,6 @@ class Small_artillery_ship(Naval_unit):
 class Small_AA_ship(Naval_unit):
     Vehicle_class = Small_ship
     Weapon_classes = [(Minigun, (0, 0, 0))]
-    # Main_weapon_class = Minigun
-
     unit_level = 1
 
     def draw_unit_application_icon(self, win, coord_on_screen):
@@ -446,6 +298,14 @@ class Battle_cruiser(Small_artillery_ship):
     Vehicle_class = Medium_ship
     Weapon_classes = [(Medium_naval_cannon, (29, 0, 0)),
                     (Medium_naval_cannon, (-27, 0, math.pi))]
-    # Main_weapon_class = Medium_naval_cannon
-
     unit_level = 2
+
+class Destroyer(Small_artillery_ship):
+    Vehicle_class = Destroyer_body
+    Weapon_classes = [(Heavy_naval_cannon, (43, 0, 0)),
+                    (Heavy_naval_cannon, (-64, 0, math.pi)),
+                    (Minigun, (16, -8, 0)),
+                    (Minigun, (16, 8, 0)),
+                    (Minigun, (-22, -11, math.pi)),
+                    (Minigun, (-22, 11, math.pi))]
+    unit_level = 3

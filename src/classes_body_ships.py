@@ -36,3 +36,16 @@ class Medium_ship(Small_ship):
 
     hit_box_radius = 35
     base_HP = 600
+
+
+class Destroyer_body(Small_ship):
+    path = DESTROYER_PATH
+    number_of_frames = DESTROYER_FRAMES
+    number_of_frames_in_sequence = DESTROYER_FRAMES - 1
+
+    v_max = 0.3
+    acceleration = 0.1
+    turn_speed = 0.005
+
+    hit_box_radius = 60
+    base_HP = 2000

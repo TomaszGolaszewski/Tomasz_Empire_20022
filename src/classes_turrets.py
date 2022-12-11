@@ -25,17 +25,19 @@ class Turret(Base_object):
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE
 
-    def __init__(self, coord, base_angle, player_id, team_id):
-    # initialization of the weapon
-        Base_object.__init__(self, coord, base_angle)
+    def __init__(self, coord, base_angle, initial_angle, player_id, team_id):
+    # initialization of the weapon               
+        self.base_angle = base_angle # angle of the base of the unit     
+        angle = base_angle + initial_angle
+        if angle > 2*math.pi: angle -= 2*math.pi
+        self.angle_to_target = angle # angle to current target
+        self.initial_angle = initial_angle # initial angle of the turret
+        Base_object.__init__(self, coord, angle)
 
-        self.base_angle = base_angle
         self.player_id = player_id
         self.team_id = team_id
-        
+
         self.target_coord = coord
-        self.angle_to_target = base_angle
-        self.initial_angle = base_angle
         self.dist_to_target = 0
         self.countdown_to_search = 0
         self.countdown_to_shot = 0
@@ -213,6 +215,31 @@ class Medium_naval_cannon(Turret):
     barrel_length = 32
 
     power = 150
+
+    countdown_time_to_search = FRAMERATE // 6
+    countdown_time_to_shot = FRAMERATE
+
+    def is_valid_target(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        # anti land units
+        if unit_type == "land" or unit_type == "navy": return True
+        else: return False
+
+
+class Heavy_naval_cannon(Turret): 
+    path = HEAVY_NAVAL_CANNON_PATH
+
+    Ammunition_class = Plasma
+
+    turn_speed = 0.02
+    max_radar_radius = 1100
+    min_radar_radius = 200
+
+    max_bullet_range = 1500
+    barrel_length = 40
+
+    power = 250
 
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE

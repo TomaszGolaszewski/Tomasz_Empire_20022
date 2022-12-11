@@ -1,6 +1,12 @@
 Changelog
 ======
 
+v0.9.4 - 11.12.2022
+----
+* Fixes in turrets' angle calculation;
+* New weapon: Heavy naval cannon;
+* New unit: Destroyer.
+
 v0.9.3 - 11.12.2022
 ----
 * Refactoring of the unit classes.

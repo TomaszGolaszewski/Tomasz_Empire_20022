@@ -26,6 +26,8 @@ SMALL_SHIP_PATH = ["imgs","vehicles","small_ship.bmp"]
 SMALL_SHIP_FRAMES = 4
 MEDIUM_SHIP_PATH = ["imgs","vehicles","medium_ship.bmp"]
 MEDIUM_SHIP_FRAMES = 4
+DESTROYER_PATH = ["imgs","vehicles","destroyer.bmp"]
+DESTROYER_FRAMES = 2
 
 # planes
 PLANE_PATH = ["imgs","vehicles","plane.bmp"]
@@ -43,6 +45,7 @@ PLANE_MINIGUN_PATH = ["imgs","weapons","plane_minigun.bmp"]
 SIDE_CANNON_PATH = ["imgs","weapons","side_cannon.bmp"]
 HEAVY_CANNON_PATH = ["imgs","weapons","heavy_cannon.bmp"]
 MEDIUM_NAVAL_CANNON_PATH = ["imgs","weapons","medium_naval_cannon.bmp"]
+HEAVY_NAVAL_CANNON_PATH = ["imgs","weapons","heavy_naval_cannon.bmp"]
 
 
 # sprites - map
