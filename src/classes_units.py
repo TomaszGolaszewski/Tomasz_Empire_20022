@@ -309,3 +309,17 @@ class Destroyer(Small_artillery_ship):
                     (Minigun, (-22, -11, math.pi)),
                     (Minigun, (-22, 11, math.pi))]
     unit_level = 3
+
+class Battleship(Small_AA_ship):
+    Vehicle_class = Battleship_body
+    Weapon_classes = [(Heavy_naval_cannon, (98, 0, 0)),
+                    (Heavy_naval_cannon, (58, 0, 0)),
+                    (Heavy_naval_cannon, (-92, 0, math.pi)),
+                    (Heavy_naval_cannon, (-51, 0, math.pi)),
+                    (Minigun, (8, 23, 0)),
+                    (Minigun, (-9, 23, 3*math.pi/2)),
+                    (Minigun, (-26, 23, math.pi)),
+                    (Minigun, (8, -23, 0)),
+                    (Minigun, (-9, -23, math.pi/2)),
+                    (Minigun, (-26, -23, math.pi))]
+    unit_level = 3

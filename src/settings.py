@@ -28,6 +28,8 @@ MEDIUM_SHIP_PATH = ["imgs","vehicles","medium_ship.bmp"]
 MEDIUM_SHIP_FRAMES = 4
 DESTROYER_PATH = ["imgs","vehicles","destroyer.bmp"]
 DESTROYER_FRAMES = 2
+BATTLESHIP_PATH = ["imgs","vehicles","battleship.bmp"]
+BATTLESHIP_FRAMES = 2
 
 # planes
 PLANE_PATH = ["imgs","vehicles","plane.bmp"]

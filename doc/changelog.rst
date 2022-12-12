@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.9.5 - 12.12.2022
+----
+* New unit: Battleship. 
+
 v0.9.4 - 11.12.2022
 ----
 * Fixes in turrets' angle calculation;

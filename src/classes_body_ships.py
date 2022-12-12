@@ -49,3 +49,16 @@ class Destroyer_body(Small_ship):
 
     hit_box_radius = 60
     base_HP = 2000
+
+
+class Battleship_body(Small_ship):
+    path = BATTLESHIP_PATH
+    number_of_frames = BATTLESHIP_FRAMES
+    number_of_frames_in_sequence = BATTLESHIP_FRAMES - 1
+
+    v_max = 0.2
+    acceleration = 0.1
+    turn_speed = 0.005
+
+    hit_box_radius = 100
+    base_HP = 10000

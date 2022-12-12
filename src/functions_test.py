@@ -41,6 +41,8 @@ def make_test_units():
         LIST_WITH_UNITS.append(Fighter([400 + 100*i, 2600], 3*math.pi/2, 2, 2))
 
     LIST_WITH_UNITS.append(Destroyer([300, 3000], 3*math.pi/2, 2, 2))
+    LIST_WITH_UNITS.append(Battleship([100, 3000], 3*math.pi/2, 2, 2))
+    LIST_WITH_UNITS.append(Battleship([500, 3000], 3*math.pi/2, 2, 2))
 
 
     # test vehicles for red team
@@ -63,6 +65,7 @@ def make_test_units():
     LIST_WITH_UNITS.append(Battle_cruiser([1900, 400], math.pi, 3, 3))
     LIST_WITH_UNITS.append(Destroyer([1900, 510], math.pi, 3, 3))
     LIST_WITH_UNITS.append(Destroyer([1900, 640], math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Battleship([1700, 200], math.pi, 3, 3))
 
     LIST_WITH_UNITS.append(Fighter([2300, 100], math.pi, 3, 3))
     LIST_WITH_UNITS.append(Fighter([2300, 150], math.pi, 3, 3))

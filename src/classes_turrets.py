@@ -237,7 +237,7 @@ class Heavy_naval_cannon(Turret):
     min_radar_radius = 200
 
     max_bullet_range = 1500
-    barrel_length = 40
+    barrel_length = 42
 
     power = 250
 
