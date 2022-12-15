@@ -172,12 +172,16 @@ class Map:
     def get_tile_type(self, coord):
     # return the tile type
         x_id, y_id = self.world2id(coord)
-        return self.BOARD[y_id][x_id].type
+        if 0 <= x_id  and x_id < self.map_width and 0 <= y_id and y_id < self.map_height:
+            return self.BOARD[y_id][x_id].type
+        else: return "out_of_map"
 
     def get_tile_degradation_level(self, coord):
     # return the tile degradation level
         x_id, y_id = self.world2id(coord)
-        return self.BOARD[y_id][x_id].degradation_level
+        if 0 <= x_id  and x_id < self.map_width and 0 <= y_id and y_id < self.map_height:
+            return self.BOARD[y_id][x_id].degradation_level
+        else: return -1
 
     def id2world(self, id):
     # calculate coordinates from tile's id to world coordinate system

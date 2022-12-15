@@ -1,6 +1,12 @@
 Changelog
 ======
 
+v0.9.6 - 15.12.2022
+----
+* Fixes in map methods regarding map border;
+* Added basic animation of units' death and bullets' explosion;
+* Chenges in units and bullets removal mechanism allowing the display of explosions.
+
 v0.9.5 - 12.12.2022
 ----
 * New unit: Battleship. 

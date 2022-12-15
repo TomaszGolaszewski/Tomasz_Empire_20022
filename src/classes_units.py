@@ -34,6 +34,9 @@ class Unit:
         self.base_HP = self.base.base_HP
         self.HP = self.base.base_HP
 
+        if self.base.frame_height > self.base.frame_width: self.body_radius = self.base.frame_height
+        else: self.body_radius = self.base.frame_width
+
         # initialization of the weapon
         self.Weapons = []
         for weapon_class in self.Weapon_classes:
@@ -45,21 +48,26 @@ class Unit:
 
         # other variables
         self.is_alive = True
+        self.to_remove = False
         self.is_selected = False
 
     def draw(self, win, offset_x, offset_y, scale):
     # draw the unit on the screen
-        self.base.draw(win, offset_x, offset_y, scale)
-        for weapon in self.Weapons:
-            weapon.draw(win, offset_x, offset_y, scale)
+        if self.is_alive:
+            self.base.draw(win, offset_x, offset_y, scale)
+            for weapon in self.Weapons:
+                weapon.draw(win, offset_x, offset_y, scale)
 
-        coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale)
-        self.draw_level_indicator(win, coord_on_screen)
-        self.draw_unit_type_icon(win, coord_on_screen)
-        self.draw_unit_application_icon(win, coord_on_screen)
+            coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale)
+            self.draw_level_indicator(win, coord_on_screen)
+            self.draw_unit_type_icon(win, coord_on_screen)
+            self.draw_unit_application_icon(win, coord_on_screen)
 
-        if self.is_selected:
-            pygame.draw.circle(win, LIME, coord_on_screen, 20, 3)
+            if self.is_selected:
+                pygame.draw.circle(win, LIME, coord_on_screen, 20, 3)
+        else:
+            coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale)
+            pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, int(self.body_radius * scale), 0)
 
     def draw_level_indicator(self, win, coord_on_screen):
     # draw level indicator
@@ -92,18 +100,19 @@ class Unit:
             weapon.draw_extra_data(win, offset_x, offset_y, scale)
 
     def draw_HP(self, win, offset_x, offset_y, scale):
-    # draw HP bar        
-        percentage_of_HP = self.HP / self.base_HP
-        start_point = [self.coord[0] - 12 * scale, self.coord[1] + 12 * scale]
-        if percentage_of_HP > 0.5:
-            color = LIME
-        elif percentage_of_HP > 0.25:
-            color = YELLOW
-        else:
-            color = RED
-        pygame.draw.line(win, color, 
-                    world2screen(start_point, offset_x, offset_y, scale), 
-                    world2screen([start_point[0] + 24 * percentage_of_HP * scale, start_point[1]], offset_x, offset_y, scale), int(3 * scale))
+    # draw HP bar     
+        if self.is_alive:   
+            percentage_of_HP = self.HP / self.base_HP
+            start_point = [self.coord[0] - 12 * scale, self.coord[1] + 12 * scale]
+            if percentage_of_HP > 0.5:
+                color = LIME
+            elif percentage_of_HP > 0.25:
+                color = YELLOW
+            else:
+                color = RED
+            pygame.draw.line(win, color, 
+                        world2screen(start_point, offset_x, offset_y, scale), 
+                        world2screen([start_point[0] + 24 * percentage_of_HP * scale, start_point[1]], offset_x, offset_y, scale), int(3 * scale))
 
     def run(self, map, list_with_units, list_with_bullets):
     # life-cycle of the unit
@@ -125,7 +134,10 @@ class Unit:
                 weapon.run(list_with_units, list_with_bullets)
                 i += 1
         else:
-            map.degrade(self.coord, 2)
+            self.body_radius -= 1
+            if self.body_radius <= 0:
+                map.degrade(self.coord, 2)
+                self.to_remove = True
 
     def get_hit(self, power):
     # function that subtracts damage from HP and kills the unit if necessary
@@ -302,12 +314,12 @@ class Battle_cruiser(Small_artillery_ship):
 
 class Destroyer(Small_artillery_ship):
     Vehicle_class = Destroyer_body
-    Weapon_classes = [(Heavy_naval_cannon, (43, 0, 0)),
-                    (Heavy_naval_cannon, (-64, 0, math.pi)),
-                    (Minigun, (16, -8, 0)),
-                    (Minigun, (16, 8, 0)),
-                    (Minigun, (-22, -11, math.pi)),
-                    (Minigun, (-22, 11, math.pi))]
+    Weapon_classes = [(Heavy_naval_cannon, (58, 0, 0)),
+                    (Heavy_naval_cannon, (-49, 0, math.pi)),
+                    (Minigun, (31, -8, 0)),
+                    (Minigun, (31, 8, 0)),
+                    (Minigun, (-7, -11, math.pi)),
+                    (Minigun, (-7, 11, math.pi))]
     unit_level = 3
 
 class Battleship(Small_AA_ship):

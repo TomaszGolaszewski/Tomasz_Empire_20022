@@ -90,7 +90,7 @@ class Turret(Base_object):
         temp_found_new_target = False
         
         for unit in list_with_units:
-            if unit.team_id != self.team_id:
+            if unit.team_id != self.team_id and unit.is_alive:
                 dist = dist_two_points(unit.coord, self.coord)
                 if self.is_valid_target(unit.unit_type) and dist < self.max_radar_radius and dist < temp_dist and dist > self.min_radar_radius:
                     temp_coord = unit.coord
@@ -352,7 +352,7 @@ class Plane_fixed_gun(Turret):
         
         while temp_dist <= self.max_radar_radius:
             for unit in list_with_units:
-                if unit.team_id != self.team_id and self.is_valid_target(unit.unit_type):
+                if unit.team_id != self.team_id and self.is_valid_target(unit.unit_type) and unit.is_alive:
                     dist = dist_two_points(unit.coord, temp_coord)
                     if dist < self.search_radius:
                         temp_target_type = unit.unit_type

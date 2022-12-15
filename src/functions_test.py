@@ -74,4 +74,10 @@ def make_test_units():
     LIST_WITH_UNITS.append(Strategic_bomber([2300, 350], math.pi, 3, 3))
     LIST_WITH_UNITS.append(Strategic_bomber([2300, 450], math.pi, 3, 3))
 
+    for i in range(10):
+        LIST_WITH_UNITS.append(Bomber([2500, 100 + 50*i], math.pi, 3, 3))
+
+    for i in range(10):
+        LIST_WITH_UNITS.append(Strategic_bomber([2600, 100 + 70*i], math.pi, 3, 3))
+
     return LIST_WITH_UNITS
