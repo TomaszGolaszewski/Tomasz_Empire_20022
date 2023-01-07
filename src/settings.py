@@ -4,8 +4,8 @@ import os
 import math
 
 # window
-WIN_WIDTH, WIN_HEIGHT = 1600, 900
-# WIN_WIDTH, WIN_HEIGHT = 1260, 720
+# WIN_WIDTH, WIN_HEIGHT = 1600, 900
+WIN_WIDTH, WIN_HEIGHT = 1260, 700 # 720
 FRAMERATE = 60
 
 # sprites - units

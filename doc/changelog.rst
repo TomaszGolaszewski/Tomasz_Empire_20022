@@ -1,6 +1,14 @@
 Changelog
 ======
 
+v0.9.7 - 07.01.2023
+----
+* Naval cannons are shooting now multiple bullets at ones;
+* Side cannons and naval cannons can no longer shoot backwards;
+* Fixes in angle following method;
+* Fixes in bombers' aiming;
+* Fixes in collision between bullets and trees.
+
 v0.9.6 - 15.12.2022
 ----
 * Fixes in map methods regarding map border;

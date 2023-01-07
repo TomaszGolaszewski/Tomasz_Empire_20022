@@ -92,7 +92,10 @@ class Turret(Base_object):
         for unit in list_with_units:
             if unit.team_id != self.team_id and unit.is_alive:
                 dist = dist_two_points(unit.coord, self.coord)
-                if self.is_valid_target(unit.unit_type) and dist < self.max_radar_radius and dist < temp_dist and dist > self.min_radar_radius:
+                if self.is_valid_target(unit.unit_type) \
+                        and dist < self.max_radar_radius \
+                        and dist < temp_dist \
+                        and dist > self.min_radar_radius:
                     temp_coord = unit.coord
                     temp_dist = dist
                     temp_target_type = unit.unit_type
@@ -126,6 +129,10 @@ class Turret(Base_object):
     def set_angle(self, angle):
     # set new base angle of weapon
         self.base_angle = angle
+
+
+# ======================================================================
+# Tanks' turrets
 
 
 class Light_cannon(Turret): 
@@ -202,7 +209,76 @@ class Heavy_cannon(Turret):
         else: return False
 
 
-class Medium_naval_cannon(Turret): 
+# ======================================================================
+# Side cannons
+
+
+class Side_cannon(Turret): 
+    path = SIDE_CANNON_PATH
+
+    Ammunition_class = Plasma
+
+    turn_speed = 0.04
+    max_radar_radius = 500
+    min_radar_radius = 75
+
+    max_bullet_range = 800
+    barrel_length = 25
+
+    power = 80
+
+    countdown_time_to_search = FRAMERATE // 6
+    countdown_time_to_shot = FRAMERATE
+
+    turn_limit = math.pi / 4
+
+    def find_target(self, list_with_units):
+    # find closest target - difference that movement is limited
+    # set new target_coord, angle_to_target and dist_to target
+
+        temp_coord = [0, 0]
+        temp_dist = 9999
+        temp_found_new_target = False
+        temp_angle_to_target = 0
+
+        current_initial_angle = self.base_angle + self.initial_angle
+        if current_initial_angle > 2*math.pi: current_initial_angle -= 2*math.pi
+        
+        for unit in list_with_units:
+            if unit.team_id != self.team_id and unit.is_alive:
+                dist = dist_two_points(unit.coord, self.coord)
+                angle = angle_to_target(self.coord, unit.coord)
+                if self.is_valid_target(unit.unit_type) \
+                        and dist < self.max_radar_radius \
+                        and dist < temp_dist \
+                        and dist > self.min_radar_radius \
+                        and dist_two_angles(angle, current_initial_angle) < self.turn_limit:
+                    # print(str(angle) + "\t" + str(current_initial_angle) + "\t" + str(dist_two_angles(angle, current_initial_angle)))
+                    temp_coord = unit.coord
+                    temp_angle_to_target = angle
+                    temp_dist = dist
+                    temp_target_type = unit.unit_type
+                    temp_found_new_target = True
+        
+        if temp_found_new_target:
+            self.target_coord = temp_coord
+            self.angle_to_target = temp_angle_to_target
+            self.dist_to_target = temp_dist
+            self.target_type = temp_target_type
+            self.target_locked = True
+        else:
+            self.target_coord = self.coord
+            self.target_locked = False
+
+    def is_valid_target(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        # anti land units
+        if unit_type == "land" or unit_type == "navy": return True
+        else: return False
+
+
+class Medium_naval_cannon(Side_cannon): 
     path = MEDIUM_NAVAL_CANNON_PATH
 
     Ammunition_class = Plasma
@@ -217,7 +293,19 @@ class Medium_naval_cannon(Turret):
     power = 150
 
     countdown_time_to_search = FRAMERATE // 6
-    countdown_time_to_shot = FRAMERATE
+    countdown_time_to_shot = FRAMERATE * 2
+
+    turn_limit = math.pi / 2
+
+    def make_bullets(self, list_with_bullets):
+    # function makes and shoot the bullet
+    # return list_with_bullets
+        barrel_width = 4
+        bullet_coord1 = move_point_by_vector(self.coord, (self.barrel_length, barrel_width), self.angle)
+        bullet_coord2 = move_point_by_vector(self.coord, (self.barrel_length, -barrel_width), self.angle)     
+        list_with_bullets.append(self.Ammunition_class(bullet_coord1, self.angle, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id, self.power, self.target_type)) 
+        list_with_bullets.append(self.Ammunition_class(bullet_coord2, self.angle, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id, self.power, self.target_type))
+        return list_with_bullets
 
     def is_valid_target(self, unit_type):
     # checks (by unit type) if the target can be targeted
@@ -227,7 +315,7 @@ class Medium_naval_cannon(Turret):
         else: return False
 
 
-class Heavy_naval_cannon(Turret): 
+class Heavy_naval_cannon(Side_cannon): 
     path = HEAVY_NAVAL_CANNON_PATH
 
     Ammunition_class = Plasma
@@ -242,7 +330,21 @@ class Heavy_naval_cannon(Turret):
     power = 250
 
     countdown_time_to_search = FRAMERATE // 6
-    countdown_time_to_shot = FRAMERATE
+    countdown_time_to_shot = FRAMERATE * 3
+
+    turn_limit = math.pi / 2
+
+    def make_bullets(self, list_with_bullets):
+    # function makes and shoot the bullet
+    # return list_with_bullets
+        barrel_width = 9
+        bullet_coord1 = move_point_by_vector(self.coord, (self.barrel_length, barrel_width), self.angle)
+        bullet_coord2 = move_point(self.coord, self.barrel_length, self.angle)
+        bullet_coord3 = move_point_by_vector(self.coord, (self.barrel_length, -barrel_width), self.angle)    
+        list_with_bullets.append(self.Ammunition_class(bullet_coord1, self.angle, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id, self.power, self.target_type))
+        list_with_bullets.append(self.Ammunition_class(bullet_coord2, self.angle, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id, self.power, self.target_type))
+        list_with_bullets.append(self.Ammunition_class(bullet_coord3, self.angle, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id, self.power, self.target_type))            
+        return list_with_bullets
 
     def is_valid_target(self, unit_type):
     # checks (by unit type) if the target can be targeted
@@ -252,29 +354,8 @@ class Heavy_naval_cannon(Turret):
         else: return False
 
 
-class Side_cannon(Turret): 
-    path = SIDE_CANNON_PATH
-
-    Ammunition_class = Plasma
-
-    turn_speed = 0.04
-    max_radar_radius = 400
-    min_radar_radius = 75
-
-    max_bullet_range = 800
-    barrel_length = 25
-
-    power = 80
-
-    countdown_time_to_search = FRAMERATE // 6
-    countdown_time_to_shot = FRAMERATE
-
-    def is_valid_target(self, unit_type):
-    # checks (by unit type) if the target can be targeted
-    # return True if target is valid
-        # anti land units
-        if unit_type == "land" or unit_type == "navy": return True
-        else: return False
+# ======================================================================
+# Miniguns
 
 
 class Minigun(Turret): 
@@ -322,13 +403,17 @@ class Plane_minigun(Turret):
         else: return False
 
 
+# ======================================================================
+# Plane gun
+
+
 class Plane_fixed_gun(Turret):
     Ammunition_class = Plasma
 
     turn_speed = 0.2
     max_radar_radius = 400
     min_radar_radius = 100
-    search_radius = 50
+    search_radius = 10 # 50
 
     max_bullet_range = 600
     barrel_length = 15
@@ -353,8 +438,9 @@ class Plane_fixed_gun(Turret):
         while temp_dist <= self.max_radar_radius:
             for unit in list_with_units:
                 if unit.team_id != self.team_id and self.is_valid_target(unit.unit_type) and unit.is_alive:
-                    dist = dist_two_points(unit.coord, temp_coord)
-                    if dist < self.search_radius:
+                    if unit.is_inside_hitbox(temp_coord, self.search_radius):
+                    # dist = dist_two_points(unit.coord, temp_coord)
+                    # if dist < self.search_radius:
                         temp_target_type = unit.unit_type
                         temp_found_new_target = True
                         break
@@ -383,13 +469,17 @@ class Plane_fixed_gun(Turret):
         else: return False
 
 
+# ======================================================================
+# Bomb dispensers
+
+
 class Bomb_dispenser(Plane_fixed_gun):
     Ammunition_class = Bomb
 
     turn_speed = 0.2
     max_radar_radius = 200
     min_radar_radius = 170
-    search_radius = 30
+    search_radius = 10
 
     max_bullet_range = 210
     barrel_length = 0
@@ -425,6 +515,11 @@ class Advanced_bomb_dispenser(Bomb_dispenser):
     power = 100
     number_of_bombs = 15
     drift_steps = 4
+    search_radius = 10
+
+
+# ======================================================================
+# Empty slot
 
 
 class Empty_slot(Turret): 

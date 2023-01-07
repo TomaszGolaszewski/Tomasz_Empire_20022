@@ -30,7 +30,6 @@ class Bullet:
         self.max_distance = max_distance
         self.min_distance = min_distance
 
-
     def draw(self, win, offset_x, offset_y, scale):
     # draw the bullet on the screen
         if self.is_alive:
@@ -46,7 +45,6 @@ class Bullet:
         else:
             coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale)
             pygame.draw.circle(win, self.explosion_color, coord_on_screen, int(self.explosion_radius * scale), 0)
-
 
     def run(self, map, list_of_units):
     # life-cycle of the bullet 
@@ -68,7 +66,7 @@ class Bullet:
                 else: self.explosion_radius = 1 # don't show explosion in the sky
                 self.is_alive = False
             # checks collision with trees
-            if map.get_tile_type(self.coord) == "forest" or map.get_tile_type(self.coord) == "snow_forest":
+            if not self.target_type == "air" and (map.get_tile_type(self.coord) == "forest" or map.get_tile_type(self.coord) == "snow_forest"):
                 if not map.get_tile_degradation_level(self.coord):
                     map.degrade(self.coord, 2)
                     self.explosion_color = ORANGE
@@ -83,21 +81,20 @@ class Bullet:
             if self.explosion_radius <= 0:
                 self.to_remove = True
 
-
     def move(self):
     # move the bullet forward
         self.distance += self.speed
         self.coord = move_point(self.coord, self.speed, self.angle)
 
-    
     def is_hit(self, object):
     # function checks if the object is hit
     # return True if yes
         if object.is_alive and object.team_id != self.team_id and object.unit_type == self.target_type and self.distance > self.min_distance:
-            if dist_two_points(self.coord, object.coord) < object.hit_box_radius + self.hit_box_radius:
-                return True
-        
-        return False
+            return object.is_inside_hitbox(self.coord, self.hit_box_radius)
+        #     if dist_two_points(self.coord, object.coord) < object.hit_box_radius + self.hit_box_radius:
+        #         return True
+      
+        # return False
 
 
 
@@ -112,8 +109,7 @@ class Plasma(Bullet):
         Bullet.__init__(self, coord, angle, max_distance, min_distance, player_id, team_id, power, target_type)
         self.origin_point = coord
         self.length = self.base_length * power // 10
-
-    
+ 
     def draw(self, win, offset_x, offset_y, scale):
     # draw the plasma beam on the screen
         if self.is_alive:

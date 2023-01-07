@@ -145,6 +145,14 @@ class Unit:
         if self.HP <= 0:
             self.is_alive = False
 
+    def is_inside_hitbox(self, point, range_of_explosion=0):
+    # function checks if the unit is hit - point is inside hitbox
+    # return True if yes
+        if self.is_alive:
+            if dist_two_points(self.coord, point) < self.hit_box_radius + range_of_explosion:
+                return True    
+        return False
+
 
 # ======================================================================
 
@@ -196,8 +204,8 @@ class Heavy_artillery(Land_unit):
 class Heavy_tank(Land_unit):
     Vehicle_class = Heavy_track
     Weapon_classes = [(Minigun, (0, 0, 0)),
-                    (Side_cannon, (0, 16, 0)),
-                    (Side_cannon, (0, -16, 0))]
+                    (Side_cannon, (0, 16, 7 * math.pi / 4)),
+                    (Side_cannon, (0, -16, math.pi / 4))]
     unit_level = 3
 
     def draw_unit_application_icon(self, win, coord_on_screen):
