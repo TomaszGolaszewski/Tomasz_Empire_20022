@@ -4,8 +4,8 @@ import os
 import math
 
 # window
-# WIN_WIDTH, WIN_HEIGHT = 1600, 900
-WIN_WIDTH, WIN_HEIGHT = 1260, 700 # 720
+WIN_WIDTH, WIN_HEIGHT = 1600, 900
+# WIN_WIDTH, WIN_HEIGHT = 1260, 700 # 720
 FRAMERATE = 60
 
 # sprites - units
@@ -23,13 +23,13 @@ ANT_FRAMES = 5
 
 # ships
 SMALL_SHIP_PATH = ["imgs","vehicles","small_ship.bmp"]
-SMALL_SHIP_FRAMES = 4
+SMALL_SHIP_FRAMES = 5
 MEDIUM_SHIP_PATH = ["imgs","vehicles","medium_ship.bmp"]
-MEDIUM_SHIP_FRAMES = 4
+MEDIUM_SHIP_FRAMES = 5
 DESTROYER_PATH = ["imgs","vehicles","destroyer.bmp"]
-DESTROYER_FRAMES = 4
+DESTROYER_FRAMES = 5
 BATTLESHIP_PATH = ["imgs","vehicles","battleship.bmp"]
-BATTLESHIP_FRAMES = 2
+BATTLESHIP_FRAMES = 5
 
 # planes
 PLANE_PATH = ["imgs","vehicles","plane.bmp"]

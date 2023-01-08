@@ -11,6 +11,7 @@ class Small_ship(Vehicle):
     path = SMALL_SHIP_PATH
     number_of_frames = SMALL_SHIP_FRAMES
     number_of_frames_in_sequence = SMALL_SHIP_FRAMES - 1
+    min_scale_to_be_visible = 0.5
 
     v_max = 0.5
     acceleration = 0.1
@@ -29,6 +30,7 @@ class Medium_ship(Small_ship):
     path = MEDIUM_SHIP_PATH
     number_of_frames = MEDIUM_SHIP_FRAMES
     number_of_frames_in_sequence = MEDIUM_SHIP_FRAMES - 1
+    min_scale_to_be_visible = 0.25
 
     v_max = 0.4
     acceleration = 0.1
@@ -42,6 +44,7 @@ class Destroyer_body(Small_ship):
     path = DESTROYER_PATH
     number_of_frames = DESTROYER_FRAMES
     number_of_frames_in_sequence = DESTROYER_FRAMES - 1
+    min_scale_to_be_visible = 0.125
 
     v_max = 0.3
     acceleration = 0.1
@@ -55,6 +58,7 @@ class Battleship_body(Small_ship):
     path = BATTLESHIP_PATH
     number_of_frames = BATTLESHIP_FRAMES
     number_of_frames_in_sequence = BATTLESHIP_FRAMES - 1
+    min_scale_to_be_visible = 0.125
 
     v_max = 0.2
     acceleration = 0.1

@@ -11,6 +11,7 @@ class Plane(Vehicle):
     path = PLANE_PATH
     number_of_frames = PLANE_FRAMES
     number_of_frames_in_sequence = PLANE_FRAMES - 1
+    min_scale_to_be_visible = 0.5
 
     v_max = 4
     acceleration = 0.1
@@ -40,6 +41,7 @@ class Plane_bomber(Plane):
     path = BOMBER_PATH
     number_of_frames = BOMBER_FRAMES
     number_of_frames_in_sequence = BOMBER_FRAMES - 1
+    min_scale_to_be_visible = 0.5
 
     v_max = 3
     acceleration = 0.1
@@ -53,6 +55,7 @@ class Plane_strategic_bomber(Plane):
     path = STRATEGIC_BOMBER_PATH
     number_of_frames = STRATEGIC_BOMBER_FRAMES
     number_of_frames_in_sequence = STRATEGIC_BOMBER_FRAMES - 1
+    min_scale_to_be_visible = 0.5
 
     v_max = 2
     acceleration = 0.05

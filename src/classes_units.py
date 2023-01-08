@@ -34,8 +34,10 @@ class Unit:
         self.base_HP = self.base.base_HP
         self.HP = self.base.base_HP
 
+        # variables to optimise display
         if self.base.frame_height > self.base.frame_width: self.body_radius = self.base.frame_height
         else: self.body_radius = self.base.frame_width
+        self.min_scale_to_be_visible = self.base.min_scale_to_be_visible
 
         # initialization of the weapon
         self.Weapons = []
@@ -53,21 +55,30 @@ class Unit:
 
     def draw(self, win, offset_x, offset_y, scale):
     # draw the unit on the screen
-        if self.is_alive:
-            self.base.draw(win, offset_x, offset_y, scale)
-            for weapon in self.Weapons:
-                weapon.draw(win, offset_x, offset_y, scale)
+        coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale) # coordinates of the unit in the window coordinate system
+        body_radius_on_screen = self.body_radius * scale # radius of the body in the scale of the window
 
-            coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale)
-            self.draw_level_indicator(win, coord_on_screen)
-            self.draw_unit_type_icon(win, coord_on_screen)
-            self.draw_unit_application_icon(win, coord_on_screen)
+        # checking if the unit is on the screen
+        if coord_on_screen[0] > - body_radius_on_screen \
+                and coord_on_screen[0] < WIN_WIDTH + body_radius_on_screen \
+                and coord_on_screen[1] > - body_radius_on_screen \
+                and coord_on_screen[1] < WIN_HEIGHT + body_radius_on_screen:
+            # checking if the unit is still alive
+            if self.is_alive:
+                if self.min_scale_to_be_visible <= scale:
+                    self.base.draw(win, offset_x, offset_y, scale)
+                    for weapon in self.Weapons:
+                        weapon.draw(win, offset_x, offset_y, scale)
+            
+                self.draw_level_indicator(win, coord_on_screen)
+                self.draw_unit_type_icon(win, coord_on_screen)
+                self.draw_unit_application_icon(win, coord_on_screen)
 
-            if self.is_selected:
-                pygame.draw.circle(win, LIME, coord_on_screen, 20, 3)
-        else:
-            coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale)
-            pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, int(self.body_radius * scale), 0)
+                if self.is_selected:
+                    pygame.draw.circle(win, LIME, coord_on_screen, 20, 3)
+            # if the unit is dead
+            else:
+                pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, int(body_radius_on_screen), 0)
 
     def draw_level_indicator(self, win, coord_on_screen):
     # draw level indicator

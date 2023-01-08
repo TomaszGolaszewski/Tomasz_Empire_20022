@@ -1,6 +1,11 @@
 Changelog
 ======
 
+v0.9.8 - 08.01.2023
+----
+* Further optimisation of the unit drawing method;
+* Fixes in naval units' sprites.
+
 v0.9.7 - 07.01.2023
 ----
 * Naval cannons are shooting now multiple bullets at ones;
