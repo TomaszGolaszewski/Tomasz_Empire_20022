@@ -1,6 +1,11 @@
 Changelog
 ======
 
+v0.9.9 - 15.01.2023
+----
+* New animation for units when stopped and dead;
+* New sprites for naval units.
+
 v0.9.8 - 08.01.2023
 ----
 * Further optimisation of the unit drawing method;

@@ -6,7 +6,7 @@
 **Project still under development**
 
 ### Last changes: 
-v0.9.8 - 08.01.2023
+v0.9.9 - 15.01.2023
 
-* Further optimisation of the unit drawing method;
-* Fixes in naval units' sprites.
+* New animation for units when stopped and dead;
+* New sprites for naval units.

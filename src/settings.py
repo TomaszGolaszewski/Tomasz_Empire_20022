@@ -11,33 +11,33 @@ FRAMERATE = 60
 # sprites - units
 # land units
 LIGHT_TRACK_PATH = ["imgs","vehicles","light_track.bmp"]
-LIGHT_TRACK_FRAMES = 5
+LIGHT_TRACK_FRAMES = 4
 MEDIUM_TRACK_PATH = ["imgs","vehicles","medium_track.bmp"]
-MEDIUM_TRACK_FRAMES = 5
+MEDIUM_TRACK_FRAMES = 4
 HEAVY_TRACK_PATH = ["imgs","vehicles","heavy_track.bmp"]
-HEAVY_TRACK_FRAMES = 7
+HEAVY_TRACK_FRAMES = 6
 HEAVY_TRACK_BASIC_PATH = ["imgs","vehicles","heavy_track_basic.bmp"]
-HEAVY_TRACK_BASIC_FRAMES = 7
+HEAVY_TRACK_BASIC_FRAMES = 6
 ANT_PATH = ["imgs","vehicles","ant.bmp"]
-ANT_FRAMES = 5
+ANT_FRAMES = 4
 
 # ships
 SMALL_SHIP_PATH = ["imgs","vehicles","small_ship.bmp"]
-SMALL_SHIP_FRAMES = 5
+SMALL_SHIP_FRAMES = 4
 MEDIUM_SHIP_PATH = ["imgs","vehicles","medium_ship.bmp"]
-MEDIUM_SHIP_FRAMES = 5
+MEDIUM_SHIP_FRAMES = 4
 DESTROYER_PATH = ["imgs","vehicles","destroyer.bmp"]
-DESTROYER_FRAMES = 5
+DESTROYER_FRAMES = 4
 BATTLESHIP_PATH = ["imgs","vehicles","battleship.bmp"]
-BATTLESHIP_FRAMES = 5
+BATTLESHIP_FRAMES = 4
 
 # planes
 PLANE_PATH = ["imgs","vehicles","plane.bmp"]
-PLANE_FRAMES = 4
+PLANE_FRAMES = 3
 BOMBER_PATH = ["imgs","vehicles","bomber.bmp"]
-BOMBER_FRAMES = 4
+BOMBER_FRAMES = 3
 STRATEGIC_BOMBER_PATH = ["imgs","vehicles","strategic_bomber.bmp"]
-STRATEGIC_BOMBER_FRAMES = 4
+STRATEGIC_BOMBER_FRAMES = 5
 
 #weapons
 LIGHT_CANNON_PATH = ["imgs","weapons","light_cannon.bmp"]

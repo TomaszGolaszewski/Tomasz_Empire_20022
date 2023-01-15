@@ -38,6 +38,7 @@ class Unit:
         if self.base.frame_height > self.base.frame_width: self.body_radius = self.base.frame_height
         else: self.body_radius = self.base.frame_width
         self.min_scale_to_be_visible = self.base.min_scale_to_be_visible
+        self.visibility_after_death = FRAMERATE * 3
 
         # initialization of the weapon
         self.Weapons = []
@@ -63,13 +64,14 @@ class Unit:
                 and coord_on_screen[0] < WIN_WIDTH + body_radius_on_screen \
                 and coord_on_screen[1] > - body_radius_on_screen \
                 and coord_on_screen[1] < WIN_HEIGHT + body_radius_on_screen:
+            
             # checking if the unit is still alive
             if self.is_alive:
                 if self.min_scale_to_be_visible <= scale:
                     self.base.draw(win, offset_x, offset_y, scale)
                     for weapon in self.Weapons:
                         weapon.draw(win, offset_x, offset_y, scale)
-            
+      
                 self.draw_level_indicator(win, coord_on_screen)
                 self.draw_unit_type_icon(win, coord_on_screen)
                 self.draw_unit_application_icon(win, coord_on_screen)
@@ -78,7 +80,8 @@ class Unit:
                     pygame.draw.circle(win, LIME, coord_on_screen, 20, 3)
             # if the unit is dead
             else:
-                pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, int(body_radius_on_screen), 0)
+                # pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, int(body_radius_on_screen), 0)
+                self.base.draw(win, offset_x, offset_y, scale)
 
     def draw_level_indicator(self, win, coord_on_screen):
     # draw level indicator
@@ -126,8 +129,7 @@ class Unit:
                         world2screen([start_point[0] + 24 * percentage_of_HP * scale, start_point[1]], offset_x, offset_y, scale), int(3 * scale))
 
     def run(self, map, list_with_units, list_with_bullets):
-    # life-cycle of the unit
-
+    # life-cycle of the unit     
         if self.is_alive:
             # running the base
             self.base.run(map, list_with_units)
@@ -145,8 +147,11 @@ class Unit:
                 weapon.run(list_with_units, list_with_bullets)
                 i += 1
         else:
-            self.body_radius -= 1
-            if self.body_radius <= 0:
+            # self.body_radius -= 1
+            # if self.body_radius <= 0:
+            self.base.run_after_death()
+            self.visibility_after_death -= 1
+            if self.visibility_after_death <= 0:
                 map.degrade(self.coord, 2)
                 self.to_remove = True
 
@@ -155,6 +160,7 @@ class Unit:
         self.HP -= power
         if self.HP <= 0:
             self.is_alive = False
+            self.base.state = 'dead'
 
     def is_inside_hitbox(self, point, range_of_explosion=0):
     # function checks if the unit is hit - point is inside hitbox
@@ -327,30 +333,30 @@ class Small_AA_ship(Naval_unit):
 
 class Battle_cruiser(Small_artillery_ship):
     Vehicle_class = Medium_ship
-    Weapon_classes = [(Medium_naval_cannon, (29, 0, 0)),
-                    (Medium_naval_cannon, (-27, 0, math.pi))]
+    Weapon_classes = [(Medium_naval_cannon, (24, 0, 0)),
+                    (Medium_naval_cannon, (-32, 0, math.pi))]
     unit_level = 2
 
 class Destroyer(Small_artillery_ship):
     Vehicle_class = Destroyer_body
-    Weapon_classes = [(Heavy_naval_cannon, (58, 0, 0)),
-                    (Heavy_naval_cannon, (-49, 0, math.pi)),
-                    (Minigun, (31, -8, 0)),
-                    (Minigun, (31, 8, 0)),
-                    (Minigun, (-7, -11, math.pi)),
-                    (Minigun, (-7, 11, math.pi))]
+    Weapon_classes = [(Heavy_naval_cannon, (43, 0, 0)),
+                    (Heavy_naval_cannon, (-64, 0, math.pi)),
+                    (Minigun, (16, -8, 0)),
+                    (Minigun, (16, 8, 0)),
+                    (Minigun, (-22, -11, math.pi)),
+                    (Minigun, (-22, 11, math.pi))]
     unit_level = 3
 
 class Battleship(Small_AA_ship):
     Vehicle_class = Battleship_body
-    Weapon_classes = [(Heavy_naval_cannon, (98, 0, 0)),
-                    (Heavy_naval_cannon, (58, 0, 0)),
-                    (Heavy_naval_cannon, (-92, 0, math.pi)),
-                    (Heavy_naval_cannon, (-51, 0, math.pi)),
-                    (Minigun, (8, 23, 0)),
-                    (Minigun, (-9, 23, 3*math.pi/2)),
-                    (Minigun, (-26, 23, math.pi)),
-                    (Minigun, (8, -23, 0)),
-                    (Minigun, (-9, -23, math.pi/2)),
-                    (Minigun, (-26, -23, math.pi))]
+    Weapon_classes = [(Heavy_naval_cannon, (85, 0, 0)),
+                    (Heavy_naval_cannon, (44, 0, 0)),
+                    (Heavy_naval_cannon, (-106, 0, math.pi)),
+                    (Heavy_naval_cannon, (-65, 0, math.pi)),
+                    (Minigun, (-4, 23, 0)),
+                    (Minigun, (-23, 23, 3*math.pi/2)),
+                    (Minigun, (-40, 23, math.pi)),
+                    (Minigun, (-4, -23, 0)),
+                    (Minigun, (-23, -23, math.pi/2)),
+                    (Minigun, (-40, -23, math.pi))]
     unit_level = 3

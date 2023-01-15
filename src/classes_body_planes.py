@@ -10,7 +10,6 @@ from classes_body_vehicles import *
 class Plane(Vehicle):
     path = PLANE_PATH
     number_of_frames = PLANE_FRAMES
-    number_of_frames_in_sequence = PLANE_FRAMES - 1
     min_scale_to_be_visible = 0.5
 
     v_max = 4
@@ -23,7 +22,6 @@ class Plane(Vehicle):
 
     def run(self, map, list_with_units):
     # life-cycle of the Plane
-
         if len(self.movement_target):
             dist_to_target = dist_two_points(self.coord, self.movement_target[0])
             self.accelerate()
@@ -36,11 +34,14 @@ class Plane(Vehicle):
         if self.v_current < self.v_max:
             map.degrade(self.coord, 1)
 
+    def run_after_death(self):
+    # life-cycle of the vehicle after death
+        self.coord = move_point(self.coord, self.v_current, self.angle)
+
 
 class Plane_bomber(Plane):
     path = BOMBER_PATH
     number_of_frames = BOMBER_FRAMES
-    number_of_frames_in_sequence = BOMBER_FRAMES - 1
     min_scale_to_be_visible = 0.5
 
     v_max = 3
@@ -54,7 +55,6 @@ class Plane_bomber(Plane):
 class Plane_strategic_bomber(Plane):
     path = STRATEGIC_BOMBER_PATH
     number_of_frames = STRATEGIC_BOMBER_FRAMES
-    number_of_frames_in_sequence = STRATEGIC_BOMBER_FRAMES - 1
     min_scale_to_be_visible = 0.5
 
     v_max = 2

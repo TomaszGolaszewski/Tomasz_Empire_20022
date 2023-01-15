@@ -10,7 +10,6 @@ from classes_base import *
 class Vehicle(Base_animated_object):
     path = LIGHT_TRACK_PATH
     number_of_frames = LIGHT_TRACK_FRAMES
-    number_of_frames_in_sequence = LIGHT_TRACK_FRAMES - 1
     min_scale_to_be_visible = 0.125
 
     v_max = 1
@@ -48,7 +47,6 @@ class Vehicle(Base_animated_object):
 
     def run(self, map, list_with_units):
     # life-cycle of the vehicle
-
         if len(self.movement_target):
             dist_to_target = dist_two_points(self.coord, self.movement_target[0])
 
@@ -75,6 +73,9 @@ class Vehicle(Base_animated_object):
 
         map.degrade(self.coord, 1)
 
+    def run_after_death(self):
+    # life-cycle of the vehicle after death
+        pass
 
     def accelerate(self):
     # accelerate the vehicle - calculate the current speed     
@@ -115,7 +116,6 @@ class Vehicle(Base_animated_object):
 class Light_track(Vehicle):
     path = LIGHT_TRACK_PATH
     number_of_frames = LIGHT_TRACK_FRAMES
-    number_of_frames_in_sequence = LIGHT_TRACK_FRAMES - 1
     min_scale_to_be_visible = 1
 
     v_max = 1
@@ -129,7 +129,6 @@ class Light_track(Vehicle):
 class Medium_track(Vehicle):
     path = MEDIUM_TRACK_PATH
     number_of_frames = MEDIUM_TRACK_FRAMES
-    number_of_frames_in_sequence = MEDIUM_TRACK_FRAMES - 1
     min_scale_to_be_visible = 0.5
 
     v_max = 0.75
@@ -143,7 +142,6 @@ class Medium_track(Vehicle):
 class Heavy_track(Vehicle):
     path = HEAVY_TRACK_PATH
     number_of_frames = HEAVY_TRACK_FRAMES
-    number_of_frames_in_sequence = HEAVY_TRACK_FRAMES - 1
     min_scale_to_be_visible = 0.5
 
     v_max = 0.5
@@ -156,14 +154,12 @@ class Heavy_track(Vehicle):
 class Heavy_track_basic(Heavy_track):
     path = HEAVY_TRACK_BASIC_PATH
     number_of_frames = HEAVY_TRACK_BASIC_FRAMES
-    number_of_frames_in_sequence = HEAVY_TRACK_BASIC_FRAMES - 1
     min_scale_to_be_visible = 0.5
 
 
 class Ant(Vehicle):
     path = ANT_PATH
     number_of_frames = ANT_FRAMES
-    number_of_frames_in_sequence = ANT_FRAMES - 1
     min_scale_to_be_visible = 1
 
     v_max = 1
