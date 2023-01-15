@@ -27,6 +27,7 @@ class Vehicle(Base_animated_object):
         self.team_id = team_id
         
         self.v_current = 0
+        self.v_max_squad = self.v_max
         self.movement_target = []
 
 
@@ -81,7 +82,7 @@ class Vehicle(Base_animated_object):
     # accelerate the vehicle - calculate the current speed     
         self.state = "move"
         self.v_current += self.acceleration
-        if self.v_current > self.v_max: self.v_current = self.v_max
+        if self.v_current > self.v_max_squad: self.v_current = self.v_max_squad
 
 
     def decelerate(self):

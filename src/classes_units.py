@@ -33,6 +33,7 @@ class Unit:
         self.hit_box_radius = self.base.hit_box_radius
         self.base_HP = self.base.base_HP
         self.HP = self.base.base_HP
+        self.v_max = self.base.v_max
 
         # variables to optimise display
         if self.base.frame_height > self.base.frame_width: self.body_radius = self.base.frame_height
@@ -169,6 +170,10 @@ class Unit:
             if dist_two_points(self.coord, point) < self.hit_box_radius + range_of_explosion:
                 return True    
         return False
+
+    def set_v_max_squad(self, v_max_squad):
+    # set new max velocity for moving unit with his squad
+        self.base.v_max_squad = v_max_squad
 
 
 # ======================================================================

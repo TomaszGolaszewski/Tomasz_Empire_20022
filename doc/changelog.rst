@@ -1,6 +1,13 @@
 Changelog
 ======
 
+v0.9.10 - 15.01.2023
+----
+* Added fps display;
+* Units in the squad are now deployed on a spiral grid (offset between units is defined by the largest unit);
+* Units in the squad are moving together (speed is defined by the slowest unit);
+* Added priority of selection: air > land > navy.
+
 v0.9.9 - 15.01.2023
 ----
 * New animation for units when stopped and dead;

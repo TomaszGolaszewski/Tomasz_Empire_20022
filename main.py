@@ -42,6 +42,11 @@ def run():
     WIN = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT))
     CLOCK = pygame.time.Clock()
     CURRENT_FRAME = 0
+    CURRENT_FPS = 0
+
+    # fonts
+    FONT_ARIAL_20 = pygame.font.SysFont('arial', 20)
+    FONT_ARIAL_30 = pygame.font.SysFont('arial', 30)
 
     # window variables
     OFFSET_VERTICAL = 150
@@ -54,13 +59,14 @@ def run():
 
     # initialize the game
     size = "L"
-    type_of_map = "island" # "lake" "bridge" "island" "noise" "forest" "snow_forest"
+    type_of_map = "island" # "mars_poles" "lake" "bridge" "island" "noise" "forest" "snow_forest"
 
     if size == "S": dimensions = (30, 40)
     elif size == "M": dimensions = (45, 75)
     elif size == "L": dimensions = (80, 100)
     elif size == "XL": dimensions = (120, 150)
     elif size == "XXL": dimensions = (150, 200)
+    elif size == "width": dimensions = (120, 75)
 
     # MAP = Map(40, 60, tile_edge_length=30)
     # MAP2 = Map_v2(5, 10, tile_edge_length=30)
@@ -84,7 +90,8 @@ def run():
             print()
 
             # print infos about fps and time
-            print("FPS: %.2f" % CLOCK.get_fps(), end="\t")
+            CURRENT_FPS = CLOCK.get_fps()
+            print("FPS: %.2f" % CURRENT_FPS, end="\t")
             print("TIME: " + str(pygame.time.get_ticks() // 1000))
 
             # print infos about view position
@@ -248,11 +255,13 @@ def run():
 
 
 # draw UI
-
         # draw selection
         if left_mouse_button_down:
             unit_selection(WIN, LIST_WITH_UNITS, left_mouse_button_coord, pygame.mouse.get_pos(), OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE, -1)
 
+        # draw FPS     
+        text = FONT_ARIAL_20.render("FPS: %.2f" % CURRENT_FPS, True, LIME)
+        WIN.blit(text, (10, 10))
 
 # flip the screen
         pygame.display.update()

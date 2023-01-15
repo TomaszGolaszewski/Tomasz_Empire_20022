@@ -87,16 +87,19 @@ def make_test_units_2():
     LIST_WITH_UNITS = []
 
     # test vehicles for blue team
-    number_of_test_vehicles = 7
-    angle = math.pi * 2 / number_of_test_vehicles
-    id = 0
-    for i in range(number_of_test_vehicles):
-        LIST_WITH_UNITS.append(Battle_cruiser(move_point([600, 500], 300, i*angle), i*angle, 1, 1)) # - math.pi
-        LIST_WITH_UNITS[i].base.movement_target = [[600, 500]]
-        id += 1
+    number_of_test_vehicles = 30
+
+    # test vehicles for green team
+    for i in range(number_of_test_vehicles):       
+        LIST_WITH_UNITS.append(Light_tank([1000 + 100*i, 2000], 3*math.pi/2, 2, 2))
+        LIST_WITH_UNITS.append(Light_tank([1000 + 100*i, 2100], 3*math.pi/2, 2, 2))
+        LIST_WITH_UNITS.append(Main_battle_tank([1000 + 100*i, 2200], 3*math.pi/2, 2, 2)) 
 
     # test vehicles for red team
-    # LIST_WITH_UNITS.append(Battleship([1700, 200], math.pi, 3, 3))
-    LIST_WITH_UNITS.append(Destroyer([1500, 500], math.pi, 3, 3))
+    for i in range(number_of_test_vehicles):       
+        LIST_WITH_UNITS.append(Light_tank([1000 + 100*i, 700], math.pi/2, 3, 3))
+        LIST_WITH_UNITS.append(Light_tank([1000 + 100*i, 600], math.pi/2, 3, 3))
+        LIST_WITH_UNITS.append(Main_battle_tank([1000 + 100*i, 500], math.pi/2, 3, 3)) 
+    
 
     return LIST_WITH_UNITS
