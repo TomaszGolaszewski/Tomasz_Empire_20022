@@ -52,7 +52,7 @@ class Bullet:
             # checks collision with units
             for unit in list_of_units:
                 if self.is_hit(unit):
-                    unit.get_hit(self.power)
+                    unit.get_hit(map, self.power)
                     self.explosion_color = ORANGE
                     self.is_alive = False    
             # checks end of life span
@@ -128,7 +128,9 @@ class Plasma(Bullet):
             else:
                 color = BLUE # RED
 
-            pygame.draw.line(win, color, start_point, end_point, int(self.radius * scale))
+            width = int(self.radius * scale)
+            if width < 1: width = 1
+            pygame.draw.line(win, color, start_point, end_point, width)
 
         else:
             coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale)

@@ -106,7 +106,12 @@ def run():
             print("BULLETS:", end=" ")
             print(len(LIST_WITH_BULLETS), end="\t")
             print("UNITS:", end=" ")
-            print(len(LIST_WITH_UNITS))
+            print(len(LIST_WITH_UNITS), end="\t")
+            unit_count = 0
+            for unit in LIST_WITH_UNITS:
+                if unit.is_on_screen: unit_count += 1
+            print("UNITS ON SCREEN:", end=" ")
+            print(unit_count)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

@@ -28,7 +28,8 @@ def move_point_by_vector(point, vector, angle):
 
 def dist_two_points(point1, point2):
 # function that calculates distance between two points
-    return math.sqrt((point1[0]-point2[0])**2 + (point1[1]-point2[1])**2)
+    # return math.sqrt((point1[0]-point2[0])**2 + (point1[1]-point2[1])**2)
+    return math.hypot(point1[0]-point2[0], point1[1]-point2[1])
 
 def dist_two_points_square(point1, point2):
 # function that calculates square of distance between two points

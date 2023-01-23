@@ -1,6 +1,12 @@
 Changelog
 ======
 
+v0.9.11 - 23.01.2023
+----
+* Fixes in body radius definition;
+* Further optimisation of the collision checking (using math.hypot);
+* Lots of small fixes.
+
 v0.9.10 - 15.01.2023
 ----
 * Added fps display;

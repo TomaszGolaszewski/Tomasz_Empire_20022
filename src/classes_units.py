@@ -18,6 +18,7 @@ class Unit:
 
     unit_type = "none"
     unit_level = 0
+    visibility_after_death = FRAMERATE * 10
 
     def __init__(self, coord, angle, player_id, team_id):
     # initialization of the unit
@@ -36,10 +37,10 @@ class Unit:
         self.v_max = self.base.v_max
 
         # variables to optimise display
-        if self.base.frame_height > self.base.frame_width: self.body_radius = self.base.frame_height
-        else: self.body_radius = self.base.frame_width
+        self.body_radius = self.base.body_radius
         self.min_scale_to_be_visible = self.base.min_scale_to_be_visible
-        self.visibility_after_death = FRAMERATE * 3
+        # self.visibility_after_death = FRAMERATE * 5
+        self.is_on_screen = False
 
         # initialization of the weapon
         self.Weapons = []
@@ -57,6 +58,7 @@ class Unit:
 
     def draw(self, win, offset_x, offset_y, scale):
     # draw the unit on the screen
+        self.is_on_screen = False
         coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale) # coordinates of the unit in the window coordinate system
         body_radius_on_screen = self.body_radius * scale # radius of the body in the scale of the window
 
@@ -65,6 +67,8 @@ class Unit:
                 and coord_on_screen[0] < WIN_WIDTH + body_radius_on_screen \
                 and coord_on_screen[1] > - body_radius_on_screen \
                 and coord_on_screen[1] < WIN_HEIGHT + body_radius_on_screen:
+
+            self.is_on_screen = True
             
             # checking if the unit is still alive
             if self.is_alive:
@@ -153,15 +157,16 @@ class Unit:
             self.base.run_after_death()
             self.visibility_after_death -= 1
             if self.visibility_after_death <= 0:
-                map.degrade(self.coord, 2)
+                # map.degrade(self.coord, 2)
                 self.to_remove = True
 
-    def get_hit(self, power):
+    def get_hit(self, map, power):
     # function that subtracts damage from HP and kills the unit if necessary
         self.HP -= power
         if self.HP <= 0:
             self.is_alive = False
             self.base.state = 'dead'
+            map.degrade(self.coord, 2)
 
     def is_inside_hitbox(self, point, range_of_explosion=0):
     # function checks if the unit is hit - point is inside hitbox
@@ -253,6 +258,7 @@ class Spider_tank(Land_unit):
 
 class Air_unit(Unit):
     unit_type = "air"
+    visibility_after_death = FRAMERATE * 3
 
     def draw_unit_type_icon(self, win, coord_on_screen):
     # draw unit type icon - land / AIR / navy / etc.

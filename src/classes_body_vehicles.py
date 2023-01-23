@@ -30,6 +30,9 @@ class Vehicle(Base_animated_object):
         self.v_max_squad = self.v_max
         self.movement_target = []
 
+        if self.frame_height > self.frame_width: self.body_radius = self.frame_height // 2
+        else: self.body_radius = self.frame_width // 2
+
 
     def draw_extra_data(self, win, offset_x, offset_y, scale):
     # draw extra data about the vehicle on the screen
@@ -44,6 +47,8 @@ class Vehicle(Base_animated_object):
 
         # hit box radius
         pygame.draw.circle(win, RED, world2screen(self.coord, offset_x, offset_y, scale), self.hit_box_radius*scale, 1)
+        # body radius
+        pygame.draw.circle(win, RED, world2screen(self.coord, offset_x, offset_y, scale), self.body_radius*scale, 1)
 
 
     def run(self, map, list_with_units):
@@ -84,7 +89,6 @@ class Vehicle(Base_animated_object):
         self.v_current += self.acceleration
         if self.v_current > self.v_max_squad: self.v_current = self.v_max_squad
 
-
     def decelerate(self):
     # decelerate the vehicle - calculate the current speed       
         self.v_current -= self.acceleration
@@ -92,20 +96,58 @@ class Vehicle(Base_animated_object):
             self.v_current = 0
             self.state = "stop"
 
-
     def get_new_angle(self):
     # return new angle closer to the movement target
         target_angle = angle_to_target(self.coord, self.movement_target[0])
         return turn_to_target_angle(self.angle, target_angle, self.turn_speed)
 
-
     def is_collision(self, list_with_units, coord):
     # return True if collision with other object occurs
         for unit in list_with_units:
-            if unit.unit_type == "land" or unit.unit_type == "navy":
-                dist = dist_two_points(coord, unit.coord)
-                if dist < self.hit_box_radius + unit.hit_box_radius and dist > 5: # dist > 5 is to avoid a collision with yourself
-                    return True
+            if unit.is_alive and (unit.unit_type == "land" or unit.unit_type == "navy"):
+            # 1. first idea - using the standard square root
+                # dist = dist_two_points(coord, unit.coord)
+                # if dist < self.hit_box_radius + unit.hit_box_radius and dist > 5: # dist > 5 is to avoid a collision with yourself
+                #     return True
+
+            # 2. second idea - measurement using taxicab geometry
+                # hit_distance = self.hit_box_radius + unit.hit_box_radius
+                # # first check distance in taxicab geometry - is faster
+                # dist_in_taxicab_geometry = abs(coord[0] - unit.coord[0]) + abs(coord[1] - unit.coord[1])
+                # if dist_in_taxicab_geometry < 1.5 * hit_distance and dist_in_taxicab_geometry > 5: # dist > 5 is to avoid a collision with yourself
+                #     # dist = dist_two_points(coord, unit.coord)
+                #     dist = math.sqrt((coord[0]-unit.coord[0])**2 + (coord[1]-unit.coord[1])**2)
+                #     if dist < hit_distance:
+                #         return True
+
+            # 3. third idea - don't use square root and compare in second power
+                # dist2 = (coord[0]-unit.coord[0])**2 + (coord[1]-unit.coord[1])**2
+                # dist2 = (coord[0]-unit.coord[0])*(coord[0]-unit.coord[0]) + (coord[1]-unit.coord[1])*(coord[1]-unit.coord[1])
+                # if dist2 < (self.hit_box_radius + unit.hit_box_radius)*(self.hit_box_radius + unit.hit_box_radius) and dist2 > 25: # dist > 5 is to avoid a collision with yourself
+                #     return True
+
+            # 4. both and don't waste time for calling functions
+                # hit_distance = self.hit_box_radius + unit.hit_box_radius
+                # # first check distance in taxicab geometry - is faster
+                # dist_in_taxicab_geometry = abs(coord[0] - unit.coord[0]) + abs(coord[1] - unit.coord[1])
+                # if dist_in_taxicab_geometry < 1.5 * hit_distance and dist_in_taxicab_geometry > 5: # dist > 5 is to avoid a collision with yourself
+                #     dist2 = (coord[0]-unit.coord[0])*(coord[0]-unit.coord[0]) + (coord[1]-unit.coord[1])*(coord[1]-unit.coord[1])
+                #     if dist2 < (self.hit_box_radius + unit.hit_box_radius)*(self.hit_box_radius + unit.hit_box_radius):
+                #         return True
+
+            # 5. try hypot function (method returns the Euclidean norm)
+                # dist = math.hypot(coord[0]-unit.coord[0], coord[1]-unit.coord[1])
+                # if dist < self.hit_box_radius + unit.hit_box_radius and dist > 5: # dist > 5 is to avoid a collision with yourself
+                #     return True
+
+            # 6. try all
+                hit_distance = self.hit_box_radius + unit.hit_box_radius
+                # first check distance in taxicab geometry - is faster
+                dist_in_taxicab_geometry = abs(coord[0] - unit.coord[0]) + abs(coord[1] - unit.coord[1])
+                if dist_in_taxicab_geometry < 1.5 * hit_distance and dist_in_taxicab_geometry > 5: # dist > 5 is to avoid a collision with yourself
+                    dist = math.hypot(coord[0]-unit.coord[0], coord[1]-unit.coord[1])
+                    if dist < hit_distance:
+                        return True
         return False
 
     def is_obstacle(self, map, coord):

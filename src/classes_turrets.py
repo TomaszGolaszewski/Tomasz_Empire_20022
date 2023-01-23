@@ -91,7 +91,8 @@ class Turret(Base_object):
         
         for unit in list_with_units:
             if unit.team_id != self.team_id and unit.is_alive:
-                dist = dist_two_points(unit.coord, self.coord)
+                # dist = dist_two_points(unit.coord, self.coord)
+                dist = math.hypot(self.coord[0]-unit.coord[0], self.coord[1]-unit.coord[1])
                 if self.is_valid_target(unit.unit_type) \
                         and dist < self.max_radar_radius \
                         and dist < temp_dist \
@@ -246,7 +247,8 @@ class Side_cannon(Turret):
         
         for unit in list_with_units:
             if unit.team_id != self.team_id and unit.is_alive:
-                dist = dist_two_points(unit.coord, self.coord)
+                # dist = dist_two_points(unit.coord, self.coord)
+                dist = math.hypot(self.coord[0]-unit.coord[0], self.coord[1]-unit.coord[1])
                 angle = angle_to_target(self.coord, unit.coord)
                 if self.is_valid_target(unit.unit_type) \
                         and dist < self.max_radar_radius \

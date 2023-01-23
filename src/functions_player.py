@@ -71,7 +71,7 @@ def set_new_target(list_with_units, target, is_ctrl_down):
     # set new target
     for unit in list_with_units:
         if unit.is_selected:
-            new_unit_target = get_coord_on_spiral(current_unit, target, 4 * biggest_unit_radius)
+            new_unit_target = get_coord_on_spiral(current_unit, target, 5 * biggest_unit_radius)
             if is_ctrl_down:
                 unit.base.movement_target.append(new_unit_target)
                 unit.set_v_max_squad(slowest_unit_speed)
