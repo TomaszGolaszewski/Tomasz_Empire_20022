@@ -521,6 +521,69 @@ class Advanced_bomb_dispenser(Bomb_dispenser):
 
 
 # ======================================================================
+# Missile launchers
+
+class ASM_Launcher(Turret):
+    # air-to-surface missile
+    Ammunition_class = ASMissile
+
+    max_radar_radius = 500
+    min_radar_radius = 150
+    search_radius = 10
+    max_bullet_range = 1500
+    power = 100
+
+    countdown_time_to_search = FRAMERATE // 6
+    countdown_time_to_shot = FRAMERATE * 3
+    countdown_time_between_shots = FRAMERATE // 3
+
+    number_of_bombs = 3
+
+    def draw(self, win, offset_x, offset_y, scale): pass
+
+    def run(self, list_with_units, list_with_bullets):
+    # life-cycle of the weapon
+        if not self.countdown_to_search:
+            # try to find target
+            self.missiles_left = 0
+            for unit in list_with_units:
+                if unit.team_id != self.team_id and unit.is_alive:
+                    if self.is_valid_target(unit.unit_type):             
+                        dist = math.hypot(self.coord[0]-unit.coord[0], self.coord[1]-unit.coord[1])
+                        if dist < self.max_radar_radius \
+                                and dist > self.min_radar_radius:
+                            self.missiles_left = self.number_of_bombs
+                            self.countdown_to_search = self.countdown_time_to_shot # don't search until next shot
+                            break
+            if not self.missiles_left:
+                self.countdown_to_search = self.countdown_time_to_search # wait for next search
+        else:
+            self.countdown_to_search -= 1
+
+        if self.missiles_left:
+            if not self.countdown_to_shot:
+                # make missile
+                self.make_bullets(list_with_bullets)
+                self.missiles_left -=1
+                self.countdown_to_shot = self.countdown_time_between_shots
+            else:
+                self.countdown_to_shot -= 1
+
+    def make_bullets(self, list_with_bullets):
+    # function makes and shoot the bullet
+    # return list_with_bullets
+        list_with_bullets.append(self.Ammunition_class(self.coord, self.base_angle, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id, self.power, "surface"))            
+        return list_with_bullets
+
+    def is_valid_target(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        # anti-aircrafts
+        if unit_type == "land" or unit_type == "navy": return True
+        else: return False
+
+
+# ======================================================================
 # Empty slot
 
 

@@ -1,6 +1,11 @@
 Changelog
 ======
 
+v0.9.12 - 24.01.2023
+----
+* New weapon: Missile_launcher;
+* New ammunition: Missile.
+
 v0.9.11 - 23.01.2023
 ----
 * Fixes in body radius definition;

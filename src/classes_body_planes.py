@@ -31,7 +31,7 @@ class Plane(Vehicle):
             if dist_to_target < 20 and len(self.movement_target) >= 2:
                 self.movement_target.pop(0) # remove the achieved target
 
-        if self.v_current < self.v_max:
+        if self.v_current < 1.5: # self.v_max:
             map.degrade(self.coord, 1)
 
     def run_after_death(self):

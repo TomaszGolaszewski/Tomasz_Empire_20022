@@ -13,6 +13,11 @@
 v0.9 - Ships
 
 ### Last changes: 
+v0.9.12 - 24.01.2023
+
+* New weapon: Missile_launcher;
+* New ammunition: Missile.
+
 v0.9.11 - 23.01.2023
 
 * Fixes in body radius definition;
@@ -25,11 +30,6 @@ v0.9.10 - 15.01.2023
 * Units in the squad are now deployed on a spiral grid (offset between units is defined by the largest unit);
 * Units in the squad are moving together (speed is defined by the slowest unit);
 * Added priority of selection: air > land > navy.
-
-v0.9.9 - 15.01.2023
-
-* New animation for units when stopped and dead;
-* New sprites for naval units.
 
 <p align="center">
   <img src="screens/screenshot2_20230115.png" alt="Tomasz Empire 20022 - Fleet">

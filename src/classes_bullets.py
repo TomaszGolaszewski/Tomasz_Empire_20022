@@ -41,7 +41,10 @@ class Bullet:
                 color = SILVER
             else:
                 color = BLUE # RED
-            pygame.draw.circle(win, color, world2screen(self.coord, offset_x, offset_y, scale), self.radius*scale, 0)
+
+            temp_radius = int(self.radius * scale)
+            if temp_radius < 2: temp_radius = 2
+            pygame.draw.circle(win, color, world2screen(self.coord, offset_x, offset_y, scale), temp_radius, 0)
         else:
             coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale)
             pygame.draw.circle(win, self.explosion_color, coord_on_screen, int(self.explosion_radius * scale), 0)
@@ -146,3 +149,91 @@ class Bomb(Bullet):
     # initialization of the bomb
         self.speed += random.randint(0, 2) * 0.1
         Bullet.__init__(self, coord, angle, max_distance, min_distance, player_id, team_id, power, target_type)
+
+
+
+class ASMissile(Bullet):
+    speed = 2
+    turn_speed = 0.03
+    radius = 3
+    hit_box_radius = 15
+
+    # def __init__(self, coord, angle, max_distance, min_distance, player_id, team_id, power, target_type):
+    # # initialization of the Missile
+    #     Bullet.__init__(self, coord, angle, max_distance, min_distance, player_id, team_id, power, target_type)
+
+    def run(self, map, list_of_units):
+    # life-cycle of the missile
+        if self.is_alive:
+            # checks collision with units
+            if self.distance > self.min_distance:
+                for unit in list_of_units:
+                    if self.is_hit(unit):
+                        unit.get_hit(map, self.power)
+                        self.explosion_color = ORANGE
+                        self.is_alive = False    
+            # checks end of life span
+            if self.distance > self.max_distance:
+                if self.target_type == "land" or self.target_type == "navy" or self.target_type == "surface": 
+                    map.degrade(self.coord, 2)
+                    if map.get_tile_type(self.coord) == "water" or map.get_tile_type(self.coord) == "shallow":
+                        self.explosion_color = WHITE
+                    else:
+                        self.explosion_color = DARKSTEELGRAY
+                else: self.explosion_radius = 1 # don't show explosion in the sky
+                self.is_alive = False
+
+        # if the bullet is still alive - move it
+        if self.is_alive:
+            if self.distance > self.min_distance:
+                # try to find closest target
+                temp_coord = [0, 0]
+                temp_dist = 9999
+                temp_found_new_target = False
+
+                for unit in list_of_units:
+                    if unit.team_id != self.team_id and unit.is_alive:
+                        if self.is_valid_target(unit.unit_type):
+                            dist = math.hypot(self.coord[0]-unit.coord[0], self.coord[1]-unit.coord[1])
+                            if dist < self.max_distance and dist < temp_dist:
+                                temp_coord = unit.coord
+                                temp_dist = dist
+                                # temp_target_type = unit.unit_type
+                                temp_found_new_target = True
+                
+                # if found, turn to new target
+                if temp_found_new_target:
+                    self.angle = turn_to_target_angle(self.angle, angle_to_target(self.coord, temp_coord), self.turn_speed)
+                
+                self.speed += 0.1
+            self.move()
+        # run explosion after death
+        else:
+            self.explosion_radius -= 1
+            if self.explosion_radius <= 0:
+                self.to_remove = True
+
+    def draw(self, win, offset_x, offset_y, scale):
+    # draw the missile on the screen
+        if self.is_alive:
+            color = YELLOW 
+            if self.distance > self.min_distance: temp_radius = int(2 * self.radius * scale)
+            else: temp_radius = int(self.radius * scale)
+            if temp_radius < 2: temp_radius = 2
+            pygame.draw.circle(win, color, world2screen(self.coord, offset_x, offset_y, scale), temp_radius, 0)
+        else:
+            coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale)
+            pygame.draw.circle(win, self.explosion_color, coord_on_screen, int(self.explosion_radius * scale), 0)
+
+    def is_valid_target(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        # anti-aircrafts
+        if unit_type == "land" or unit_type == "navy": return True
+        else: return False
+
+    def is_hit(self, object):
+    # function checks if the object is hit
+    # return True if yes
+        if object.is_alive and object.team_id != self.team_id and (object.unit_type == "land" or object.unit_type == "navy") and self.distance > self.min_distance:
+            return object.is_inside_hitbox(self.coord, self.hit_box_radius)

@@ -172,7 +172,8 @@ class Unit:
     # function checks if the unit is hit - point is inside hitbox
     # return True if yes
         if self.is_alive:
-            if dist_two_points(self.coord, point) < self.hit_box_radius + range_of_explosion:
+            # if dist_two_points(self.coord, point) < self.hit_box_radius + range_of_explosion:
+            if math.hypot(self.coord[0]-point[0], self.coord[1]-point[1]) < self.hit_box_radius + range_of_explosion:
                 return True    
         return False
 
@@ -284,7 +285,7 @@ class Fighter(Air_unit):
 
 class Bomber(Air_unit):
     Vehicle_class = Plane_bomber
-    Weapon_classes = [(Bomb_dispenser, (0, 0, 0)),
+    Weapon_classes = [(ASM_Launcher, (0, 0, 0)), # (Bomb_dispenser, (0, 0, 0)),
                     (Plane_minigun, (0, 0, 0))]
     unit_level = 2
 
@@ -297,7 +298,9 @@ class Bomber(Air_unit):
 
 class Strategic_bomber(Air_unit):
     Vehicle_class = Plane_strategic_bomber
-    Weapon_classes = [(Advanced_bomb_dispenser, (0, 0, 0)),
+    Weapon_classes = [ # (Advanced_bomb_dispenser, (0, 0, 0)),
+                    (ASM_Launcher, (0, 10, 0)),
+                    (ASM_Launcher, (0, -10, 0)),
                     (Plane_minigun, (-6, 16, 0)),
                     (Plane_minigun, (-6, -16, 0))]
     unit_level = 3
