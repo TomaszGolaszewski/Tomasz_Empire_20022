@@ -2,7 +2,8 @@ import pygame
 import math
 import random
 
-from settings import *
+# from settings import *
+from setup import *
 from functions_math import *
 from functions_player import *
 from classes_body_vehicles import *
@@ -298,9 +299,7 @@ class Bomber(Air_unit):
 
 class Strategic_bomber(Air_unit):
     Vehicle_class = Plane_strategic_bomber
-    Weapon_classes = [ # (Advanced_bomb_dispenser, (0, 0, 0)),
-                    (ASM_Launcher, (0, 10, 0)),
-                    (ASM_Launcher, (0, -10, 0)),
+    Weapon_classes = [(Advanced_bomb_dispenser, (0, 0, 0)),
                     (Plane_minigun, (-6, 16, 0)),
                     (Plane_minigun, (-6, -16, 0))]
     unit_level = 3

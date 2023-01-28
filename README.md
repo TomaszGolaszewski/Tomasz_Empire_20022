@@ -10,9 +10,14 @@
 **Project still under development**
 
 ### Current stage:
-v0.9 - Ships
+v0.10 - UI stage I
 
 ### Last changes: 
+v0.10.0 - 28.01.2023
+
+* Added slide button to set new units actions;
+* Units in the squad can now deployed on a spiral grid or in original arrangement.
+
 v0.9.12 - 24.01.2023
 
 * New weapon: Missile_launcher;
@@ -23,13 +28,6 @@ v0.9.11 - 23.01.2023
 * Fixes in body radius definition;
 * Further optimisation of the collision checking (using math.hypot);
 * Lots of small fixes.
-
-v0.9.10 - 15.01.2023
-
-* Added fps display;
-* Units in the squad are now deployed on a spiral grid (offset between units is defined by the largest unit);
-* Units in the squad are moving together (speed is defined by the slowest unit);
-* Added priority of selection: air > land > navy.
 
 <p align="center">
   <img src="screens/screenshot2_20230115.png" alt="Tomasz Empire 20022 - Fleet">

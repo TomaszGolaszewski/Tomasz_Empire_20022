@@ -3,6 +3,7 @@ import math
 import random
 
 from settings import *
+# from setup import *
 from functions_math import *
 from classes_bullets import *
 from classes_base import *

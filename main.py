@@ -22,12 +22,13 @@ else:
     print("other")
 
 from settings import *
+from setup import *
 from functions_graphics import *
 from functions_test import *
 from functions_other import *
 from classes_map import *
 from classes_units import *
-
+from classes_ui import *
 from classes_base import *
 
 
@@ -76,7 +77,7 @@ def run():
     # LIST_WITH_UNITS = make_test_units_2()
     # LIST_WITH_UNITS = [Light_tank([500, 300], math.pi/2, 1, 1)]
     LIST_WITH_BULLETS = []
-
+    LIST_WITH_WINDOWS = []
 
 # main loop
     running = True
@@ -113,6 +114,11 @@ def run():
             print("UNITS ON SCREEN:", end=" ")
             print(unit_count)
 
+            # print infos about ui windows
+            print("WINDOWS:", end=" ")
+            print(len(LIST_WITH_WINDOWS), end="\t")
+            print()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -125,6 +131,10 @@ def run():
                 if event.button == 1:
                     left_mouse_button_coord = pygame.mouse.get_pos()
                     left_mouse_button_down = True
+
+                # 3 - right click
+                if event.button == 3:
+                    LIST_WITH_WINDOWS.append(Base_slide_button(pygame.mouse.get_pos()))
 
 # mouse button up
             if event.type == pygame.MOUSEBUTTONUP:
@@ -143,7 +153,11 @@ def run():
                 if event.button == 3:
                     # set new movement target
                     keys_pressed = pygame.key.get_pressed()
-                    set_new_target(LIST_WITH_UNITS, screen2world(pygame.mouse.get_pos(), OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE), keys_pressed[pygame.K_LCTRL])
+                    # set_new_target(LIST_WITH_UNITS, screen2world(pygame.mouse.get_pos(), OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE), keys_pressed[pygame.K_LCTRL])
+
+                    # press UI windows (based od slide)
+                    for ui_win in LIST_WITH_WINDOWS:
+                        ui_win.press(LIST_WITH_UNITS, pygame.mouse.get_pos(), screen2world(pygame.mouse.get_pos(), OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE), keys_pressed[pygame.K_LCTRL])
 
                 # 4 - scroll up
                 if event.button == 4:
@@ -260,6 +274,10 @@ def run():
 
 
 # draw UI
+        # draw UI windows
+        for ui_win in LIST_WITH_WINDOWS:
+            ui_win.draw(WIN)
+
         # draw selection
         if left_mouse_button_down:
             unit_selection(WIN, LIST_WITH_UNITS, left_mouse_button_coord, pygame.mouse.get_pos(), OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE, -1)
@@ -280,7 +298,9 @@ def run():
 
         # dead units
         remove_few_dead_elements(LIST_WITH_UNITS)
-    
+
+        # unnecessary UI windows
+        remove_few_dead_elements(LIST_WITH_WINDOWS)
 
 if __name__ == "__main__":
     run()

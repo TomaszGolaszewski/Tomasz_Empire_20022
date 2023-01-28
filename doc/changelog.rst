@@ -1,6 +1,15 @@
 Changelog
 ======
 
+v0.10.0 - 28.01.2023
+----
+* Added slide button to set new units actions;
+* Units in the squad can now deployed on a spiral grid or in original arrangement.
+
+v0.10 - UI stage I
+======
+
+
 v0.9.12 - 24.01.2023
 ----
 * New weapon: Missile_launcher;

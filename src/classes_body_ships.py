@@ -2,7 +2,8 @@ import pygame
 import math
 import random
 
-from settings import *
+# from settings import *
+from setup import *
 from functions_math import *
 from classes_body_vehicles import *
 
