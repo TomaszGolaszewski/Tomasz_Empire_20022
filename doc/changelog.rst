@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.10.1 - 18.02.2023
+----
+* New notebook with tabs window for future units buying mechanism.
+
 v0.10.0 - 28.01.2023
 ----
 * Added slide button to set new units actions;

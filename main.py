@@ -77,7 +77,7 @@ def run():
     # LIST_WITH_UNITS = make_test_units_2()
     # LIST_WITH_UNITS = [Light_tank([500, 300], math.pi/2, 1, 1)]
     LIST_WITH_BULLETS = []
-    LIST_WITH_WINDOWS = []
+    LIST_WITH_WINDOWS = [] # Base_notebook(0)]
 
 # main loop
     running = True
@@ -142,6 +142,10 @@ def run():
                 if event.button == 1:
                     left_mouse_button_down = False
 
+                    # press UI windows (based on notebooks)
+                    for ui_win in LIST_WITH_WINDOWS:
+                        ui_win.press_left(LIST_WITH_UNITS, pygame.mouse.get_pos())
+
                 # 2 - middle click
                 if event.button == 2:
                     # define new view center
@@ -153,11 +157,10 @@ def run():
                 if event.button == 3:
                     # set new movement target
                     keys_pressed = pygame.key.get_pressed()
-                    # set_new_target(LIST_WITH_UNITS, screen2world(pygame.mouse.get_pos(), OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE), keys_pressed[pygame.K_LCTRL])
 
-                    # press UI windows (based od slide)
+                    # press UI windows (based on slide)
                     for ui_win in LIST_WITH_WINDOWS:
-                        ui_win.press(LIST_WITH_UNITS, pygame.mouse.get_pos(), screen2world(pygame.mouse.get_pos(), OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE), keys_pressed[pygame.K_LCTRL])
+                        ui_win.press_right(LIST_WITH_UNITS, pygame.mouse.get_pos(), screen2world(pygame.mouse.get_pos(), OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE), keys_pressed[pygame.K_LCTRL])
 
                 # 4 - scroll up
                 if event.button == 4:

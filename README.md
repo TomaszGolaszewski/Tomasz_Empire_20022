@@ -13,6 +13,10 @@
 v0.10 - UI stage I
 
 ### Last changes: 
+v0.10.1 - 18.02.2023
+
+* New notebook with tabs window for future units buying mechanism.
+
 v0.10.0 - 28.01.2023
 
 * Added slide button to set new units actions;
@@ -22,12 +26,6 @@ v0.9.12 - 24.01.2023
 
 * New weapon: Missile_launcher;
 * New ammunition: Missile.
-
-v0.9.11 - 23.01.2023
-
-* Fixes in body radius definition;
-* Further optimisation of the collision checking (using math.hypot);
-* Lots of small fixes.
 
 <p align="center">
   <img src="screens/screenshot2_20230115.png" alt="Tomasz Empire 20022 - Fleet">
