@@ -1,6 +1,7 @@
 import math
 
 from classes_units import *
+from classes_buildings import *
 
 
 def make_test_units():
@@ -79,6 +80,10 @@ def make_test_units():
 
     for i in range(10):
         LIST_WITH_UNITS.append(Strategic_bomber([2600, 100 + 70*i], math.pi, 3, 3))
+
+    # test buildings
+    LIST_WITH_UNITS.append(Building([2200, 1000], math.pi, 3, 3))
+    LIST_WITH_UNITS.append(Building([2200, 2500], math.pi, 2, 2))
 
     return LIST_WITH_UNITS
 

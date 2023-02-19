@@ -105,7 +105,7 @@ class Vehicle(Base_animated_object):
     def is_collision(self, list_with_units, coord):
     # return True if collision with other object occurs
         for unit in list_with_units:
-            if unit.is_alive and (unit.unit_type == "land" or unit.unit_type == "navy"):
+            if unit.is_alive and (unit.unit_type == "land" or unit.unit_type == "navy" or unit.unit_type == "building"):
             # 1. first idea - using the standard square root
                 # dist = dist_two_points(coord, unit.coord)
                 # if dist < self.hit_box_radius + unit.hit_box_radius and dist > 5: # dist > 5 is to avoid a collision with yourself

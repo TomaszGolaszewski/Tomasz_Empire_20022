@@ -28,6 +28,7 @@ from functions_test import *
 from functions_other import *
 from classes_map import *
 from classes_units import *
+from classes_buildings import *
 from classes_ui import *
 from classes_base import *
 
@@ -260,7 +261,8 @@ def run():
 
         # draw land and naval units
         for unit in LIST_WITH_UNITS:
-            if unit.unit_type == "land" or unit.unit_type == "navy": unit.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
+            if unit.unit_type == "land" or unit.unit_type == "navy" or unit.unit_type == "building": 
+                unit.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
         # draw air units
         for unit in LIST_WITH_UNITS:

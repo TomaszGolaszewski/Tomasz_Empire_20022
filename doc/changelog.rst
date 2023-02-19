@@ -1,6 +1,11 @@
 Changelog
 ======
 
+v0.10.2 - 19.02.2023
+----
+* New class: Building;
+* Units can collide with buildings but cannot shot to them.
+
 v0.10.1 - 18.02.2023
 ----
 * New notebook with tabs window for future units buying mechanism.

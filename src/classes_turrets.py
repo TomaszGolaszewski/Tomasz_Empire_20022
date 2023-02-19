@@ -378,7 +378,13 @@ class Minigun(Turret):
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE // 15
 
-    # minigun is for all targets
+    # minigun is for all targets - not to buildings
+    def is_valid_target(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        # anti-aircrafts
+        if unit_type == "building": return False    
+        else: return True
 
 
 class Plane_minigun(Turret): 
