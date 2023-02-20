@@ -16,7 +16,7 @@ class Unit:
     Vehicle_class = Vehicle
     # [(class, (x, y, alpha))]
     Weapon_classes = [(Turret, (0, 0, 0))]
-
+    name = "Unit"
     unit_type = "none"
     unit_level = 0
     visibility_after_death = FRAMERATE * 10
@@ -42,6 +42,13 @@ class Unit:
         self.min_scale_to_be_visible = self.base.min_scale_to_be_visible
         # self.visibility_after_death = FRAMERATE * 5
         self.is_on_screen = False
+
+        # variables for managing the graphics window
+        window_height = 100
+        self.window_rect = pygame.Rect(10, WIN_HEIGHT - window_height - 10, 300, window_height)
+        # fonts
+        self.font_arial_20 = pygame.font.SysFont('arial', 20)
+        self.name_text = self.font_arial_20.render(self.name, True, LIME)
 
         # initialization of the weapon
         self.Weapons = []
@@ -134,6 +141,29 @@ class Unit:
                         world2screen(start_point, offset_x, offset_y, scale), 
                         world2screen([start_point[0] + 24 * percentage_of_HP * scale, start_point[1]], offset_x, offset_y, scale), int(3 * scale))
 
+    def draw_windows(self, win):
+    # draw windows with unit's infos and controls
+        if self.is_selected:
+            # background
+            pygame.draw.rect(win, BLACK, self.window_rect)
+            # lines of title bar
+            pygame.draw.line(win, LIME, self.window_rect.bottomleft, self.window_rect.topleft, 3) # left
+            pygame.draw.line(win, LIME, self.window_rect.topleft, self.window_rect.topright, 3) # top
+            pygame.draw.line(win, LIME, self.window_rect.topright, self.window_rect.bottomright, 3) # right
+            pygame.draw.line(win, LIME, self.window_rect.bottomright, self.window_rect.bottomleft, 3) # bottom
+
+            # infos about unit
+            win.blit(self.name_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 10])
+            if self.is_alive:
+                percentage_of_HP = self.HP / self.base_HP
+                if percentage_of_HP > 0.5: color = LIME
+                elif percentage_of_HP > 0.25: color = YELLOW
+                else: color = RED
+                HP_text = self.font_arial_20.render(str(self.HP) + " / " + str(self.base_HP), True, color)          
+            else:
+                HP_text = self.font_arial_20.render("Unit is dead", True, GRAY)  
+            win.blit(HP_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 30])
+
     def run(self, map, list_with_units, list_with_bullets):
     # life-cycle of the unit     
         if self.is_alive:
@@ -187,6 +217,7 @@ class Unit:
 
 
 class Land_unit(Unit):
+    name = "Land unit"
     unit_type = "land"
 
     def draw_unit_type_icon(self, win, coord_on_screen):
@@ -195,6 +226,7 @@ class Land_unit(Unit):
 
 
 class Light_tank(Land_unit):
+    name = "Light tank"
     Vehicle_class = Light_track
     Weapon_classes = [(Light_cannon, (0, 0, 0))]
     unit_level = 1
@@ -206,6 +238,7 @@ class Light_tank(Land_unit):
 
 
 class Main_battle_tank(Land_unit):
+    name = "Main battle tank"
     Vehicle_class = Medium_track
     Weapon_classes = [(Medium_cannon, (0, 0, 0))]
     unit_level = 2
@@ -217,6 +250,7 @@ class Main_battle_tank(Land_unit):
 
 
 class Heavy_artillery(Land_unit):
+    name = "Heavy artyllery"
     Vehicle_class = Heavy_track_basic
     Weapon_classes = [(Heavy_cannon, (0, 0, 0))]
     unit_level = 3
@@ -231,6 +265,7 @@ class Heavy_artillery(Land_unit):
 
 
 class Heavy_tank(Land_unit):
+    name = "Heavy tank"
     Vehicle_class = Heavy_track
     Weapon_classes = [(Minigun, (0, 0, 0)),
                     (Side_cannon, (0, 16, 7 * math.pi / 4)),
@@ -244,6 +279,7 @@ class Heavy_tank(Land_unit):
 
 
 class Spider_tank(Land_unit):
+    name = "Spider tank"
     Vehicle_class = Ant
     Weapon_classes = [(Minigun, (0, 0, 0))]
     unit_level = 2
@@ -259,6 +295,7 @@ class Spider_tank(Land_unit):
 
 
 class Air_unit(Unit):
+    name = "Air unit"
     unit_type = "air"
     visibility_after_death = FRAMERATE * 3
 
@@ -273,6 +310,7 @@ class Air_unit(Unit):
 
 
 class Fighter(Air_unit):
+    name = "Fighter"
     Vehicle_class = Plane
     Weapon_classes = [(Plane_fixed_gun, (0, 0, 0))]
     unit_level = 2
@@ -285,6 +323,7 @@ class Fighter(Air_unit):
 
 
 class Bomber(Air_unit):
+    name = "Bomber"
     Vehicle_class = Plane_bomber
     Weapon_classes = [(ASM_Launcher, (0, 0, 0)), # (Bomb_dispenser, (0, 0, 0)),
                     (Plane_minigun, (0, 0, 0))]
@@ -298,6 +337,7 @@ class Bomber(Air_unit):
 
 
 class Strategic_bomber(Air_unit):
+    name = "Strategic bomber"
     Vehicle_class = Plane_strategic_bomber
     Weapon_classes = [(Advanced_bomb_dispenser, (0, 0, 0)),
                     (Plane_minigun, (-6, 16, 0)),
@@ -314,6 +354,7 @@ class Strategic_bomber(Air_unit):
 
 
 class Naval_unit(Unit):
+    name = "Naval unit"
     unit_type = "navy"
 
     def draw_unit_type_icon(self, win, coord_on_screen):
@@ -322,6 +363,7 @@ class Naval_unit(Unit):
 
 
 class Small_artillery_ship(Naval_unit):
+    name = "Small artillery ship"
     Vehicle_class = Small_ship
     Weapon_classes = [(Medium_cannon, (0, 0, 0))]
     unit_level = 1
@@ -333,6 +375,7 @@ class Small_artillery_ship(Naval_unit):
 
 
 class Small_AA_ship(Naval_unit):
+    name = "Small AA ship"
     Vehicle_class = Small_ship
     Weapon_classes = [(Minigun, (0, 0, 0))]
     unit_level = 1
@@ -345,12 +388,14 @@ class Small_AA_ship(Naval_unit):
 
 
 class Battle_cruiser(Small_artillery_ship):
+    name = "Battle cruiser"
     Vehicle_class = Medium_ship
     Weapon_classes = [(Medium_naval_cannon, (24, 0, 0)),
                     (Medium_naval_cannon, (-32, 0, math.pi))]
     unit_level = 2
 
 class Destroyer(Small_artillery_ship):
+    name = "Destroyer"
     Vehicle_class = Destroyer_body
     Weapon_classes = [(Heavy_naval_cannon, (43, 0, 0)),
                     (Heavy_naval_cannon, (-64, 0, math.pi)),
@@ -361,6 +406,7 @@ class Destroyer(Small_artillery_ship):
     unit_level = 3
 
 class Battleship(Small_AA_ship):
+    name = "Battleship"
     Vehicle_class = Battleship_body
     Weapon_classes = [(Heavy_naval_cannon, (85, 0, 0)),
                     (Heavy_naval_cannon, (44, 0, 0)),

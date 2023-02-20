@@ -120,7 +120,7 @@ class Page_with_notebook(Base_page):
 class Base_notebook:
     Pages_class = [Base_page, Page_with_notebook, Base_page]
 
-    def __init__(self, lvl_of_notebook):
+    def __init__(self):
     # initialization of the object
 
         # basic variables

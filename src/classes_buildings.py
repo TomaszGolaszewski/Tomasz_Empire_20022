@@ -5,6 +5,7 @@ import random
 from setup import *
 from functions_player import *
 from classes_units import *
+from classes_ui import *
 
 
 class Building:
@@ -19,6 +20,9 @@ class Building:
         self.angle = angle
         self.player_id = player_id
         self.team_id = team_id
+
+    # objects
+        self.Shop_window = Base_notebook()
 
     # variables to optimise display
         self.body_radius = 50
@@ -37,6 +41,9 @@ class Building:
         pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, int(self.body_radius * scale), 0)
         pygame.draw.circle(win, BLACK, coord_on_screen, int(self.body_radius * scale), 1)
 
+        if self.is_selected:
+            pygame.draw.circle(win, LIME, coord_on_screen, 20, 3)       
+
     def draw_extra_data(self, win, offset_x, offset_y, scale):
     # draw extra data about the building on the screen
         pass
@@ -44,6 +51,11 @@ class Building:
     def draw_HP(self, win, offset_x, offset_y, scale):
     # draw HP bar
         pass
+
+    def draw_windows(self, win):
+    # draw windows with unit's infos and controls
+        if self.is_selected:
+            self.Shop_window.draw(win)
 
     def run(self, map, list_with_units, list_with_bullets):
     # life-cycle of the building

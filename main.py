@@ -58,6 +58,7 @@ def run():
     SHOW_HP_BARS = True
 
     left_mouse_button_down = False
+    number_of_selected_units = 0
 
     # initialize the game
     size = "L"
@@ -78,7 +79,7 @@ def run():
     # LIST_WITH_UNITS = make_test_units_2()
     # LIST_WITH_UNITS = [Light_tank([500, 300], math.pi/2, 1, 1)]
     LIST_WITH_BULLETS = []
-    LIST_WITH_WINDOWS = [] # Base_notebook(0)]
+    LIST_WITH_WINDOWS = [] # Base_notebook()]
 
 # main loop
     running = True
@@ -285,7 +286,12 @@ def run():
 
         # draw selection
         if left_mouse_button_down:
-            unit_selection(WIN, LIST_WITH_UNITS, left_mouse_button_coord, pygame.mouse.get_pos(), OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE, -1)
+            number_of_selected_units = unit_selection(WIN, LIST_WITH_UNITS, left_mouse_button_coord, pygame.mouse.get_pos(), OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE, -1)
+
+        # draw units windows
+        if number_of_selected_units == 1:
+            for unit in LIST_WITH_UNITS:
+                unit.draw_windows(WIN)
 
         # draw FPS     
         text = FONT_ARIAL_20.render("FPS: %.2f" % CURRENT_FPS, True, LIME)

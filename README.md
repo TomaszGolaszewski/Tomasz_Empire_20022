@@ -13,6 +13,10 @@
 v0.10 - UI stage I
 
 ### Last changes: 
+v0.10.3 - 20.02.2023
+
+* Added small window with infos about unit.
+
 v0.10.2 - 19.02.2023
 
 * New class: Building;
@@ -21,11 +25,6 @@ v0.10.2 - 19.02.2023
 v0.10.1 - 18.02.2023
 
 * New notebook with tabs window for future units buying mechanism.
-
-v0.10.0 - 28.01.2023
-
-* Added slide button to set new units actions;
-* Units in the squad can now deployed on a spiral grid or in original arrangement.
 
 <p align="center">
   <img src="screens/screenshot2_20230115.png" alt="Tomasz Empire 20022 - Fleet">

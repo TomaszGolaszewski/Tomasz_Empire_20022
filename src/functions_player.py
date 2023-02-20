@@ -19,6 +19,7 @@ def player_color(player_id):
 
 def unit_selection(win, list_with_units, corner1, corner2, offset_x, offset_y, scale, player_id):
 # draw selection rectangle, then set units to selection mode
+# return number of selected units
 
     def unit_selection_by_type(unit_type):
     # help tool to select units by type
@@ -47,13 +48,21 @@ def unit_selection(win, list_with_units, corner1, corner2, offset_x, offset_y, s
 
     # if selection is rectangle
     else:
-        # priority of selection: air > land > navy
+        # priority of selection: air > land > navy > building
         is_air_selected = unit_selection_by_type("air")
         if not is_air_selected: 
             is_land_selected = unit_selection_by_type("land")
-            if not is_land_selected: unit_selection_by_type("navy")
+            if not is_land_selected: 
+                is_navy_selectes = unit_selection_by_type("navy")
+                if not is_navy_selectes: unit_selection_by_type("building")
 
     pygame.draw.rect(win, LIME, rect, 3)
+
+    # count selected units
+    result = 0
+    for unit in list_with_units:
+        if unit.is_selected: result += 1
+    return result
 
 
 def set_new_target_move(list_with_units, target, is_ctrl_down):

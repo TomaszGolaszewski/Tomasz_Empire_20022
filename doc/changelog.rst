@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.10.3 - 20.02.2023
+----
+* Added small window with infos about unit.
+
 v0.10.2 - 19.02.2023
 ----
 * New class: Building;
