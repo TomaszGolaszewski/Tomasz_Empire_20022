@@ -75,7 +75,7 @@ def run():
     # MAP2 = Map_v2(5, 10, tile_edge_length=30)
     MAP2 = Map_v2(*dimensions, type=type_of_map)
 
-    LIST_WITH_UNITS = make_test_units()
+    DICT_WITH_UNITS = make_test_units()
     # LIST_WITH_UNITS = make_test_units_2()
     # LIST_WITH_UNITS = [Light_tank([500, 300], math.pi/2, 1, 1)]
     LIST_WITH_BULLETS = []
@@ -109,10 +109,10 @@ def run():
             print("BULLETS:", end=" ")
             print(len(LIST_WITH_BULLETS), end="\t")
             print("UNITS:", end=" ")
-            print(len(LIST_WITH_UNITS), end="\t")
+            print(len(DICT_WITH_UNITS), end="\t")
             unit_count = 0
-            for unit in LIST_WITH_UNITS:
-                if unit.is_on_screen: unit_count += 1
+            for unit_id in DICT_WITH_UNITS:
+                if DICT_WITH_UNITS[unit_id].is_on_screen: unit_count += 1
             print("UNITS ON SCREEN:", end=" ")
             print(unit_count)
 
@@ -146,7 +146,7 @@ def run():
 
                     # press UI windows (based on notebooks)
                     for ui_win in LIST_WITH_WINDOWS:
-                        ui_win.press_left(LIST_WITH_UNITS, pygame.mouse.get_pos())
+                        ui_win.press_left(DICT_WITH_UNITS, pygame.mouse.get_pos())
 
                 # 2 - middle click
                 if event.button == 2:
@@ -162,7 +162,7 @@ def run():
 
                     # press UI windows (based on slide)
                     for ui_win in LIST_WITH_WINDOWS:
-                        ui_win.press_right(LIST_WITH_UNITS, pygame.mouse.get_pos(), screen2world(pygame.mouse.get_pos(), OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE), keys_pressed[pygame.K_LCTRL])
+                        ui_win.press_right(DICT_WITH_UNITS, pygame.mouse.get_pos(), screen2world(ui_win.coord, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE), keys_pressed[pygame.K_LCTRL])
 
                 # 4 - scroll up
                 if event.button == 4:
@@ -237,11 +237,11 @@ def run():
 
         # life-cycles of bullets
         for bullet in LIST_WITH_BULLETS:
-            bullet.run(MAP2, LIST_WITH_UNITS)
+            bullet.run(MAP2, DICT_WITH_UNITS)
 
         # life-cycles of units
-        for unit in LIST_WITH_UNITS:
-            unit.run(MAP2, LIST_WITH_UNITS, LIST_WITH_BULLETS)
+        for unit in DICT_WITH_UNITS.values():
+            unit.run(MAP2, DICT_WITH_UNITS, LIST_WITH_BULLETS)
         
 
 # draw the screen
@@ -257,21 +257,21 @@ def run():
 
         # show extra data
         if SHOW_EXTRA_DATA:
-            for unit in LIST_WITH_UNITS:
+            for unit in DICT_WITH_UNITS.values():
                 unit.draw_extra_data(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
         # draw land and naval units
-        for unit in LIST_WITH_UNITS:
+        for unit in DICT_WITH_UNITS.values():
             if unit.unit_type == "land" or unit.unit_type == "navy" or unit.unit_type == "building": 
                 unit.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
         # draw air units
-        for unit in LIST_WITH_UNITS:
+        for unit in DICT_WITH_UNITS.values():
             if unit.unit_type == "air": unit.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
         # show HP bars
         if SHOW_HP_BARS and SCALE >= 1:
-            for unit in LIST_WITH_UNITS:
+            for unit in DICT_WITH_UNITS.values():
                 unit.draw_HP(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
         # draw bullets
@@ -286,11 +286,11 @@ def run():
 
         # draw selection
         if left_mouse_button_down:
-            number_of_selected_units = unit_selection(WIN, LIST_WITH_UNITS, left_mouse_button_coord, pygame.mouse.get_pos(), OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE, -1)
+            number_of_selected_units = unit_selection(WIN, DICT_WITH_UNITS, left_mouse_button_coord, pygame.mouse.get_pos(), OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE, -1)
 
         # draw units windows
         if number_of_selected_units == 1:
-            for unit in LIST_WITH_UNITS:
+            for unit in DICT_WITH_UNITS.values():
                 unit.draw_windows(WIN)
 
         # draw FPS     
@@ -304,14 +304,14 @@ def run():
 # clear dead elements
 
         # dead bullets
-        remove_few_dead_elements(LIST_WITH_BULLETS)
+        remove_few_dead_elements_from_list(LIST_WITH_BULLETS)
         # LIST_WITH_BULLETS = remove_many_dead_elements(LIST_WITH_BULLETS)
 
         # dead units
-        remove_few_dead_elements(LIST_WITH_UNITS)
+        remove_dead_elements_from_dict(DICT_WITH_UNITS)
 
         # unnecessary UI windows
-        remove_few_dead_elements(LIST_WITH_WINDOWS)
+        remove_few_dead_elements_from_list(LIST_WITH_WINDOWS)
 
 if __name__ == "__main__":
     run()

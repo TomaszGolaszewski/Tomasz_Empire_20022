@@ -50,13 +50,13 @@ class Bullet:
             coord_on_screen = world2screen(self.coord, offset_x, offset_y, scale)
             pygame.draw.circle(win, self.explosion_color, coord_on_screen, int(self.explosion_radius * scale), 0)
 
-    def run(self, map, list_of_units):
+    def run(self, map, dict_with_units):
     # life-cycle of the bullet 
         if self.is_alive:
             # checks collision with units
-            for unit in list_of_units:
-                if self.is_hit(unit):
-                    unit.get_hit(map, self.power)
+            for unit_id in dict_with_units:
+                if self.is_hit(dict_with_units[unit_id]):
+                    dict_with_units[unit_id].get_hit(map, self.power)
                     self.explosion_color = ORANGE
                     self.is_alive = False    
             # checks end of life span
@@ -163,14 +163,14 @@ class ASMissile(Bullet):
     # # initialization of the Missile
     #     Bullet.__init__(self, coord, angle, max_distance, min_distance, player_id, team_id, power, target_type)
 
-    def run(self, map, list_of_units):
+    def run(self, map, dict_with_units):
     # life-cycle of the missile
         if self.is_alive:
             # checks collision with units
             if self.distance > self.min_distance:
-                for unit in list_of_units:
-                    if self.is_hit(unit):
-                        unit.get_hit(map, self.power)
+                for unit_id in dict_with_units:
+                    if self.is_hit(dict_with_units[unit_id]):
+                        dict_with_units[unit_id].get_hit(map, self.power)
                         self.explosion_color = ORANGE
                         self.is_alive = False    
             # checks end of life span
@@ -192,12 +192,12 @@ class ASMissile(Bullet):
                 temp_dist = 9999
                 temp_found_new_target = False
 
-                for unit in list_of_units:
-                    if unit.team_id != self.team_id and unit.is_alive:
-                        if self.is_valid_target(unit.unit_type):
-                            dist = math.hypot(self.coord[0]-unit.coord[0], self.coord[1]-unit.coord[1])
+                for unit_id in dict_with_units:
+                    if dict_with_units[unit_id].team_id != self.team_id and dict_with_units[unit_id].is_alive:
+                        if self.is_valid_target(dict_with_units[unit_id].unit_type):
+                            dist = math.hypot(self.coord[0]-dict_with_units[unit_id].coord[0], self.coord[1]-dict_with_units[unit_id].coord[1])
                             if dist < self.max_distance and dist < temp_dist:
-                                temp_coord = unit.coord
+                                temp_coord = dict_with_units[unit_id].coord
                                 temp_dist = dist
                                 # temp_target_type = unit.unit_type
                                 temp_found_new_target = True

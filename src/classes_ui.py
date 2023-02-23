@@ -53,7 +53,7 @@ class Base_page:
         # draw title   
         win.blit(self.name_text, self.name_text_rect.topleft)
 
-    def press_left(self, list_with_units, press_coord):
+    def press_left(self, dict_with_units, press_coord):
     # handle actions after left button is pressed
         pass
 
@@ -95,7 +95,7 @@ class Page_with_notebook(Base_page):
             for page in self.list_with_pages:
                 page.draw(win)
 
-    def press_left(self, list_with_units, press_coord):
+    def press_left(self, dict_with_units, press_coord):
     # handle actions after left button is pressed
 
         # check and handle actions after one of titles button is pressed
@@ -111,7 +111,7 @@ class Page_with_notebook(Base_page):
         # check and handle actions after one of pages is pressed
         for page in self.list_with_pages:
             if page.is_active and page.is_page_pressed(press_coord):
-                page.press_left(list_with_units, press_coord)
+                page.press_left(dict_with_units, press_coord)
 
 
 # ======================================================================
@@ -198,21 +198,21 @@ class Base_slide_button:
     # handle actions after left button is pressed
         pass
 
-    def press_right(self, list_with_units, press_coord, target, is_ctrl_down):
+    def press_right(self, dict_with_units, press_coord, target, is_ctrl_down):
     # handle actions after right button is pressed
         # check if center is pressed
         dist = math.hypot(self.coord[0]-press_coord[0], self.coord[1]-press_coord[1])
         if dist < 25:
             # print("center")
-            set_new_target_move(list_with_units, target, is_ctrl_down)
+            set_new_target_move(dict_with_units, target, is_ctrl_down)
         else:
             # check sector       
             angle = math.degrees(angle_to_target(self.coord, press_coord))
             if angle < 270 and angle > 90:
                 # print("left")
-                set_new_target_regroup(list_with_units, target, is_ctrl_down)
+                set_new_target_regroup(dict_with_units, target, is_ctrl_down)
             else:
                 # print("right")
-                set_new_target_move(list_with_units, target, is_ctrl_down)
+                set_new_target_move(dict_with_units, target, is_ctrl_down)
         print()
         self.to_remove = True

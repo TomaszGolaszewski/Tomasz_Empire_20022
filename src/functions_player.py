@@ -17,7 +17,7 @@ def player_color(player_id):
     else: return WHITE
 
 
-def unit_selection(win, list_with_units, corner1, corner2, offset_x, offset_y, scale, player_id):
+def unit_selection(win, dict_with_units, corner1, corner2, offset_x, offset_y, scale, player_id):
 # draw selection rectangle, then set units to selection mode
 # return number of selected units
 
@@ -25,14 +25,14 @@ def unit_selection(win, list_with_units, corner1, corner2, offset_x, offset_y, s
     # help tool to select units by type
     # return number of selected units
         is_some_unit_selected = False
-        for unit in list_with_units:
-            if (player_id == -1 or unit.player_id == player_id) \
-                        and unit.unit_type == unit_type \
-                        and rect.collidepoint(world2screen(unit.coord, offset_x, offset_y, scale)):
-                unit.is_selected = True
+        for unit_id in dict_with_units:
+            if (player_id == -1 or dict_with_units[unit_id].player_id == player_id) \
+                        and dict_with_units[unit_id].unit_type == unit_type \
+                        and rect.collidepoint(world2screen(dict_with_units[unit_id].coord, offset_x, offset_y, scale)):
+                dict_with_units[unit_id].is_selected = True
                 is_some_unit_selected = True
             else:
-                unit.is_selected = False
+                dict_with_units[unit_id].is_selected = False
         return is_some_unit_selected
 
     rect = set_rectangle_with_two_corners(corner1, corner2)
@@ -40,11 +40,11 @@ def unit_selection(win, list_with_units, corner1, corner2, offset_x, offset_y, s
     # if selection is point
     if dist_two_points(corner1, corner2) < 5:
         point = screen2world(corner1, offset_x, offset_y, scale)
-        for unit in list_with_units:
-            if (player_id == -1 or unit.player_id == player_id) and dist_two_points(point, unit.coord) < unit.hit_box_radius:
-                unit.is_selected = True
+        for unit_id in dict_with_units:
+            if (player_id == -1 or dict_with_units[unit_id].player_id == player_id) and dist_two_points(point, dict_with_units[unit_id].coord) < dict_with_units[unit_id].hit_box_radius:
+                dict_with_units[unit_id].is_selected = True
             else:
-                unit.is_selected = False
+                dict_with_units[unit_id].is_selected = False
 
     # if selection is rectangle
     else:
@@ -60,12 +60,12 @@ def unit_selection(win, list_with_units, corner1, corner2, offset_x, offset_y, s
 
     # count selected units
     result = 0
-    for unit in list_with_units:
-        if unit.is_selected: result += 1
+    for unit_id in dict_with_units:
+        if dict_with_units[unit_id].is_selected: result += 1
     return result
 
 
-def set_new_target_move(list_with_units, target, is_ctrl_down):
+def set_new_target_move(dict_with_units, target, is_ctrl_down):
 # set new movement target to all selected units
 # units will move in original arrangement
     number_of_selested_units = 0
@@ -76,31 +76,31 @@ def set_new_target_move(list_with_units, target, is_ctrl_down):
     top_top = 99999
     top_bottom = -99999
     # search search through the list with units
-    for unit in list_with_units:
-        if unit.is_selected:
+    for unit_id in dict_with_units:
+        if dict_with_units[unit_id].is_selected:
             number_of_selested_units += 1
             # if unit.body_radius > biggest_unit_radius: biggest_unit_radius = unit.body_radius
-            if unit.v_max < slowest_unit_speed: slowest_unit_speed = unit.v_max
-            if unit.coord[0] < top_left: top_left = unit.coord[0]
-            if unit.coord[0] > top_right: top_right = unit.coord[0]
-            if unit.coord[1] < top_top: top_top = unit.coord[1]
-            if unit.coord[1] > top_bottom: top_bottom = unit.coord[1]
+            if dict_with_units[unit_id].v_max < slowest_unit_speed: slowest_unit_speed = dict_with_units[unit_id].v_max
+            if dict_with_units[unit_id].coord[0] < top_left: top_left = dict_with_units[unit_id].coord[0]
+            if dict_with_units[unit_id].coord[0] > top_right: top_right = dict_with_units[unit_id].coord[0]
+            if dict_with_units[unit_id].coord[1] < top_top: top_top = dict_with_units[unit_id].coord[1]
+            if dict_with_units[unit_id].coord[1] > top_bottom: top_bottom = dict_with_units[unit_id].coord[1]
     
     coord_of_squad = [top_left + (top_right - top_left) / 2, top_top + (top_bottom - top_top) / 2]
     translation_vector = [target[0] - coord_of_squad[0], target[1] - coord_of_squad[1]]
 
     # set new target
-    for unit in list_with_units:
-        if unit.is_selected:
+    for unit_id in dict_with_units:
+        if dict_with_units[unit_id].is_selected:
             if is_ctrl_down:
-                unit.base.movement_target.append([unit.coord[0] + translation_vector[0], unit.coord[1] + translation_vector[1]])
-                unit.set_v_max_squad(slowest_unit_speed)
+                dict_with_units[unit_id].base.movement_target.append([dict_with_units[unit_id].coord[0] + translation_vector[0], dict_with_units[unit_id].coord[1] + translation_vector[1]])
+                dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
             else:
-                unit.base.movement_target = [[unit.coord[0] + translation_vector[0], unit.coord[1] + translation_vector[1]]]
-                unit.set_v_max_squad(slowest_unit_speed)
+                dict_with_units[unit_id].base.movement_target = [[dict_with_units[unit_id].coord[0] + translation_vector[0], dict_with_units[unit_id].coord[1] + translation_vector[1]]]
+                dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
 
 
-def set_new_target_regroup(list_with_units, target, is_ctrl_down):
+def set_new_target_regroup(dict_with_units, target, is_ctrl_down):
 # set new movement target to all selected units
 # units will regroup into spiral
     number_of_selested_units = 0
@@ -108,22 +108,22 @@ def set_new_target_regroup(list_with_units, target, is_ctrl_down):
     biggest_unit_radius = 0
     slowest_unit_speed = 100
     # search search through the list with units
-    for unit in list_with_units:
-        if unit.is_selected:
+    for unit_id in dict_with_units:
+        if dict_with_units[unit_id].is_selected:
             number_of_selested_units += 1
-            if unit.body_radius > biggest_unit_radius: biggest_unit_radius = unit.body_radius
-            if unit.v_max < slowest_unit_speed: slowest_unit_speed = unit.v_max
+            if dict_with_units[unit_id].body_radius > biggest_unit_radius: biggest_unit_radius = dict_with_units[unit_id].body_radius
+            if dict_with_units[unit_id].v_max < slowest_unit_speed: slowest_unit_speed = dict_with_units[unit_id].v_max
 
     # set new target
-    for unit in list_with_units:
-        if unit.is_selected:
+    for unit_id in dict_with_units:
+        if dict_with_units[unit_id].is_selected:
             new_unit_target = get_coord_on_spiral(current_unit, target, 5 * biggest_unit_radius)
             if is_ctrl_down:
-                unit.base.movement_target.append(new_unit_target)
-                unit.set_v_max_squad(slowest_unit_speed)
+                dict_with_units[unit_id].base.movement_target.append(new_unit_target)
+                dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
             else:
-                unit.base.movement_target = [new_unit_target]
-                unit.set_v_max_squad(slowest_unit_speed)
+                dict_with_units[unit_id].base.movement_target = [new_unit_target]
+                dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
             current_unit += 1
 
 

@@ -1,7 +1,7 @@
 
 
-def remove_few_dead_elements(list):
-# function removes dead elements - good for a few dead elements
+def remove_few_dead_elements_from_list(list):
+# function removes dead elements from list - good for a few dead elements
     temp_list_of_indexes = []
     for i, element in enumerate(list):
         if element.to_remove:
@@ -12,12 +12,9 @@ def remove_few_dead_elements(list):
 
     for i in temp_list_of_indexes:
         list.pop(i)
-    
-    # return list
 
-
-def remove_many_dead_elements(list):
-# function removes dead elements - good for many dead elements
+def remove_many_dead_elements_from_list(list):
+# function removes dead elements from list - good for many dead elements
 
     # list = [element for element in list if element.is_alive]
     # return list
@@ -29,3 +26,13 @@ def remove_many_dead_elements(list):
             new_list.append(element)
 
     return new_list
+
+def remove_dead_elements_from_dict(dict):
+# function removes dead elements from dictionary
+    temp_list_of_indexes = []
+    for id in dict:
+        if dict[id].to_remove:
+            temp_list_of_indexes.append(id)
+
+    for id in temp_list_of_indexes:
+        dict.pop(id)

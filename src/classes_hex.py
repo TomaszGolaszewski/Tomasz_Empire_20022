@@ -3,6 +3,7 @@ import random
 
 # from settings import *
 from setup import *
+from settings import *
 from functions_math import *
 
 class HexTile:

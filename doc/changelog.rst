@@ -1,6 +1,11 @@
 Changelog
 ======
 
+v0.10.4 - 23.02.2023
+----
+* All units are now stored in dictionary;
+* Small fix in slide button.
+
 v0.10.3 - 20.02.2023
 ----
 * Added small window with infos about unit.

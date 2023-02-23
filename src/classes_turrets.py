@@ -58,11 +58,11 @@ class Turret(Base_object):
         pygame.draw.circle(win, LIME, world2screen(self.coord, offset_x, offset_y, scale), self.min_radar_radius*scale, 1)
 
 
-    def run(self, list_with_units, list_with_bullets):
+    def run(self, dict_with_units, list_with_bullets):
     # life-cycle of the weapon
         if not self.countdown_to_search:
             # try to find target
-            self.find_target(list_with_units)
+            self.find_target(dict_with_units)
             self.countdown_to_search = self.countdown_time_to_search          
         else:
             self.countdown_to_search -= 1
@@ -82,7 +82,7 @@ class Turret(Base_object):
         self.angle = turn_to_target_angle(self.angle, self.angle_to_target, self.turn_speed) # , 0.02) # damping
 
 
-    def find_target(self, list_with_units):
+    def find_target(self, dict_with_units):
     # find closest target
     # set new target_coord, angle_to_target and dist_to target
 
@@ -90,7 +90,7 @@ class Turret(Base_object):
         temp_dist = 9999
         temp_found_new_target = False
         
-        for unit in list_with_units:
+        for unit in dict_with_units.values():
             if unit.team_id != self.team_id and unit.is_alive:
                 # dist = dist_two_points(unit.coord, self.coord)
                 dist = math.hypot(self.coord[0]-unit.coord[0], self.coord[1]-unit.coord[1])
@@ -234,7 +234,7 @@ class Side_cannon(Turret):
 
     turn_limit = math.pi / 4
 
-    def find_target(self, list_with_units):
+    def find_target(self, dict_with_units):
     # find closest target - difference that movement is limited
     # set new target_coord, angle_to_target and dist_to target
 
@@ -246,7 +246,7 @@ class Side_cannon(Turret):
         current_initial_angle = self.base_angle + self.initial_angle
         if current_initial_angle > 2*math.pi: current_initial_angle -= 2*math.pi
         
-        for unit in list_with_units:
+        for unit in dict_with_units.values():
             if unit.team_id != self.team_id and unit.is_alive:
                 # dist = dist_two_points(unit.coord, self.coord)
                 dist = math.hypot(self.coord[0]-unit.coord[0], self.coord[1]-unit.coord[1])
@@ -435,7 +435,7 @@ class Plane_fixed_gun(Turret):
     def draw(self, win, offset_x, offset_y, scale): pass
 
 
-    def find_target(self, list_with_units):
+    def find_target(self, dict_with_units):
     # find closest target in front of gun
     # set new target_coord, angle_to_target and dist_to target
 
@@ -445,7 +445,7 @@ class Plane_fixed_gun(Turret):
         step = 15
         
         while temp_dist <= self.max_radar_radius:
-            for unit in list_with_units:
+            for unit in dict_with_units.values():
                 if unit.team_id != self.team_id and self.is_valid_target(unit.unit_type) and unit.is_alive:
                     if unit.is_inside_hitbox(temp_coord, self.search_radius):
                     # dist = dist_two_points(unit.coord, temp_coord)
@@ -548,12 +548,12 @@ class ASM_Launcher(Turret):
 
     def draw(self, win, offset_x, offset_y, scale): pass
 
-    def run(self, list_with_units, list_with_bullets):
+    def run(self, dict_with_units, list_with_bullets):
     # life-cycle of the weapon
         if not self.countdown_to_search:
             # try to find target
             self.missiles_left = 0
-            for unit in list_with_units:
+            for unit in dict_with_units.values():
                 if unit.team_id != self.team_id and unit.is_alive:
                     if self.is_valid_target(unit.unit_type):             
                         dist = math.hypot(self.coord[0]-unit.coord[0], self.coord[1]-unit.coord[1])

@@ -13,6 +13,11 @@
 v0.10 - UI stage I
 
 ### Last changes: 
+v0.10.4 - 23.02.2023
+
+* All units are now stored in dictionary;
+* Small fix in slide button.
+
 v0.10.3 - 20.02.2023
 
 * Added small window with infos about unit.
@@ -21,10 +26,6 @@ v0.10.2 - 19.02.2023
 
 * New class: Building;
 * Units can collide with buildings but cannot shot to them.
-
-v0.10.1 - 18.02.2023
-
-* New notebook with tabs window for future units buying mechanism.
 
 <p align="center">
   <img src="screens/screenshot2_20230115.png" alt="Tomasz Empire 20022 - Fleet">

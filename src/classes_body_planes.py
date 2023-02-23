@@ -21,7 +21,7 @@ class Plane(Vehicle):
     base_HP = 100
 
 
-    def run(self, map, list_with_units):
+    def run(self, map, dict_with_units):
     # life-cycle of the Plane
         if len(self.movement_target):
             dist_to_target = dist_two_points(self.coord, self.movement_target[0])

@@ -164,11 +164,11 @@ class Unit:
                 HP_text = self.font_arial_20.render("Unit is dead", True, GRAY)  
             win.blit(HP_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 30])
 
-    def run(self, map, list_with_units, list_with_bullets):
+    def run(self, map, dict_with_units, list_with_bullets):
     # life-cycle of the unit     
         if self.is_alive:
             # running the base
-            self.base.run(map, list_with_units)
+            self.base.run(map, dict_with_units)
             self.coord = self.base.get_position()
             self.angle = self.base.get_angle()
             # running the weapons
@@ -180,7 +180,7 @@ class Unit:
                 weapon_y = self.coord[1] + x * math.sin(self.angle) - y * math.cos(self.angle)
                 weapon.set_position((weapon_x, weapon_y))
                 weapon.set_angle(self.angle)
-                weapon.run(list_with_units, list_with_bullets)
+                weapon.run(dict_with_units, list_with_bullets)
                 i += 1
         else:
             # self.body_radius -= 1

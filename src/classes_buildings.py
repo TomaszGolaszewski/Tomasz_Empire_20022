@@ -57,7 +57,7 @@ class Building:
         if self.is_selected:
             self.Shop_window.draw(win)
 
-    def run(self, map, list_with_units, list_with_bullets):
+    def run(self, map, dict_with_units, list_with_bullets):
     # life-cycle of the building
         pass
 
