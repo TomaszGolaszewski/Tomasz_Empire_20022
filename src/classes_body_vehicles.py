@@ -20,10 +20,11 @@ class Vehicle(Base_animated_object):
     hit_box_radius = 13
     base_HP = 100
 
-    def __init__(self, coord, angle, player_id, team_id):
+    def __init__(self, id, coord, angle, player_id, team_id):
     # initialization of the vehicle
         Base_animated_object.__init__(self, coord, angle)
 
+        self.id = id
         self.player_id = player_id
         self.team_id = team_id
         

@@ -12,10 +12,11 @@ class Building:
     unit_type = "building"
     unit_level = 0
 
-    def __init__(self, coord, angle, player_id, team_id):
+    def __init__(self, id, coord, angle, player_id, team_id):
     # initialization of the building
 
-    # basic variables       
+    # basic variables     
+        self.id = id  
         self.coord = coord
         self.angle = angle
         self.player_id = player_id

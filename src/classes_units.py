@@ -21,17 +21,18 @@ class Unit:
     unit_level = 0
     visibility_after_death = FRAMERATE * 10
 
-    def __init__(self, coord, angle, player_id, team_id):
+    def __init__(self, id, coord, angle, player_id, team_id):
     # initialization of the unit
 
-        # basic variables       
+        # basic variables
+        self.id = id       
         self.coord = coord
         self.angle = angle
         self.player_id = player_id
         self.team_id = team_id
 
         # initialization of the base
-        self.base = self.Vehicle_class(coord, angle, player_id, team_id)
+        self.base = self.Vehicle_class(id, coord, angle, player_id, team_id)
         self.hit_box_radius = self.base.hit_box_radius
         self.base_HP = self.base.base_HP
         self.HP = self.base.base_HP
@@ -49,6 +50,7 @@ class Unit:
         # fonts
         self.font_arial_20 = pygame.font.SysFont('arial', 20)
         self.name_text = self.font_arial_20.render(self.name, True, LIME)
+        self.id_text = self.font_arial_20.render("#" + str(self.id), True, GRAY)
 
         # initialization of the weapon
         self.Weapons = []
@@ -57,7 +59,7 @@ class Unit:
             y = weapon_class[1][1]
             weapon_x = self.coord[0] + x * math.cos(self.angle) + y * math.sin(self.angle)
             weapon_y = self.coord[1] + x * math.sin(self.angle) - y * math.cos(self.angle)
-            self.Weapons.append(weapon_class[0]((weapon_x, weapon_y), angle, weapon_class[1][2], player_id, team_id))
+            self.Weapons.append(weapon_class[0](id, (weapon_x, weapon_y), angle, weapon_class[1][2], player_id, team_id))
 
         # other variables
         self.is_alive = True
@@ -163,6 +165,7 @@ class Unit:
             else:
                 HP_text = self.font_arial_20.render("Unit is dead", True, GRAY)  
             win.blit(HP_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 30])
+            win.blit(self.id_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 50])
 
     def run(self, map, dict_with_units, list_with_bullets):
     # life-cycle of the unit     

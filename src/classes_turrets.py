@@ -26,8 +26,9 @@ class Turret(Base_object):
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE
 
-    def __init__(self, coord, base_angle, initial_angle, player_id, team_id):
-    # initialization of the weapon               
+    def __init__(self, id, coord, base_angle, initial_angle, player_id, team_id):
+    # initialization of the weapon    
+        self.id = id           
         self.base_angle = base_angle # angle of the base of the unit     
         angle = base_angle + initial_angle
         if angle > 2*math.pi: angle -= 2*math.pi

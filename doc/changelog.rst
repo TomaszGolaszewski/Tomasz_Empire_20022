@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.10.5 - 25.02.2023
+----
+* Added ID number to units. 
+
 v0.10.4 - 23.02.2023
 ----
 * All units are now stored in dictionary;
