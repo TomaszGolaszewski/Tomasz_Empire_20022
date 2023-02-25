@@ -5,10 +5,11 @@ import random
 from setup import *
 from functions_player import *
 from classes_units import *
-from classes_ui import *
+# from classes_ui import *
 
 
 class Building:
+    name = "Building"
     unit_type = "building"
     unit_level = 0
 
@@ -22,8 +23,8 @@ class Building:
         self.player_id = player_id
         self.team_id = team_id
 
-    # objects
-        self.Shop_window = Base_notebook()
+    # # objects
+    #     self.Shop_window = Base_notebook()
 
     # variables to optimise display
         self.body_radius = 50
@@ -55,8 +56,9 @@ class Building:
 
     def draw_windows(self, win):
     # draw windows with unit's infos and controls
-        if self.is_selected:
-            self.Shop_window.draw(win)
+        pass
+        # if self.is_selected:
+        #     self.Shop_window.draw(win)
 
     def run(self, map, dict_with_units, list_with_bullets):
     # life-cycle of the building

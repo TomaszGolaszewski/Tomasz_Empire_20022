@@ -15,4 +15,3 @@ def set_rectangle_with_two_corners(corner1, corner2):
     y = min(y1, y2)
 
     return pygame.Rect(x, y, horizontal_edge, vertical_edge)
-    

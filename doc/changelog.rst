@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.10.6 - 25.02.2023
+----
+* Changes to the way windows are stored and handled.
+
 v0.10.5 - 25.02.2023
 ----
 * Added ID number to units. 

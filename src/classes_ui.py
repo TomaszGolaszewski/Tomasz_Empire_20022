@@ -2,15 +2,17 @@ import pygame
 
 # from settings import *
 from setup import *
+from settings import *
 from functions_math import *
 from functions_player import *
 
 
 class Base_page:
-    def __init__(self, lvl_of_page, number_of_page, name):
+    def __init__(self, id, lvl_of_page, number_of_page, name):
     # initialization of the object
 
         # basic variables
+        self.id = id
         self.is_active = False
         self.name = name
 
@@ -77,14 +79,14 @@ class Base_page:
 class Page_with_notebook(Base_page):
     Pages_class = [Base_page, Base_page]
 
-    def __init__(self, lvl_of_page, number_of_page, name):
-        Base_page.__init__(self, lvl_of_page, number_of_page, name)
+    def __init__(self, id, lvl_of_page, number_of_page, name):
+        Base_page.__init__(self, id, lvl_of_page, number_of_page, name)
 
         # initialization of tabs
         self.list_with_pages = []
         number_of_page = 0
         for page_class in self.Pages_class:
-            self.list_with_pages.append(page_class(lvl_of_page + 1, number_of_page, 'temp'))
+            self.list_with_pages.append(page_class(id, lvl_of_page + 1, number_of_page, 'temp'))
             number_of_page += 1
         self.list_with_pages[0].is_active = True
 
@@ -120,17 +122,18 @@ class Page_with_notebook(Base_page):
 class Base_notebook:
     Pages_class = [Base_page, Page_with_notebook, Base_page]
 
-    def __init__(self):
+    def __init__(self, id):
     # initialization of the object
 
         # basic variables
+        self.id = id
         self.to_remove = False
 
         # initialization of tabs
         self.list_with_pages = []
         number_of_page = 0
         for page_class in self.Pages_class:
-            self.list_with_pages.append(page_class(0, number_of_page, 'temp_name'))
+            self.list_with_pages.append(page_class(id, 0, number_of_page, 'temp_name'))
             number_of_page += 1
         self.list_with_pages[0].is_active = True
 
@@ -170,11 +173,12 @@ class Base_notebook:
 class Base_slide_button:
     path = BUTTON_1_PATH
 
-    def __init__(self, coord):
+    def __init__(self, screen_coord, world_coord):
     # initialization of the object
 
         # basic variables
-        self.coord = coord
+        self.screen_coord = screen_coord
+        self.world_coord = world_coord
         self.to_remove = False
 
         # load and prepare sprite
@@ -191,28 +195,28 @@ class Base_slide_button:
 
     def draw(self, win):
     # draw the object on the screen
-        new_rect = self.sprite.get_rect(center = self.coord)
+        new_rect = self.sprite.get_rect(center = self.screen_coord)
         win.blit(self.sprite, new_rect.topleft)
 
     def press_left(self, *args):
     # handle actions after left button is pressed
         pass
 
-    def press_right(self, dict_with_units, press_coord, target, is_ctrl_down):
+    def press_right(self, dict_with_units, press_coord, is_ctrl_down):
     # handle actions after right button is pressed
         # check if center is pressed
-        dist = math.hypot(self.coord[0]-press_coord[0], self.coord[1]-press_coord[1])
+        dist = math.hypot(self.screen_coord[0]-press_coord[0], self.screen_coord[1]-press_coord[1])
         if dist < 25:
             # print("center")
-            set_new_target_move(dict_with_units, target, is_ctrl_down)
+            set_new_target_move(dict_with_units, self.world_coord, is_ctrl_down)
         else:
             # check sector       
-            angle = math.degrees(angle_to_target(self.coord, press_coord))
+            angle = math.degrees(angle_to_target(self.screen_coord, press_coord))
             if angle < 270 and angle > 90:
                 # print("left")
-                set_new_target_regroup(dict_with_units, target, is_ctrl_down)
+                set_new_target_regroup(dict_with_units, self.world_coord, is_ctrl_down)
             else:
                 # print("right")
-                set_new_target_move(dict_with_units, target, is_ctrl_down)
+                set_new_target_move(dict_with_units, self.world_coord, is_ctrl_down)
         print()
         self.to_remove = True

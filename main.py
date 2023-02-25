@@ -25,6 +25,7 @@ from settings import *
 from setup import *
 from functions_graphics import *
 from functions_test import *
+from functions_windows import *
 from functions_other import *
 from classes_map import *
 from classes_units import *
@@ -136,7 +137,9 @@ def run():
 
                 # 3 - right click
                 if event.button == 3:
-                    LIST_WITH_WINDOWS.append(Base_slide_button(pygame.mouse.get_pos()))
+                    right_mouse_button_coord = pygame.mouse.get_pos()
+                    make_windows_from_right_mouse_button(DICT_WITH_UNITS, LIST_WITH_WINDOWS, right_mouse_button_coord, \
+                                                screen2world(right_mouse_button_coord, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE))
 
 # mouse button up
             if event.type == pygame.MOUSEBUTTONUP:
@@ -162,7 +165,7 @@ def run():
 
                     # press UI windows (based on slide)
                     for ui_win in LIST_WITH_WINDOWS:
-                        ui_win.press_right(DICT_WITH_UNITS, pygame.mouse.get_pos(), screen2world(ui_win.coord, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE), keys_pressed[pygame.K_LCTRL])
+                        ui_win.press_right(DICT_WITH_UNITS, pygame.mouse.get_pos(), keys_pressed[pygame.K_LCTRL])
 
                 # 4 - scroll up
                 if event.button == 4:
@@ -280,13 +283,15 @@ def run():
 
 
 # draw UI
+        # draw selection
+        if left_mouse_button_down: # and not len(LIST_WITH_WINDOWS):
+            number_of_selected_units = unit_selection(WIN, DICT_WITH_UNITS, left_mouse_button_coord, pygame.mouse.get_pos(), OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE, -1)
+        else:
+            make_windows_from_dict_with_units(DICT_WITH_UNITS, LIST_WITH_WINDOWS)
+
         # draw UI windows
         for ui_win in LIST_WITH_WINDOWS:
             ui_win.draw(WIN)
-
-        # draw selection
-        if left_mouse_button_down:
-            number_of_selected_units = unit_selection(WIN, DICT_WITH_UNITS, left_mouse_button_coord, pygame.mouse.get_pos(), OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE, -1)
 
         # draw units windows
         if number_of_selected_units == 1:
