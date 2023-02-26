@@ -7,6 +7,27 @@ from functions_math import *
 from functions_player import *
 
 
+class Base_window:
+    def __init__(self):
+        # basic variables
+        self.to_remove = False
+
+    def draw(self, win, dict_with_units):
+    # draw the object on the screen
+        pass
+
+    def press_left(self, *args):
+    # handle actions after left button is pressed
+        pass
+
+    def press_right(self, *args):
+    # handle actions after right button is pressed
+        pass
+
+
+# ======================================================================
+
+
 class Base_page:
     def __init__(self, id, lvl_of_page, number_of_page, name):
     # initialization of the object
@@ -25,11 +46,11 @@ class Base_page:
         title_height = 25
         gap_between_lvls = 7
         origin_vert_pos_of_this_page = origin_vert_pos + lvl_of_page * (title_height + gap_between_lvls)
-        margin_bottom = 50
+        margin_bottom = 125
         height_of_this_page = WIN_HEIGHT - origin_vert_pos_of_this_page - margin_bottom
         
         self.title_rect = pygame.Rect(margin + number_of_page * title_width, origin_vert_pos_of_this_page, title_width, title_height)
-        self.page_rect = pygame.Rect(margin, origin_vert_pos_of_this_page + title_height, WIN_WIDTH - 2 * margin, height_of_this_page)
+        self.page_rect = pygame.Rect(margin, origin_vert_pos_of_this_page + title_height, WIN_WIDTH - 2 * margin, height_of_this_page - title_height)
 
         # fonts
         font_arial_20 = pygame.font.SysFont('arial', 20)
@@ -59,9 +80,9 @@ class Base_page:
     # handle actions after left button is pressed
         pass
 
-    def press_right(self, *args):
-    # handle actions after right button is pressed
-        pass
+    # def press_right(self, *args):
+    # # handle actions after right button is pressed
+    #     pass
 
     def is_title_pressed(self, press_coord):
     # check if title is pressed
@@ -137,7 +158,7 @@ class Base_notebook:
             number_of_page += 1
         self.list_with_pages[0].is_active = True
 
-    def draw(self, win):
+    def draw(self, win, dict_with_unit):
     # draw the object on the screen
         for page in self.list_with_pages:
             page.draw(win)
@@ -165,12 +186,109 @@ class Base_notebook:
     def press_right(self, *args):
     # handle actions after right button is pressed
         pass
-    
+
 
 # ======================================================================
 
 
-class Base_slide_button:
+class Building_queue(Base_window):
+    def __init__(self, id):
+        # basic variables
+        self.to_remove = False
+        # basic data about unit
+        self.id = id  
+        # variables for managing the graphics window    
+        # vertically
+        bottom_margin = 25
+        self.field_size = 75
+        origin_vert_pos = WIN_HEIGHT - bottom_margin - self.field_size 
+        # horizontally
+        self.queue_slots = 10
+        window_width = self.queue_slots * self.field_size
+        origin_horz_pos = (WIN_WIDTH - window_width) // 2
+        self.window_rect = pygame.Rect(origin_horz_pos, origin_vert_pos, window_width, self.field_size)
+
+    def draw(self, win, dict_with_units):
+    # draw windows with unit's queue
+        if self.id in dict_with_units:
+            if dict_with_units[self.id].is_selected:
+                # background
+                pygame.draw.rect(win, BLACK, self.window_rect)
+                # lines of title bar
+                pygame.draw.line(win, LIME, self.window_rect.topleft, self.window_rect.topright, 3) # top
+                pygame.draw.line(win, LIME, self.window_rect.bottomright, self.window_rect.bottomleft, 3) # bottom
+                origin = self.window_rect.topleft
+                for i in range(self.queue_slots + 1):         
+                    pygame.draw.line(win, LIME, (origin[0] + i * self.field_size, origin[1]), (origin[0] + i * self.field_size, origin[1] + self.field_size), 3)      
+            else:
+                self.to_remove = True
+        else:
+            self.to_remove = True
+
+
+# ======================================================================
+
+
+class Info_about_unit(Base_window):
+    def __init__(self, id, dict_with_units):
+        # basic variables
+        self.to_remove = False
+        # basic data about unit
+        self.id = id  
+        self.name = dict_with_units[id].name
+        self.base_HP = dict_with_units[id].base_HP
+        self.player_id = dict_with_units[id].player_id
+        self.team_id = dict_with_units[id].team_id
+        # variables for managing the graphics window
+        window_height = 100
+        self.window_rect = pygame.Rect(10, WIN_HEIGHT - window_height - 10, 300, window_height)
+        # fonts
+        self.font_arial_20 = pygame.font.SysFont('arial', 20)
+        self.name_text = self.font_arial_20.render(self.name, True, LIME)
+        self.id_text = self.font_arial_20.render("#" + str(self.id), True, GRAY)
+
+    def draw(self, win, dict_with_units):
+    # draw windows with unit's infos and controls
+        if self.id in dict_with_units:
+            if dict_with_units[self.id].is_selected:
+                # background
+                pygame.draw.rect(win, BLACK, self.window_rect)
+                # lines of title bar
+                pygame.draw.line(win, LIME, self.window_rect.bottomleft, self.window_rect.topleft, 3) # left
+                pygame.draw.line(win, LIME, self.window_rect.topleft, self.window_rect.topright, 3) # top
+                pygame.draw.line(win, LIME, self.window_rect.topright, self.window_rect.bottomright, 3) # right
+                pygame.draw.line(win, LIME, self.window_rect.bottomright, self.window_rect.bottomleft, 3) # bottom
+                # player circle
+                pygame.draw.circle(win, player_color(self.player_id), [self.window_rect.topleft[0] + 18, self.window_rect.topleft[1] + 21], 8, 0)
+                # infos about unit
+                win.blit(self.name_text, [self.window_rect.topleft[0] + 30, self.window_rect.topleft[1] + 10])
+                if dict_with_units[self.id].is_alive:
+                    percentage_of_HP = dict_with_units[self.id].HP / self.base_HP
+                    if percentage_of_HP > 0.5: color = LIME
+                    elif percentage_of_HP > 0.25: color = YELLOW
+                    else: color = RED
+                    HP_text = self.font_arial_20.render("HP: " + str(dict_with_units[self.id].HP) + " / " + str(self.base_HP), True, color)          
+                else:
+                    HP_text = self.font_arial_20.render("Unit is dead", True, GRAY)  
+                win.blit(HP_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 30])
+                win.blit(self.id_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 50])
+            else:
+                self.to_remove = True
+        else:
+            self.to_remove = True
+
+    # def press_left(self, *args):
+    # # handle actions after left button is pressed
+    #     pass
+
+    # def press_right(self, *args):
+    # # handle actions after right button is pressed
+    #     pass
+
+# ======================================================================
+
+
+class Base_slide_button(Base_window):
     path = BUTTON_1_PATH
 
     def __init__(self, screen_coord, world_coord):
@@ -193,14 +311,14 @@ class Base_slide_button:
         self.frame_width = sprite_rect.width
         self.frame_height = sprite_rect.height
 
-    def draw(self, win):
+    def draw(self, win, dict_with_unit):
     # draw the object on the screen
         new_rect = self.sprite.get_rect(center = self.screen_coord)
         win.blit(self.sprite, new_rect.topleft)
 
-    def press_left(self, *args):
-    # handle actions after left button is pressed
-        pass
+    # def press_left(self, *args):
+    # # handle actions after left button is pressed
+    #     pass
 
     def press_right(self, dict_with_units, press_coord, is_ctrl_down):
     # handle actions after right button is pressed

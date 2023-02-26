@@ -285,18 +285,19 @@ def run():
 # draw UI
         # draw selection
         if left_mouse_button_down: # and not len(LIST_WITH_WINDOWS):
-            number_of_selected_units = unit_selection(WIN, DICT_WITH_UNITS, left_mouse_button_coord, pygame.mouse.get_pos(), OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE, -1)
+            # number_of_selected_units = 
+            unit_selection(WIN, DICT_WITH_UNITS, left_mouse_button_coord, pygame.mouse.get_pos(), OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE, -1)
         else:
             make_windows_from_dict_with_units(DICT_WITH_UNITS, LIST_WITH_WINDOWS)
 
         # draw UI windows
         for ui_win in LIST_WITH_WINDOWS:
-            ui_win.draw(WIN)
+            ui_win.draw(WIN, DICT_WITH_UNITS)
 
-        # draw units windows
-        if number_of_selected_units == 1:
-            for unit in DICT_WITH_UNITS.values():
-                unit.draw_windows(WIN)
+        # # draw units windows
+        # if number_of_selected_units == 1:
+        #     for unit in DICT_WITH_UNITS.values():
+        #         unit.draw_windows(WIN)
 
         # draw FPS     
         text = FONT_ARIAL_20.render("FPS: %.2f" % CURRENT_FPS, True, LIME)

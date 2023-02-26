@@ -13,6 +13,11 @@
 v0.10 - UI stage I
 
 ### Last changes:
+v0.10.7 - 26.02.2023
+
+* Changes to the way window with infos about unit is stored;
+* Added building queue window.
+
 v0.10.6 - 25.02.2023
 
 * Changes to the way windows are stored and handled.
@@ -20,11 +25,6 @@ v0.10.6 - 25.02.2023
 v0.10.5 - 25.02.2023
 
 * Added ID number to units. 
-
-v0.10.4 - 23.02.2023
-
-* All units are now stored in dictionary;
-* Small fix in slide button.
 
 <p align="center">
   <img src="screens/screenshot2_20230115.png" alt="Tomasz Empire 20022 - Fleet">

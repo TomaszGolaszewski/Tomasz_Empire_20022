@@ -1,6 +1,11 @@
 Changelog
 ======
 
+v0.10.7 - 26.02.2023
+----
+* Changes to the way window with infos about unit is stored;
+* Added building queue window.
+
 v0.10.6 - 25.02.2023
 ----
 * Changes to the way windows are stored and handled.

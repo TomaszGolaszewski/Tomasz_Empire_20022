@@ -44,14 +44,6 @@ class Unit:
         # self.visibility_after_death = FRAMERATE * 5
         self.is_on_screen = False
 
-        # variables for managing the graphics window
-        window_height = 100
-        self.window_rect = pygame.Rect(10, WIN_HEIGHT - window_height - 10, 300, window_height)
-        # fonts
-        self.font_arial_20 = pygame.font.SysFont('arial', 20)
-        self.name_text = self.font_arial_20.render(self.name, True, LIME)
-        self.id_text = self.font_arial_20.render("#" + str(self.id), True, GRAY)
-
         # initialization of the weapon
         self.Weapons = []
         for weapon_class in self.Weapon_classes:
@@ -142,30 +134,6 @@ class Unit:
             pygame.draw.line(win, color, 
                         world2screen(start_point, offset_x, offset_y, scale), 
                         world2screen([start_point[0] + 24 * percentage_of_HP * scale, start_point[1]], offset_x, offset_y, scale), int(3 * scale))
-
-    def draw_windows(self, win):
-    # draw windows with unit's infos and controls
-        if self.is_selected:
-            # background
-            pygame.draw.rect(win, BLACK, self.window_rect)
-            # lines of title bar
-            pygame.draw.line(win, LIME, self.window_rect.bottomleft, self.window_rect.topleft, 3) # left
-            pygame.draw.line(win, LIME, self.window_rect.topleft, self.window_rect.topright, 3) # top
-            pygame.draw.line(win, LIME, self.window_rect.topright, self.window_rect.bottomright, 3) # right
-            pygame.draw.line(win, LIME, self.window_rect.bottomright, self.window_rect.bottomleft, 3) # bottom
-
-            # infos about unit
-            win.blit(self.name_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 10])
-            if self.is_alive:
-                percentage_of_HP = self.HP / self.base_HP
-                if percentage_of_HP > 0.5: color = LIME
-                elif percentage_of_HP > 0.25: color = YELLOW
-                else: color = RED
-                HP_text = self.font_arial_20.render(str(self.HP) + " / " + str(self.base_HP), True, color)          
-            else:
-                HP_text = self.font_arial_20.render("Unit is dead", True, GRAY)  
-            win.blit(HP_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 30])
-            win.blit(self.id_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 50])
 
     def run(self, map, dict_with_units, list_with_bullets):
     # life-cycle of the unit     
