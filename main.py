@@ -59,6 +59,7 @@ def run():
     SHOW_HP_BARS = True
 
     left_mouse_button_down = False
+    right_mouse_button_down = False
     number_of_selected_units = 0
 
     # initialize the game
@@ -133,7 +134,13 @@ def run():
                 # 1 - left click
                 if event.button == 1:
                     left_mouse_button_coord = pygame.mouse.get_pos()
-                    left_mouse_button_down = True
+                    left_mouse_button_down = False
+                    
+                    # press UI windows (based on notebooks)
+                    for ui_win in LIST_WITH_WINDOWS:
+                        left_mouse_button_down |= ui_win.press_left(DICT_WITH_UNITS, left_mouse_button_coord)
+
+                    left_mouse_button_down = not left_mouse_button_down
 
                 # 3 - right click
                 if event.button == 3:
@@ -146,10 +153,6 @@ def run():
                 # 1 - left click
                 if event.button == 1:
                     left_mouse_button_down = False
-
-                    # press UI windows (based on notebooks)
-                    for ui_win in LIST_WITH_WINDOWS:
-                        ui_win.press_left(DICT_WITH_UNITS, pygame.mouse.get_pos())
 
                 # 2 - middle click
                 if event.button == 2:

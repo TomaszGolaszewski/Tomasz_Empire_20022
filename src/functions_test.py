@@ -112,9 +112,9 @@ def make_test_units():
         id += 1
 
     # test buildings
-    dict_with_units[id] = Building(id, [2200, 1000], math.pi, 3, 3)
+    dict_with_units[id] = Factory(id, [2200, 1000], math.pi, 3, 3)
     id += 1
-    dict_with_units[id] = Building(id, [2200, 2500], math.pi, 2, 2)
+    dict_with_units[id] = Factory(id, [2200, 2500], math.pi, 2, 2)
     id += 1
 
     return dict_with_units

@@ -18,11 +18,13 @@ class Base_window:
 
     def press_left(self, *args):
     # handle actions after left button is pressed
-        pass
+    # return True if pressed and False if not
+        return False
 
     def press_right(self, *args):
     # handle actions after right button is pressed
-        pass
+    # return True if pressed and False if not
+        return False
 
 
 # ======================================================================
@@ -158,34 +160,53 @@ class Base_notebook:
             number_of_page += 1
         self.list_with_pages[0].is_active = True
 
-    def draw(self, win, dict_with_unit):
+    def draw(self, win, dict_with_units):
     # draw the object on the screen
-        for page in self.list_with_pages:
-            page.draw(win)
+        if self.id in dict_with_units:
+            if dict_with_units[self.id].is_selected:
+                for page in self.list_with_pages:
+                    page.draw(win)
+            else:
+                self.to_remove = True
+        else:
+            self.to_remove = True
 
     def press_left(self, list_with_units, press_coord):
     # handle actions after left button is pressed
+    # return True if pressed and False if not
+
+        # check if the notebook has been pressed at all:
         was_pressed = False
         for page in self.list_with_pages:
-            if was_pressed: page.is_active = False # previous page was activated
             if page.is_active:
                 if page.is_title_pressed(press_coord): # title of active tab is pressed
                     was_pressed = True
                 elif page.is_page_pressed(press_coord): # page (body) is pressed
                     was_pressed = True
-                    page.press_left(list_with_units, press_coord)
-                else: # nothing on this tab has been pressed
-                    page.is_active = False
             else:
                 if page.is_title_pressed(press_coord): # title of inactive tab is pressed
                     was_pressed = True
-                    page.is_active = True
-
-        if not was_pressed: self.to_remove = True # nothing on this notebook has been pressed
+        # if the notebook has been pressed do the action:
+        if was_pressed:
+            for page in self.list_with_pages:
+                if page.is_active:
+                    if page.is_title_pressed(press_coord): # title of active tab is pressed
+                        pass
+                    elif page.is_page_pressed(press_coord): # page (body) is pressed
+                        page.press_left(list_with_units, press_coord)
+                    else: # nothing on this tab has been pressed
+                        page.is_active = False
+                else:
+                    if page.is_title_pressed(press_coord): # title of inactive tab is pressed
+                        page.is_active = True
+            return True
+        # if not pressed return False
+        else: return False
 
     def press_right(self, *args):
     # handle actions after right button is pressed
-        pass
+    # return True if pressed and False if not
+        return False
 
 
 # ======================================================================
@@ -219,11 +240,31 @@ class Building_queue(Base_window):
                 pygame.draw.line(win, LIME, self.window_rect.bottomright, self.window_rect.bottomleft, 3) # bottom
                 origin = self.window_rect.topleft
                 for i in range(self.queue_slots + 1):         
-                    pygame.draw.line(win, LIME, (origin[0] + i * self.field_size, origin[1]), (origin[0] + i * self.field_size, origin[1] + self.field_size), 3)      
+                    pygame.draw.line(win, LIME, (origin[0] + i * self.field_size, origin[1]), (origin[0] + i * self.field_size, origin[1] + self.field_size), 3)  
+
+                # draw queue
+                len_of_queue = len(dict_with_units[self.id].list_building_queue)
+                for no_of_slot in range(len_of_queue):
+                    coord_on_screen = [self.window_rect.left + no_of_slot * self.field_size + self.field_size // 2, self.window_rect.center[1]]
+                    dict_with_units[self.id].list_building_queue[no_of_slot].draw_level_indicator(win, coord_on_screen)
+                    dict_with_units[self.id].list_building_queue[no_of_slot].draw_unit_type_icon(win, coord_on_screen)
+                    dict_with_units[self.id].list_building_queue[no_of_slot].draw_unit_application_icon(win, coord_on_screen)
+
             else:
                 self.to_remove = True
         else:
             self.to_remove = True
+
+    def press_left(self, dict_with_units, press_coord):
+    # handle actions after left button is pressed
+    # return True if pressed and False if not
+        if self.window_rect.collidepoint(press_coord): 
+            no_of_slot = (press_coord[0] - self.window_rect.left) // self.field_size
+            if no_of_slot < len(dict_with_units[self.id].list_building_queue):
+                # dict_with_units[self.id].list_building_queue.pop(no_of_slot)
+                del dict_with_units[self.id].list_building_queue[no_of_slot]
+            return True
+        else: return False
 
 
 # ======================================================================
@@ -277,13 +318,6 @@ class Info_about_unit(Base_window):
         else:
             self.to_remove = True
 
-    # def press_left(self, *args):
-    # # handle actions after left button is pressed
-    #     pass
-
-    # def press_right(self, *args):
-    # # handle actions after right button is pressed
-    #     pass
 
 # ======================================================================
 
@@ -316,10 +350,6 @@ class Base_slide_button(Base_window):
         new_rect = self.sprite.get_rect(center = self.screen_coord)
         win.blit(self.sprite, new_rect.topleft)
 
-    # def press_left(self, *args):
-    # # handle actions after left button is pressed
-    #     pass
-
     def press_right(self, dict_with_units, press_coord, is_ctrl_down):
     # handle actions after right button is pressed
         # check if center is pressed
@@ -338,3 +368,5 @@ class Base_slide_button(Base_window):
                 set_new_target_move(dict_with_units, self.world_coord, is_ctrl_down)
         print()
         self.to_remove = True
+    # return True if pressed and False if not
+        return False

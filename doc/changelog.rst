@@ -1,6 +1,12 @@
 Changelog
 ======
 
+v0.10.8 - 28.02.2023
+----
+* More changes and fixes to the windows handling methods;
+* Queue window now is showing building queue;
+* Added possibility to delete units from the queue.
+
 v0.10.7 - 26.02.2023
 ----
 * Changes to the way window with infos about unit is stored;

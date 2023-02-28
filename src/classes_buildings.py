@@ -68,3 +68,26 @@ class Building:
     # function checks if the unit is hit - point is inside hitbox
     # return True if yes
         return False
+    
+
+# ======================================================================
+
+
+class Factory(Building):
+    name = "Factory"
+    unit_type = "building"
+    unit_level = 0
+
+    def __init__(self, id, coord, angle, player_id, team_id):
+    # initialization of the building
+        Building.__init__(self, id, coord, angle, player_id, team_id)
+        self.list_building_queue = [
+            Light_tank(0, coord, angle, player_id, team_id),
+            Light_tank(0, coord, angle, player_id, team_id),
+            Main_battle_tank(0, coord, angle, player_id, team_id),
+            Main_battle_tank(0, coord, angle, player_id, team_id),
+            Spider_tank(0, coord, angle, player_id, team_id),
+            Spider_tank(0, coord, angle, player_id, team_id),
+            Heavy_tank(0, coord, angle, player_id, team_id),
+            Heavy_artillery(0, coord, angle, player_id, team_id)
+        ]
