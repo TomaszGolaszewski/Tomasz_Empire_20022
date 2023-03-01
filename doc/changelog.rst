@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.10.9 - 01.03.2023
+----
+* Added more technical data to window with infos about unit.
+
 v0.10.8 - 28.02.2023
 ----
 * More changes and fixes to the windows handling methods;

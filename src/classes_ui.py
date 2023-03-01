@@ -281,12 +281,20 @@ class Info_about_unit(Base_window):
         self.player_id = dict_with_units[id].player_id
         self.team_id = dict_with_units[id].team_id
         # variables for managing the graphics window
-        window_height = 100
-        self.window_rect = pygame.Rect(10, WIN_HEIGHT - window_height - 10, 300, window_height)
+        window_height = 190
+        window_width = 330
+        self.window_rect = pygame.Rect(10, WIN_HEIGHT - window_height - 10, window_width, window_height)
         # fonts
         self.font_arial_20 = pygame.font.SysFont('arial', 20)
+        self.font_arial_15 = pygame.font.SysFont('arial', 15)
+        # fixed textes
         self.name_text = self.font_arial_20.render(self.name, True, LIME)
         self.id_text = self.font_arial_20.render("#" + str(self.id), True, GRAY)
+        self.price_text = self.font_arial_15.render("Cost:  " + str(dict_with_units[id].price), True, GRAY)
+        self.speed_text = self.font_arial_15.render("Speed:  " + str(dict_with_units[id].v_max), True, GRAY)
+        self.weapons_data_texts = [self.font_arial_15.render("Weapons:", True, GRAY)]
+        for weapon in dict_with_units[id].Weapons:
+            self.weapons_data_texts.append(self.font_arial_15.render("-" + weapon.description, True, GRAY))
 
     def draw(self, win, dict_with_units):
     # draw windows with unit's infos and controls
@@ -299,9 +307,14 @@ class Info_about_unit(Base_window):
                 pygame.draw.line(win, LIME, self.window_rect.topleft, self.window_rect.topright, 3) # top
                 pygame.draw.line(win, LIME, self.window_rect.topright, self.window_rect.bottomright, 3) # right
                 pygame.draw.line(win, LIME, self.window_rect.bottomright, self.window_rect.bottomleft, 3) # bottom
-                # player circle
-                pygame.draw.circle(win, player_color(self.player_id), [self.window_rect.topleft[0] + 18, self.window_rect.topleft[1] + 21], 8, 0)
+                # unit icon
+                # pygame.draw.circle(win, player_color(self.player_id), [self.window_rect.topleft[0] + 18, self.window_rect.topleft[1] + 21], 8, 0)
+                coord_on_screen = [self.window_rect.topleft[0] + 18, self.window_rect.topleft[1] + 21]
+                dict_with_units[self.id].draw_level_indicator(win, coord_on_screen)
+                dict_with_units[self.id].draw_unit_type_icon(win, coord_on_screen)
+                dict_with_units[self.id].draw_unit_application_icon(win, coord_on_screen)
                 # infos about unit
+                # column I
                 win.blit(self.name_text, [self.window_rect.topleft[0] + 30, self.window_rect.topleft[1] + 10])
                 if dict_with_units[self.id].is_alive:
                     percentage_of_HP = dict_with_units[self.id].HP / self.base_HP
@@ -313,6 +326,14 @@ class Info_about_unit(Base_window):
                     HP_text = self.font_arial_20.render("Unit is dead", True, GRAY)  
                 win.blit(HP_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 30])
                 win.blit(self.id_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 50])
+                win.blit(self.price_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 80])
+                win.blit(self.speed_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 95])
+                # column II
+                i = 0
+                for weapon_data_text in self.weapons_data_texts:
+                    win.blit(weapon_data_text, [self.window_rect.topleft[0] + 170, self.window_rect.topleft[1] + 10 + 15*i])
+                    i += 1
+
             else:
                 self.to_remove = True
         else:

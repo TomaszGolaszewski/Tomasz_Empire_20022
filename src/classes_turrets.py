@@ -22,6 +22,7 @@ class Turret(Base_object):
     barrel_length = 10
 
     power = 100
+    description = "Turret"
 
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE
@@ -151,6 +152,7 @@ class Light_cannon(Turret):
     barrel_length = 15
 
     power = 40
+    description = "Cannon: 40dps (40p1s)"
 
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE
@@ -176,6 +178,7 @@ class Medium_cannon(Turret):
     barrel_length = 25
 
     power = 80
+    description = "Cannon: 80dps (80p1s)"
 
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE
@@ -200,6 +203,7 @@ class Heavy_cannon(Turret):
     barrel_length = 30
 
     power = 150
+    description = "Cannon: 75dps (150p2s)"
 
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE * 2
@@ -229,6 +233,7 @@ class Side_cannon(Turret):
     barrel_length = 25
 
     power = 80
+    description = "SideCannon: 80dps (80p1s)"
 
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE
@@ -295,6 +300,7 @@ class Medium_naval_cannon(Side_cannon):
     barrel_length = 32
 
     power = 150
+    description = "Naval: 150dps (2x150p2s)"
 
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE * 2
@@ -332,6 +338,7 @@ class Heavy_naval_cannon(Side_cannon):
     barrel_length = 42
 
     power = 250
+    description = "Naval: 250dps (3x250p3s)"
 
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE * 3
@@ -375,6 +382,7 @@ class Minigun(Turret):
     barrel_length = 15
 
     power = 10
+    description = "Minigun: 150dps (10x15/s)"
 
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE // 15
@@ -401,6 +409,7 @@ class Plane_minigun(Turret):
     barrel_length = 15
 
     power = 10
+    description = "Minigun: 100dps (10x10/s)"
 
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE // 10
@@ -429,6 +438,7 @@ class Plane_fixed_gun(Turret):
     barrel_length = 15
 
     power = 20
+    description = "Minigun: 400dps (20x20/s)"
 
     countdown_time_to_search = 1
     countdown_time_to_shot = FRAMERATE // 20
@@ -495,6 +505,7 @@ class Bomb_dispenser(Plane_fixed_gun):
     barrel_length = 0
 
     power = 100
+    description = "Bomb: 500dps (5x100ps)"
     drift_steps = 2
 
     countdown_time_to_search = FRAMERATE // 20
@@ -523,6 +534,7 @@ class Bomb_dispenser(Plane_fixed_gun):
 class Advanced_bomb_dispenser(Bomb_dispenser):
     max_bullet_range = 270
     power = 100
+    description = "Bomb: 1500dps (15x100ps)"
     number_of_bombs = 15
     drift_steps = 4
     search_radius = 10
@@ -540,6 +552,7 @@ class ASM_Launcher(Turret):
     search_radius = 10
     max_bullet_range = 1500
     power = 100
+    description = "ASM: 100dps (3x100p3s)"
 
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE * 3
@@ -596,6 +609,7 @@ class ASM_Launcher(Turret):
 
 
 class Empty_slot(Turret): 
+    description = ""
     def draw(self, win, offset_x, offset_y, scale): pass
     def draw_extra_data(self, win, offset_x, offset_y, scale): pass
     def run(self, list_with_units, list_with_bullets): pass

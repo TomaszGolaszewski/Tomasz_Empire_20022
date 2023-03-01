@@ -19,6 +19,7 @@ class Unit:
     name = "Unit"
     unit_type = "none"
     unit_level = 0
+    price = 100
     visibility_after_death = FRAMERATE * 10
 
     def __init__(self, id, coord, angle, player_id, team_id):
