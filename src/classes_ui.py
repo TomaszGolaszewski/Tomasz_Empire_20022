@@ -31,13 +31,13 @@ class Base_window:
 
 
 class Base_page:
-    def __init__(self, id, lvl_of_page, number_of_page, name):
+    name = "temp"
+    def __init__(self, id, lvl_of_page, number_of_page):
     # initialization of the object
 
         # basic variables
         self.id = id
         self.is_active = False
-        self.name = name
 
         # variables for managing the graphics window
         # horizontally
@@ -99,17 +99,49 @@ class Base_page:
         else: return False
         
 
+class Page_land_T1(Base_page):
+    name = "T1"
+
+class Page_land_T2(Base_page):
+    name = "T2"
+
+class Page_land_T3(Base_page):
+    name = "T3"
+
+class Page_air_T1(Base_page):
+    name = "T1"
+
+class Page_air_T2(Base_page):
+    name = "T2"
+
+class Page_air_T3(Base_page):
+    name = "T3"
+
+class Page_navy_T1(Base_page):
+    name = "T1"
+
+class Page_navy_T2(Base_page):
+    name = "T2"
+
+class Page_navy_T3(Base_page):
+    name = "T3"
+
+class Page_factory(Base_page):
+    name = "Upgrade"
+
+
 class Page_with_notebook(Base_page):
+    name = "temp note"
     Pages_class = [Base_page, Base_page]
 
-    def __init__(self, id, lvl_of_page, number_of_page, name):
-        Base_page.__init__(self, id, lvl_of_page, number_of_page, name)
+    def __init__(self, id, lvl_of_page, number_of_page):
+        Base_page.__init__(self, id, lvl_of_page, number_of_page)
 
         # initialization of tabs
         self.list_with_pages = []
         number_of_page = 0
         for page_class in self.Pages_class:
-            self.list_with_pages.append(page_class(id, lvl_of_page + 1, number_of_page, 'temp'))
+            self.list_with_pages.append(page_class(id, lvl_of_page + 1, number_of_page))
             number_of_page += 1
         self.list_with_pages[0].is_active = True
 
@@ -139,6 +171,18 @@ class Page_with_notebook(Base_page):
                 page.press_left(dict_with_units, press_coord)
 
 
+class Page_land(Page_with_notebook):
+    name = "Land"
+    Pages_class = [Page_land_T1, Page_land_T2, Page_land_T3]
+
+class Page_air(Page_with_notebook):
+    name = "Air"
+    Pages_class = [Page_air_T1, Page_air_T2, Page_air_T3]
+
+class Page_navy(Page_with_notebook):
+    name = "Navy"
+    Pages_class = [Page_navy_T1, Page_navy_T2, Page_navy_T3]
+
 # ======================================================================
 
 
@@ -156,7 +200,7 @@ class Base_notebook:
         self.list_with_pages = []
         number_of_page = 0
         for page_class in self.Pages_class:
-            self.list_with_pages.append(page_class(id, 0, number_of_page, 'temp_name'))
+            self.list_with_pages.append(page_class(id, 0, number_of_page))
             number_of_page += 1
         self.list_with_pages[0].is_active = True
 
@@ -207,6 +251,10 @@ class Base_notebook:
     # handle actions after right button is pressed
     # return True if pressed and False if not
         return False
+
+
+class Notebook_universal_factory(Base_notebook):
+    Pages_class = [Page_factory, Page_land, Page_air, Page_navy]
 
 
 # ======================================================================
@@ -338,6 +386,60 @@ class Info_about_unit(Base_window):
                 self.to_remove = True
         else:
             self.to_remove = True
+
+
+# ======================================================================
+
+
+class Shop_unit_label: #(Base_window):
+    def __init__(self, unit):
+        # basic data about unit
+        self.Unit = unit 
+        self.name = unit.name
+        self.price = unit.price
+        self.base_HP = unit.base_HP
+        self.player_id = unit.player_id
+        self.team_id = unit.team_id
+        # variables for managing the graphics window
+        window_height = 190
+        window_width = 330
+        self.window_rect = pygame.Rect(10, WIN_HEIGHT - window_height - 10, window_width, window_height)
+        # fonts
+        self.font_arial_20 = pygame.font.SysFont('arial', 20)
+        self.font_arial_15 = pygame.font.SysFont('arial', 15)
+        # fixed textes
+        self.name_text = self.font_arial_20.render(self.name, True, LIME)
+        self.price_text = self.font_arial_15.render("Cost:  " + str(unit.price), True, GRAY)
+        self.HP_text = self.font_arial_15.render("HP:  " + str(unit.base_HP), True, GRAY)
+        self.speed_text = self.font_arial_15.render("Speed:  " + str(unit.v_max), True, GRAY)
+        self.weapons_data_texts = [self.font_arial_15.render("Weapons:", True, GRAY)]
+        for weapon in unit.Weapons:
+            self.weapons_data_texts.append(self.font_arial_15.render("-" + weapon.description, True, GRAY))
+
+    def draw(self, win):
+    # draw windows with unit's infos and controls
+
+        # lines of title bar
+        # pygame.draw.line(win, LIME, self.window_rect.bottomleft, self.window_rect.topleft, 3) # left
+        # pygame.draw.line(win, LIME, self.window_rect.topleft, self.window_rect.topright, 3) # top
+        pygame.draw.line(win, LIME, self.window_rect.topright, self.window_rect.bottomright, 3) # right
+        # pygame.draw.line(win, LIME, self.window_rect.bottomright, self.window_rect.bottomleft, 3) # bottom
+        # unit icon
+        coord_on_screen = [self.window_rect.topleft[0] + 18, self.window_rect.topleft[1] + 21]
+        self.Unit.draw_level_indicator(win, coord_on_screen)
+        self.Unit.draw_unit_type_icon(win, coord_on_screen)
+        self.Unit.draw_unit_application_icon(win, coord_on_screen)
+        # infos about unit
+        # column I
+        win.blit(self.name_text, [self.window_rect.topleft[0] + 30, self.window_rect.topleft[1] + 10])
+        win.blit(self.price_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 80])
+        win.blit(self.HP_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 30])
+        win.blit(self.speed_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 95])
+        # column II
+        i = 0
+        for weapon_data_text in self.weapons_data_texts:
+            win.blit(weapon_data_text, [self.window_rect.topleft[0] + 170, self.window_rect.topleft[1] + 10 + 15*i])
+            i += 1
 
 
 # ======================================================================

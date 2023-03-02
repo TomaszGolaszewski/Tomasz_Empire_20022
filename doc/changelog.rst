@@ -1,6 +1,11 @@
 Changelog
 ======
 
+v0.10.10 - 02.03.2023
+----
+* Preparing notebooks for future factory management;
+* Added class Shop_unit_label.
+
 v0.10.9 - 01.03.2023
 ----
 * Added more technical data to window with infos about unit.

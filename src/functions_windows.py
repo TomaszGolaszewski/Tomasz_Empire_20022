@@ -12,7 +12,8 @@ def make_windows_from_dict_with_units(dict_with_units, list_with_windows):
             current_unit_id = unit_id
 
     if number_of_selected_units == 1 and not len(list_with_windows) and dict_with_units[current_unit_id].unit_type == "building":
-        list_with_windows.append(Base_notebook(current_unit_id))
+        # list_with_windows.append(Base_notebook(current_unit_id))
+        list_with_windows.append(Notebook_universal_factory(current_unit_id))
         list_with_windows.append(Building_queue(current_unit_id))
 
     if number_of_selected_units == 1 and not len(list_with_windows) and dict_with_units[current_unit_id].unit_type != "building":
