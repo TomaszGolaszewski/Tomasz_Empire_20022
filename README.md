@@ -13,6 +13,12 @@
 v0.10 - UI stage I
 
 ### Last changes:
+v0.10.11 - 03.03.2023
+
+* Fixes in class Shop_unit_label;
+* Factory management notebooks completed;
+* Added possibility to add units to the queue.
+
 v0.10.10 - 02.03.2023
 
 * Preparing notebooks for future factory management;
@@ -21,12 +27,6 @@ v0.10.10 - 02.03.2023
 v0.10.9 - 01.03.2023
 
 * Added more technical data to window with infos about unit.
-
-v0.10.8 - 28.02.2023
-
-* More changes and fixes to the windows handling methods;
-* Queue window now is showing building queue;
-* Added possibility to delete units from the queue.
 
 <p align="center">
   <img src="screens/screenshot2_20230115.png" alt="Tomasz Empire 20022 - Fleet">

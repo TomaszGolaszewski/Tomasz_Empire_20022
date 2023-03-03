@@ -84,10 +84,7 @@ class Factory(Building):
         self.list_building_queue = [
             Light_tank(0, coord, angle, player_id, team_id),
             Light_tank(0, coord, angle, player_id, team_id),
+            Light_tank(0, coord, angle, player_id, team_id),
+            Light_tank(0, coord, angle, player_id, team_id),
             Main_battle_tank(0, coord, angle, player_id, team_id),
-            Main_battle_tank(0, coord, angle, player_id, team_id),
-            Spider_tank(0, coord, angle, player_id, team_id),
-            Spider_tank(0, coord, angle, player_id, team_id),
-            Heavy_tank(0, coord, angle, player_id, team_id),
-            Heavy_artillery(0, coord, angle, player_id, team_id)
         ]

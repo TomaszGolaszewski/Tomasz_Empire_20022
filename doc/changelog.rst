@@ -1,6 +1,12 @@
 Changelog
 ======
 
+v0.10.11 - 03.03.2023
+----
+* Fixes in class Shop_unit_label;
+* Factory management notebooks completed;
+* Added possibility to add units to the queue.
+
 v0.10.10 - 02.03.2023
 ----
 * Preparing notebooks for future factory management;
