@@ -80,6 +80,17 @@ class Factory(Building):
         self.base_BP = 100
         self.BP = 0
         self.current_production_force = 1
+        self.target_for_units = [move_point(coord, 200, angle)]
+
+    def draw_extra_data(self, win, offset_x, offset_y, scale):
+    # draw extra data about the building on the screen
+        # target
+        if len(self.target_for_units):
+            last_target = self.coord
+            for target in self.target_for_units:
+                pygame.draw.line(win, BLUE, world2screen(last_target, offset_x, offset_y, scale), world2screen(target, offset_x, offset_y, scale))
+                pygame.draw.circle(win, BLUE, world2screen(target, offset_x, offset_y, scale), 10*scale, 1)
+                last_target = target
 
     def run(self, map, dict_with_game_state, dict_with_units, list_with_bullets):
     # life-cycle of the building
@@ -90,11 +101,9 @@ class Factory(Building):
                 # make new unit
                 new_id = dict_with_game_state["lowest_free_id"]
                 dict_with_game_state["lowest_free_id"] += 1
-                dict_with_game_state["dict_with_new_units"][new_id] = self.list_building_queue[0]
-                # print(type(self.list_building_queue[0]))
-                # print(self.list_building_queue[0].__class__) #.__name__))
-                dict_with_game_state["dict_with_new_units"][new_id].set_new_id(new_id)
-                dict_with_game_state["dict_with_new_units"][new_id].set_new_target((0,0))
+                dict_with_game_state["dict_with_new_units"][new_id] = self.list_building_queue[0].__class__(new_id, self.coord, self.angle, self.player_id, self.team_id, self.id)
+                for target in self.target_for_units:
+                    dict_with_game_state["dict_with_new_units"][new_id].set_new_target(target)
                 self.remove_unit_from_queue(0)
 
     def start_production(self):
@@ -120,3 +129,11 @@ class Factory(Building):
                 if not len(self.list_building_queue): # when queue is empty
                     self.production_is_on = False
                     self.BP = 0
+
+
+class Land_factory(Factory):
+    name = "Land factory"
+
+class Navy_factory(Factory):
+    name = "Navy factory"
+

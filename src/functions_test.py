@@ -85,8 +85,8 @@ def make_test_units(dict_with_game_state, dict_with_units):
     id += 1
     dict_with_units[id] = Destroyer(id, [1900, 510], math.pi, 3, 3)
     id += 1
-    dict_with_units[id] = Destroyer(id, [1900, 640], math.pi, 3, 3)
-    id += 1
+    # dict_with_units[id] = Destroyer(id, [1900, 640], math.pi, 3, 3)
+    # id += 1
     dict_with_units[id] = Battleship(id, [1700, 200], math.pi, 3, 3)
     id += 1
 
@@ -103,20 +103,22 @@ def make_test_units(dict_with_game_state, dict_with_units):
     dict_with_units[id] = Strategic_bomber(id, [2300, 450], math.pi, 3, 3)
     id += 1
 
-    for i in range(10):
-        dict_with_units[id] = Bomber(id, [2500, 100 + 50*i], math.pi, 3, 3)
-        id += 1
+    # for i in range(10):
+    #     dict_with_units[id] = Bomber(id, [2500, 100 + 50*i], math.pi, 3, 3)
+    #     id += 1
 
-    for i in range(10):
-        dict_with_units[id] = Strategic_bomber(id, [2600, 100 + 70*i], math.pi, 3, 3)
-        id += 1
+    # for i in range(10):
+    #     dict_with_units[id] = Strategic_bomber(id, [2600, 100 + 70*i], math.pi, 3, 3)
+    #     id += 1
 
     # test buildings
-    dict_with_units[id] = Factory(id, [2200, 1000], math.pi, 3, 3) # red
+    dict_with_units[id] = Land_factory(id, [2200, 1000], math.pi, 3, 3) # red land
     id += 1
-    dict_with_units[id] = Factory(id, [2650, 1000], math.pi, 3, 3) # shelf
+    dict_with_units[id] = Navy_factory(id, [2650, 1000], 0, 3, 3) # red shelf
     id += 1
-    dict_with_units[id] = Factory(id, [2200, 2500], math.pi, 2, 2) # green
+    dict_with_units[id] = Land_factory(id, [2200, 2500], math.pi, 2, 2) # green land
+    id += 1
+    dict_with_units[id] = Navy_factory(id, [2650, 2700], 0, 2, 2) # green shelf
     id += 1
 
     dict_with_units[id] = Small_AA_ship(id, [2800, 200], math.pi, 3, 3)
@@ -124,7 +126,6 @@ def make_test_units(dict_with_game_state, dict_with_units):
 
     dict_with_game_state["lowest_free_id"] = id
 
-    # return dict_with_units
 
 # def make_test_units_2():
 # # make test units

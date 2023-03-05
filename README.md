@@ -13,6 +13,10 @@
 v0.10 - UI stage I
 
 ### Last changes:
+v0.10.13 - 05.03.2023
+
+* Small fixes regarding creation of units.
+
 v0.10.12 - 05.03.2023
 
 * Small fixes regarding iterating dictionaries;
@@ -26,11 +30,6 @@ v0.10.11 - 03.03.2023
 * Fixes in class Shop_unit_label;
 * Factory management notebooks completed;
 * Added possibility to add units to the queue.
-
-v0.10.10 - 02.03.2023
-
-* Preparing notebooks for future factory management;
-* Added class Shop_unit_label.
 
 <p align="center">
   <img src="screens/screenshot2_20230115.png" alt="Tomasz Empire 20022 - Fleet">

@@ -22,7 +22,7 @@ class Unit:
     price = FRAMERATE * 5
     visibility_after_death = FRAMERATE * 10
 
-    def __init__(self, id, coord, angle, player_id, team_id):
+    def __init__(self, id, coord, angle, player_id, team_id, factory_id=0):
     # initialization of the unit
 
         # basic variables
@@ -33,7 +33,7 @@ class Unit:
         self.team_id = team_id
 
         # initialization of the base
-        self.base = self.Vehicle_class(id, coord, angle, player_id, team_id)
+        self.base = self.Vehicle_class(id, coord, angle, player_id, team_id, factory_id)
         self.hit_box_radius = self.base.hit_box_radius
         self.base_HP = self.base.base_HP
         self.HP = self.base.base_HP

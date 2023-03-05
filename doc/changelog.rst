@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.10.13 - 05.03.2023
+----
+* Small fixes regarding creation of units.
+
 v0.10.12 - 05.03.2023
 ----
 * Small fixes regarding iterating dictionaries;

@@ -256,7 +256,7 @@ class Page_with_shop(Base_page):
         i = 0
         for product in self.Product_classes:
             origin = (self.page_rect.left + i * product_width, self.page_rect.top)
-            self.list_with_products.append(Shop_unit_label(id, product(id, coord, angle, player_id, team_id), origin, self.extra_wide))
+            self.list_with_products.append(Shop_unit_label(id, product(0, coord, angle, player_id, team_id), origin, self.extra_wide))
             i += 1
 
     def draw(self, win):
