@@ -77,11 +77,16 @@ def run():
     # MAP2 = Map_v2(5, 10, tile_edge_length=30)
     MAP2 = Map_v2(*dimensions, type=type_of_map)
 
-    DICT_WITH_UNITS = make_test_units()
+    DICT_WITH_GAME_STATE = {
+        "lowest_free_id": 1,
+        "list_with_energy": [0, 10000, 10000, 10000, 10000],
+        "dict_with_new_units": {}
+    }
+    DICT_WITH_UNITS = {}
+    make_test_units(DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
     # LIST_WITH_UNITS = make_test_units_2()
-    # LIST_WITH_UNITS = [Light_tank([500, 300], math.pi/2, 1, 1)]
     LIST_WITH_BULLETS = []
-    LIST_WITH_WINDOWS = [] # Base_notebook()]
+    LIST_WITH_WINDOWS = []
 
 # main loop
     running = True
@@ -116,11 +121,26 @@ def run():
             for unit_id in DICT_WITH_UNITS:
                 if DICT_WITH_UNITS[unit_id].is_on_screen: unit_count += 1
             print("UNITS ON SCREEN:", end=" ")
+            print(unit_count, end="\t")
+            unit_count = 0
+            for unit_id in DICT_WITH_UNITS:
+                if DICT_WITH_UNITS[unit_id].is_selected: unit_count += 1
+            print("SELECTED UNITS:", end=" ")
             print(unit_count)
 
             # print infos about ui windows
             print("WINDOWS:", end=" ")
             print(len(LIST_WITH_WINDOWS), end="\t")
+
+            # other infos
+            print("MAX_ID:", end=" ")
+            print(DICT_WITH_GAME_STATE["lowest_free_id"], end="\t")
+            print()
+
+            # energy
+            print("ENERGY:", end=" ")
+            for player in range(1,5):
+                print(DICT_WITH_GAME_STATE["list_with_energy"][player], end="\t")
             print()
 
         for event in pygame.event.get():
@@ -246,8 +266,8 @@ def run():
             bullet.run(MAP2, DICT_WITH_UNITS)
 
         # life-cycles of units
-        for unit in DICT_WITH_UNITS.values():
-            unit.run(MAP2, DICT_WITH_UNITS, LIST_WITH_BULLETS)
+        for unit_id in DICT_WITH_UNITS:
+            DICT_WITH_UNITS[unit_id].run(MAP2, DICT_WITH_GAME_STATE, DICT_WITH_UNITS, LIST_WITH_BULLETS)
         
 
 # draw the screen
@@ -263,22 +283,25 @@ def run():
 
         # show extra data
         if SHOW_EXTRA_DATA:
-            for unit in DICT_WITH_UNITS.values():
-                unit.draw_extra_data(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
+            for unit_id in DICT_WITH_UNITS:
+                DICT_WITH_UNITS[unit_id].draw_extra_data(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
         # draw land and naval units
-        for unit in DICT_WITH_UNITS.values():
-            if unit.unit_type == "land" or unit.unit_type == "navy" or unit.unit_type == "building": 
-                unit.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
+        for unit_id in DICT_WITH_UNITS:
+            if DICT_WITH_UNITS[unit_id].unit_type == "land" or \
+                        DICT_WITH_UNITS[unit_id].unit_type == "navy" or \
+                        DICT_WITH_UNITS[unit_id].unit_type == "building": 
+                DICT_WITH_UNITS[unit_id].draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
         # draw air units
-        for unit in DICT_WITH_UNITS.values():
-            if unit.unit_type == "air": unit.draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
+        for unit_id in DICT_WITH_UNITS:
+            if DICT_WITH_UNITS[unit_id].unit_type == "air": 
+                DICT_WITH_UNITS[unit_id].draw(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
         # show HP bars
         if SHOW_HP_BARS and SCALE >= 1:
-            for unit in DICT_WITH_UNITS.values():
-                unit.draw_HP(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
+            for unit_id in DICT_WITH_UNITS:
+                DICT_WITH_UNITS[unit_id].draw_HP(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
         # draw bullets
         for bullet in LIST_WITH_BULLETS:
@@ -296,11 +319,6 @@ def run():
         # draw UI windows
         for ui_win in LIST_WITH_WINDOWS:
             ui_win.draw(WIN, DICT_WITH_UNITS)
-
-        # # draw units windows
-        # if number_of_selected_units == 1:
-        #     for unit in DICT_WITH_UNITS.values():
-        #         unit.draw_windows(WIN)
 
         # draw FPS     
         text = FONT_ARIAL_20.render("FPS: %.2f" % CURRENT_FPS, True, LIME)
@@ -321,6 +339,10 @@ def run():
 
         # unnecessary UI windows
         remove_few_dead_elements_from_list(LIST_WITH_WINDOWS)
+
+# add new units - move new units form DICT_WITH_GAME_STATE["dict_with_new_units"] to DICT_WITH_UNITS
+        DICT_WITH_UNITS |= DICT_WITH_GAME_STATE["dict_with_new_units"]
+        DICT_WITH_GAME_STATE["dict_with_new_units"] = {}
 
 if __name__ == "__main__":
     run()

@@ -14,6 +14,8 @@ def player_color(player_id):
         return GREEN
     elif player_id == 3:
         return RED
+    elif player_id == 4:
+        return YELLOW
     else: return WHITE
 
 
@@ -92,11 +94,12 @@ def set_new_target_move(dict_with_units, target, is_ctrl_down):
     # set new target
     for unit_id in dict_with_units:
         if dict_with_units[unit_id].is_selected:
+            new_target = [dict_with_units[unit_id].coord[0] + translation_vector[0], dict_with_units[unit_id].coord[1] + translation_vector[1]]
             if is_ctrl_down:
-                dict_with_units[unit_id].base.movement_target.append([dict_with_units[unit_id].coord[0] + translation_vector[0], dict_with_units[unit_id].coord[1] + translation_vector[1]])
+                dict_with_units[unit_id].set_new_target(new_target)
                 dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
             else:
-                dict_with_units[unit_id].base.movement_target = [[dict_with_units[unit_id].coord[0] + translation_vector[0], dict_with_units[unit_id].coord[1] + translation_vector[1]]]
+                dict_with_units[unit_id].set_new_target(new_target, overwrite=True)
                 dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
 
 
@@ -119,10 +122,10 @@ def set_new_target_regroup(dict_with_units, target, is_ctrl_down):
         if dict_with_units[unit_id].is_selected:
             new_unit_target = get_coord_on_spiral(current_unit, target, 5 * biggest_unit_radius)
             if is_ctrl_down:
-                dict_with_units[unit_id].base.movement_target.append(new_unit_target)
+                dict_with_units[unit_id].set_new_target(new_unit_target)
                 dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
             else:
-                dict_with_units[unit_id].base.movement_target = [new_unit_target]
+                dict_with_units[unit_id].set_new_target(new_unit_target, overwrite=True)
                 dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
             current_unit += 1
 

@@ -25,6 +25,7 @@ class Vehicle(Base_animated_object):
         Base_animated_object.__init__(self, coord, angle)
 
         self.id = id
+        self.factory_id = id
         self.player_id = player_id
         self.team_id = team_id
         
@@ -116,7 +117,8 @@ class Vehicle(Base_animated_object):
                 if dist_in_taxicab_geometry < 1.5 * hit_distance and dist_in_taxicab_geometry > 5: # dist > 5 is to avoid a collision with yourself
                     dist = math.hypot(coord[0]-dict_with_units[unit_id].coord[0], coord[1]-dict_with_units[unit_id].coord[1])
                     if dist < hit_distance:
-                        return True
+                        if unit_id == self.factory_id: return False # to avoid collision inside the factory
+                        else: return True
         return False
 
     def is_obstacle(self, map, coord):

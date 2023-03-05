@@ -54,13 +54,7 @@ class Building:
     # draw HP bar
         pass
 
-    def draw_windows(self, win):
-    # draw windows with unit's infos and controls
-        pass
-        # if self.is_selected:
-        #     self.Shop_window.draw(win)
-
-    def run(self, map, dict_with_units, list_with_bullets):
+    def run(self, map, dict_with_game_state, dict_with_units, list_with_bullets):
     # life-cycle of the building
         pass
 
@@ -76,15 +70,53 @@ class Building:
 class Factory(Building):
     name = "Factory"
     unit_type = "building"
-    unit_level = 0
+    unit_level = 1
 
     def __init__(self, id, coord, angle, player_id, team_id):
     # initialization of the building
         Building.__init__(self, id, coord, angle, player_id, team_id)
-        self.list_building_queue = [
-            Light_tank(0, coord, angle, player_id, team_id),
-            Light_tank(0, coord, angle, player_id, team_id),
-            Light_tank(0, coord, angle, player_id, team_id),
-            Light_tank(0, coord, angle, player_id, team_id),
-            Main_battle_tank(0, coord, angle, player_id, team_id),
-        ]
+        self.list_building_queue = []
+        self.production_is_on = False
+        self.base_BP = 100
+        self.BP = 0
+        self.current_production_force = 1
+
+    def run(self, map, dict_with_game_state, dict_with_units, list_with_bullets):
+    # life-cycle of the building
+        if self.production_is_on and dict_with_game_state["list_with_energy"][self.player_id] > self.current_production_force:
+            self.BP += self.current_production_force
+            dict_with_game_state["list_with_energy"][self.player_id] -= self.current_production_force
+            if self.BP > self.base_BP:
+                # make new unit
+                new_id = dict_with_game_state["lowest_free_id"]
+                dict_with_game_state["lowest_free_id"] += 1
+                dict_with_game_state["dict_with_new_units"][new_id] = self.list_building_queue[0]
+                # print(type(self.list_building_queue[0]))
+                # print(self.list_building_queue[0].__class__) #.__name__))
+                dict_with_game_state["dict_with_new_units"][new_id].set_new_id(new_id)
+                dict_with_game_state["dict_with_new_units"][new_id].set_new_target((0,0))
+                self.remove_unit_from_queue(0)
+
+    def start_production(self):
+    # start production of new unit
+        if len(self.list_building_queue) > 0:
+            self.BP = 0
+            self.base_BP = self.list_building_queue[0].price
+            self.production_is_on = True
+
+    def add_unit_to_queue(self, unit):
+    # add new unit to building queue
+        if len(self.list_building_queue) < 10:
+            self.list_building_queue.append(unit)
+            if len(self.list_building_queue) == 1: # when first element was changed
+                self.start_production()
+
+    def remove_unit_from_queue(self, no_of_slot):
+    # remove unit from building queue
+        if no_of_slot < len(self.list_building_queue):
+                del self.list_building_queue[no_of_slot]
+                if not no_of_slot: # when first element was changed
+                    self.start_production()
+                if not len(self.list_building_queue): # when queue is empty
+                    self.production_is_on = False
+                    self.BP = 0

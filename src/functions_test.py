@@ -4,14 +4,14 @@ from classes_units import *
 from classes_buildings import *
 
 
-def make_test_units():
+def make_test_units(dict_with_game_state, dict_with_units):
 # make test units
 
     # test vehicles for blue team
     number_of_test_vehicles = 7
     angle = math.pi * 2 / number_of_test_vehicles
-    id = 1
-    dict_with_units = {}
+    id = dict_with_game_state["lowest_free_id"]
+
     for i in range(number_of_test_vehicles):
         dict_with_units[id] = Small_artillery_ship(id, move_point([600, 500], 300, i*angle), i*angle, 1, 1) # - math.pi
         dict_with_units[id].base.movement_target = [[600, 500]]
@@ -119,7 +119,12 @@ def make_test_units():
     dict_with_units[id] = Factory(id, [2200, 2500], math.pi, 2, 2) # green
     id += 1
 
-    return dict_with_units
+    dict_with_units[id] = Small_AA_ship(id, [2800, 200], math.pi, 3, 3)
+    id += 1
+
+    dict_with_game_state["lowest_free_id"] = id
+
+    # return dict_with_units
 
 # def make_test_units_2():
 # # make test units

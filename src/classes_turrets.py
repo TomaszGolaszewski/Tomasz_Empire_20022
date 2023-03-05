@@ -92,17 +92,17 @@ class Turret(Base_object):
         temp_dist = 9999
         temp_found_new_target = False
         
-        for unit in dict_with_units.values():
-            if unit.team_id != self.team_id and unit.is_alive:
+        for unit_id in dict_with_units:
+            if dict_with_units[unit_id].team_id != self.team_id and dict_with_units[unit_id].is_alive:
                 # dist = dist_two_points(unit.coord, self.coord)
-                dist = math.hypot(self.coord[0]-unit.coord[0], self.coord[1]-unit.coord[1])
-                if self.is_valid_target(unit.unit_type) \
+                dist = math.hypot(self.coord[0]-dict_with_units[unit_id].coord[0], self.coord[1]-dict_with_units[unit_id].coord[1])
+                if self.is_valid_target(dict_with_units[unit_id].unit_type) \
                         and dist < self.max_radar_radius \
                         and dist < temp_dist \
                         and dist > self.min_radar_radius:
-                    temp_coord = unit.coord
+                    temp_coord = dict_with_units[unit_id].coord
                     temp_dist = dist
-                    temp_target_type = unit.unit_type
+                    temp_target_type = dict_with_units[unit_id].unit_type
                     temp_found_new_target = True
         
         if temp_found_new_target:
@@ -252,21 +252,21 @@ class Side_cannon(Turret):
         current_initial_angle = self.base_angle + self.initial_angle
         if current_initial_angle > 2*math.pi: current_initial_angle -= 2*math.pi
         
-        for unit in dict_with_units.values():
-            if unit.team_id != self.team_id and unit.is_alive:
+        for unit_id in dict_with_units:
+            if dict_with_units[unit_id].team_id != self.team_id and dict_with_units[unit_id].is_alive:
                 # dist = dist_two_points(unit.coord, self.coord)
-                dist = math.hypot(self.coord[0]-unit.coord[0], self.coord[1]-unit.coord[1])
-                angle = angle_to_target(self.coord, unit.coord)
-                if self.is_valid_target(unit.unit_type) \
+                dist = math.hypot(self.coord[0]-dict_with_units[unit_id].coord[0], self.coord[1]-dict_with_units[unit_id].coord[1])
+                angle = angle_to_target(self.coord, dict_with_units[unit_id].coord)
+                if self.is_valid_target(dict_with_units[unit_id].unit_type) \
                         and dist < self.max_radar_radius \
                         and dist < temp_dist \
                         and dist > self.min_radar_radius \
                         and dist_two_angles(angle, current_initial_angle) < self.turn_limit:
                     # print(str(angle) + "\t" + str(current_initial_angle) + "\t" + str(dist_two_angles(angle, current_initial_angle)))
-                    temp_coord = unit.coord
+                    temp_coord = dict_with_units[unit_id].coord
                     temp_angle_to_target = angle
                     temp_dist = dist
-                    temp_target_type = unit.unit_type
+                    temp_target_type = dict_with_units[unit_id].unit_type
                     temp_found_new_target = True
         
         if temp_found_new_target:
@@ -456,12 +456,12 @@ class Plane_fixed_gun(Turret):
         step = 15
         
         while temp_dist <= self.max_radar_radius:
-            for unit in dict_with_units.values():
-                if unit.team_id != self.team_id and self.is_valid_target(unit.unit_type) and unit.is_alive:
-                    if unit.is_inside_hitbox(temp_coord, self.search_radius):
+            for unit_id in dict_with_units:
+                if dict_with_units[unit_id].team_id != self.team_id and self.is_valid_target(dict_with_units[unit_id].unit_type) and dict_with_units[unit_id].is_alive:
+                    if dict_with_units[unit_id].is_inside_hitbox(temp_coord, self.search_radius):
                     # dist = dist_two_points(unit.coord, temp_coord)
                     # if dist < self.search_radius:
-                        temp_target_type = unit.unit_type
+                        temp_target_type = dict_with_units[unit_id].unit_type
                         temp_found_new_target = True
                         break
             if temp_found_new_target:
@@ -567,10 +567,10 @@ class ASM_Launcher(Turret):
         if not self.countdown_to_search:
             # try to find target
             self.missiles_left = 0
-            for unit in dict_with_units.values():
-                if unit.team_id != self.team_id and unit.is_alive:
-                    if self.is_valid_target(unit.unit_type):             
-                        dist = math.hypot(self.coord[0]-unit.coord[0], self.coord[1]-unit.coord[1])
+            for unit_id in dict_with_units:
+                if dict_with_units[unit_id].team_id != self.team_id and dict_with_units[unit_id].is_alive:
+                    if self.is_valid_target(dict_with_units[unit_id].unit_type):             
+                        dist = math.hypot(self.coord[0]-dict_with_units[unit_id].coord[0], self.coord[1]-dict_with_units[unit_id].coord[1])
                         if dist < self.max_radar_radius \
                                 and dist > self.min_radar_radius:
                             self.missiles_left = self.number_of_bombs

@@ -70,13 +70,13 @@ class Info_about_unit(Base_window):
                 pygame.draw.line(win, LIME, self.window_rect.bottomright, self.window_rect.bottomleft, 3) # bottom
                 # unit icon
                 # pygame.draw.circle(win, player_color(self.player_id), [self.window_rect.topleft[0] + 18, self.window_rect.topleft[1] + 21], 8, 0)
-                coord_on_screen = [self.window_rect.topleft[0] + 18, self.window_rect.topleft[1] + 21]
+                coord_on_screen = [self.window_rect.left + 18, self.window_rect.top + 21]
                 dict_with_units[self.id].draw_level_indicator(win, coord_on_screen)
                 dict_with_units[self.id].draw_unit_type_icon(win, coord_on_screen)
                 dict_with_units[self.id].draw_unit_application_icon(win, coord_on_screen)
                 # infos about unit
                 # column I
-                win.blit(self.name_text, [self.window_rect.topleft[0] + 30, self.window_rect.topleft[1] + 10])
+                win.blit(self.name_text, [self.window_rect.left + 30, self.window_rect.top + 10])
                 if dict_with_units[self.id].is_alive:
                     percentage_of_HP = dict_with_units[self.id].HP / self.base_HP
                     if percentage_of_HP > 0.5: color = LIME
@@ -85,14 +85,14 @@ class Info_about_unit(Base_window):
                     HP_text = self.font_arial_20.render("HP: " + str(dict_with_units[self.id].HP) + " / " + str(self.base_HP), True, color)          
                 else:
                     HP_text = self.font_arial_20.render("Unit is dead", True, GRAY)  
-                win.blit(HP_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 30])
-                win.blit(self.id_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 50])
-                win.blit(self.price_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 80])
-                win.blit(self.speed_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 95])
+                win.blit(HP_text, [self.window_rect.left + 10, self.window_rect.top + 30])
+                win.blit(self.id_text, [self.window_rect.left + 10, self.window_rect.top + 50])
+                win.blit(self.price_text, [self.window_rect.left + 10, self.window_rect.top + 80])
+                win.blit(self.speed_text, [self.window_rect.left + 10, self.window_rect.top + 95])
                 # column II
                 i = 0
                 for weapon_data_text in self.weapons_data_texts:
-                    win.blit(weapon_data_text, [self.window_rect.topleft[0] + 170, self.window_rect.topleft[1] + 10 + 15*i])
+                    win.blit(weapon_data_text, [self.window_rect.left + 170, self.window_rect.top + 10 + 15*i])
                     i += 1
 
             else:
@@ -137,33 +137,32 @@ class Shop_unit_label: #(Base_window):
     # draw windows with unit's infos and prices
 
         # lines of title bar
-        pygame.draw.line(win, LIME, (self.window_rect.right, self.window_rect.topright[1] + 20), \
-                         (self.window_rect.right, self.window_rect.bottomright[1] - 20), 3) # right
+        pygame.draw.line(win, LIME, (self.window_rect.right, self.window_rect.top + 20), \
+                         (self.window_rect.right, self.window_rect.bottom - 20), 3) # right
         # unit icon
-        coord_on_screen = [self.window_rect.topleft[0] + 18, self.window_rect.topleft[1] + 21]
+        coord_on_screen = [self.window_rect.left + 18, self.window_rect.top + 21]
         self.Unit.draw_level_indicator(win, coord_on_screen)
         self.Unit.draw_unit_type_icon(win, coord_on_screen)
         self.Unit.draw_unit_application_icon(win, coord_on_screen)
         # infos about unit
         # column I
-        win.blit(self.name_text, [self.window_rect.topleft[0] + 30, self.window_rect.topleft[1] + 10])
-        win.blit(self.price_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 35])
-        win.blit(self.HP_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 50])
-        win.blit(self.speed_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 65])
+        win.blit(self.name_text, [self.window_rect.left + 30, self.window_rect.top + 10])
+        win.blit(self.price_text, [self.window_rect.left + 10, self.window_rect.top + 35])
+        win.blit(self.HP_text, [self.window_rect.left + 10, self.window_rect.top + 50])
+        win.blit(self.speed_text, [self.window_rect.left + 10, self.window_rect.top + 65])
         # column II
         i = 0
         for weapon_data_text in self.weapons_data_texts:
             if self.extra_wide:
-                win.blit(weapon_data_text, [self.window_rect.topleft[0] + 130, self.window_rect.topleft[1] + 10 + 15*i])
+                win.blit(weapon_data_text, [self.window_rect.left + 130, self.window_rect.top + 10 + 15*i])
             else:
-                win.blit(weapon_data_text, [self.window_rect.topleft[0] + 10, self.window_rect.topleft[1] + 85 + 15*i])
+                win.blit(weapon_data_text, [self.window_rect.left + 10, self.window_rect.top + 85 + 15*i])
             i += 1
 
     def press_left(self, dict_with_units, press_coord):
     # handle actions after left button is pressed
         if self.window_rect.collidepoint(press_coord): 
-            if len(dict_with_units[self.id].list_building_queue) < 10:
-                dict_with_units[self.id].list_building_queue.append(self.Unit)
+            dict_with_units[self.id].add_unit_to_queue(self.Unit)
 
 
 # ======================================================================
@@ -257,7 +256,7 @@ class Page_with_shop(Base_page):
         i = 0
         for product in self.Product_classes:
             origin = (self.page_rect.left + i * product_width, self.page_rect.top)
-            self.list_with_products.append(Shop_unit_label(id, product(0, coord, angle, player_id, team_id), origin, self.extra_wide))
+            self.list_with_products.append(Shop_unit_label(id, product(id, coord, angle, player_id, team_id), origin, self.extra_wide))
             i += 1
 
     def draw(self, win):
@@ -489,6 +488,11 @@ class Building_queue(Base_window):
                     dict_with_units[self.id].list_building_queue[no_of_slot].draw_unit_type_icon(win, coord_on_screen)
                     dict_with_units[self.id].list_building_queue[no_of_slot].draw_unit_application_icon(win, coord_on_screen)
 
+                # draw progress
+                pygame.draw.line(win, BLUE, 
+                            [self.window_rect.left, self.window_rect.bottom + 10],
+                            [self.window_rect.left + self.window_rect.width * dict_with_units[self.id].BP / dict_with_units[self.id].base_BP, self.window_rect.bottom + 10], 5)
+
             else:
                 self.to_remove = True
         else:
@@ -499,9 +503,7 @@ class Building_queue(Base_window):
     # return True if pressed and False if not
         if self.window_rect.collidepoint(press_coord): 
             no_of_slot = (press_coord[0] - self.window_rect.left) // self.field_size
-            if no_of_slot < len(dict_with_units[self.id].list_building_queue):
-                # dict_with_units[self.id].list_building_queue.pop(no_of_slot)
-                del dict_with_units[self.id].list_building_queue[no_of_slot]
+            dict_with_units[self.id].remove_unit_from_queue(no_of_slot)
             return True
         else: return False
 

@@ -19,7 +19,7 @@ class Unit:
     name = "Unit"
     unit_type = "none"
     unit_level = 0
-    price = 100
+    price = FRAMERATE * 5
     visibility_after_death = FRAMERATE * 10
 
     def __init__(self, id, coord, angle, player_id, team_id):
@@ -136,7 +136,7 @@ class Unit:
                         world2screen(start_point, offset_x, offset_y, scale), 
                         world2screen([start_point[0] + 24 * percentage_of_HP * scale, start_point[1]], offset_x, offset_y, scale), int(3 * scale))
 
-    def run(self, map, dict_with_units, list_with_bullets):
+    def run(self, map, dict_with_game_state, dict_with_units, list_with_bullets):
     # life-cycle of the unit     
         if self.is_alive:
             # running the base
@@ -184,6 +184,20 @@ class Unit:
     # set new max velocity for moving unit with his squad
         self.base.v_max_squad = v_max_squad
 
+    def set_new_id(self, new_id):
+    # set new id to all elements of the unit
+        self.id = new_id
+        self.base.id = new_id
+        for weapon in self.Weapons:
+            weapon.id = new_id
+
+    def set_new_target(self, new_target, overwrite=False):
+    # set new target of the unit's movement
+        if overwrite:
+            self.base.movement_target = [new_target]
+        else:
+            self.base.movement_target.append(new_target)
+
 
 # ======================================================================
 
@@ -202,6 +216,7 @@ class Light_tank(Land_unit):
     Vehicle_class = Light_track
     Weapon_classes = [(Light_cannon, (0, 0, 0))]
     unit_level = 1
+    price = FRAMERATE * 3
 
     def draw_unit_application_icon(self, win, coord_on_screen):
     # draw unit application icon - tank / anti-aircraft / bomber / etc.
@@ -214,6 +229,7 @@ class Main_battle_tank(Land_unit):
     Vehicle_class = Medium_track
     Weapon_classes = [(Medium_cannon, (0, 0, 0))]
     unit_level = 2
+    price = FRAMERATE * 10
 
     def draw_unit_application_icon(self, win, coord_on_screen):
     # draw unit application icon - tank / anti-aircraft / bomber / etc.
@@ -226,6 +242,7 @@ class Heavy_artillery(Land_unit):
     Vehicle_class = Heavy_track_basic
     Weapon_classes = [(Heavy_cannon, (0, 0, 0))]
     unit_level = 3
+    price = FRAMERATE * 30
 
     def draw_unit_application_icon(self, win, coord_on_screen):
     # draw unit application icon - tank / anti-aircraft / bomber / etc.
@@ -243,6 +260,7 @@ class Heavy_tank(Land_unit):
                     (Side_cannon, (0, 16, 7 * math.pi / 4)),
                     (Side_cannon, (0, -16, math.pi / 4))]
     unit_level = 3
+    price = FRAMERATE * 30
 
     def draw_unit_application_icon(self, win, coord_on_screen):
     # draw unit application icon - tank / anti-aircraft / bomber / etc.
@@ -255,6 +273,7 @@ class Spider_tank(Land_unit):
     Vehicle_class = Ant
     Weapon_classes = [(Minigun, (0, 0, 0))]
     unit_level = 2
+    price = FRAMERATE * 10
 
     def draw_unit_application_icon(self, win, coord_on_screen):
     # draw unit application icon - tank / anti-aircraft / bomber / etc.
@@ -286,6 +305,7 @@ class Fighter(Air_unit):
     Vehicle_class = Plane
     Weapon_classes = [(Plane_fixed_gun, (0, 0, 0))]
     unit_level = 2
+    price = FRAMERATE * 10
 
     def draw_unit_application_icon(self, win, coord_on_screen):
     # draw unit application icon - tank / anti-aircraft / bomber / etc.
@@ -300,7 +320,7 @@ class Bomber(Air_unit):
     Weapon_classes = [(ASM_Launcher, (0, 0, 0)), # (Bomb_dispenser, (0, 0, 0)),
                     (Plane_minigun, (0, 0, 0))]
     unit_level = 2
-
+    price = FRAMERATE * 20
 
     def draw_unit_application_icon(self, win, coord_on_screen):
     # draw unit application icon - tank / anti-aircraft / bomber / etc.
@@ -315,6 +335,7 @@ class Strategic_bomber(Air_unit):
                     (Plane_minigun, (-6, 16, 0)),
                     (Plane_minigun, (-6, -16, 0))]
     unit_level = 3
+    price = FRAMERATE * 30
 
     def draw_unit_application_icon(self, win, coord_on_screen):
     # draw unit application icon - tank / anti-aircraft / bomber / etc.
@@ -339,6 +360,7 @@ class Small_artillery_ship(Naval_unit):
     Vehicle_class = Small_ship
     Weapon_classes = [(Medium_cannon, (0, 0, 0))]
     unit_level = 1
+    price = FRAMERATE * 10
 
     def draw_unit_application_icon(self, win, coord_on_screen):
     # draw unit application icon - tank / anti-aircraft / bomber / etc.
@@ -351,6 +373,7 @@ class Small_AA_ship(Naval_unit):
     Vehicle_class = Small_ship
     Weapon_classes = [(Minigun, (0, 0, 0))]
     unit_level = 1
+    price = FRAMERATE * 10
 
     def draw_unit_application_icon(self, win, coord_on_screen):
     # draw unit application icon - tank / anti-aircraft / bomber / etc.
@@ -365,6 +388,7 @@ class Battle_cruiser(Small_artillery_ship):
     Weapon_classes = [(Medium_naval_cannon, (24, 0, 0)),
                     (Medium_naval_cannon, (-32, 0, math.pi))]
     unit_level = 2
+    price = FRAMERATE * 30
 
 class Destroyer(Small_artillery_ship):
     name = "Destroyer"
@@ -376,6 +400,7 @@ class Destroyer(Small_artillery_ship):
                     (Minigun, (-22, -11, math.pi)),
                     (Minigun, (-22, 11, math.pi))]
     unit_level = 3
+    price = FRAMERATE * 60
 
 class Battleship(Small_AA_ship):
     name = "Battleship"
@@ -391,3 +416,4 @@ class Battleship(Small_AA_ship):
                     (Minigun, (-23, -23, math.pi/2)),
                     (Minigun, (-40, -23, math.pi))]
     unit_level = 3
+    price = FRAMERATE * 120
