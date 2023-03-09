@@ -121,6 +121,10 @@ def make_test_units(dict_with_game_state, dict_with_units):
     dict_with_units[id] = Navy_factory(id, [2650, 2700], 0, 2, 2) # green shelf
     id += 1
 
+    for i in range(7):
+        dict_with_units[id] = Generator(id, [1900, 1000 + 290*i], 0, 3, 3)
+        id += 1
+
     dict_with_units[id] = Small_AA_ship(id, [2800, 200], math.pi, 3, 3)
     id += 1
 

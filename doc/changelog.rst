@@ -1,6 +1,16 @@
 Changelog
 ======
 
+v0.11.0 - 09.03.2023
+----
+* Added new building: Generator;
+* Added icons for buildings;
+* Added HP bars and progress bars for buildings.
+
+v0.11 - Buildings
+======
+
+
 v0.10.13 - 05.03.2023
 ----
 * Small fixes regarding creation of units.

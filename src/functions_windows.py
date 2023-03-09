@@ -14,9 +14,10 @@ def make_windows_from_dict_with_units(dict_with_units, list_with_windows):
     if number_of_selected_units == 1 and not len(list_with_windows) and dict_with_units[current_unit_id].unit_type == "building":
         if dict_with_units[current_unit_id].name == "Land factory":
             list_with_windows.append(Notebook_land_factory(current_unit_id, dict_with_units))
+            list_with_windows.append(Building_queue(current_unit_id))
         elif dict_with_units[current_unit_id].name == "Navy factory":
             list_with_windows.append(Notebook_navy_factory(current_unit_id, dict_with_units))
-        list_with_windows.append(Building_queue(current_unit_id))
+            list_with_windows.append(Building_queue(current_unit_id))
 
     if number_of_selected_units == 1 and not len(list_with_windows) and dict_with_units[current_unit_id].unit_type != "building":
         list_with_windows.append(Info_about_unit(current_unit_id, dict_with_units))
