@@ -93,7 +93,7 @@ class Turret(Base_object):
         temp_found_new_target = False
         
         for unit_id in dict_with_units:
-            if dict_with_units[unit_id].team_id != self.team_id and dict_with_units[unit_id].is_alive:
+            if dict_with_units[unit_id].team_id != self.team_id and dict_with_units[unit_id].player_id and dict_with_units[unit_id].is_alive:
                 # dist = dist_two_points(unit.coord, self.coord)
                 dist = math.hypot(self.coord[0]-dict_with_units[unit_id].coord[0], self.coord[1]-dict_with_units[unit_id].coord[1])
                 if self.is_valid_target(dict_with_units[unit_id].unit_type) \
@@ -161,7 +161,7 @@ class Light_cannon(Turret):
     # checks (by unit type) if the target can be targeted
     # return True if target is valid
         # anti land units
-        if unit_type == "land" or unit_type == "navy": return True
+        if unit_type == "land" or unit_type == "navy" or unit_type == "building": return True
         else: return False
 
 
@@ -187,7 +187,7 @@ class Medium_cannon(Turret):
     # checks (by unit type) if the target can be targeted
     # return True if target is valid
         # anti land units
-        if unit_type == "land" or unit_type == "navy": return True
+        if unit_type == "land" or unit_type == "navy" or unit_type == "building": return True
         else: return False
 
 class Heavy_cannon(Turret): 
@@ -212,7 +212,7 @@ class Heavy_cannon(Turret):
     # checks (by unit type) if the target can be targeted
     # return True if target is valid
         # anti land units
-        if unit_type == "land" or unit_type == "navy": return True
+        if unit_type == "land" or unit_type == "navy" or unit_type == "building": return True
         else: return False
 
 
@@ -253,7 +253,7 @@ class Side_cannon(Turret):
         if current_initial_angle > 2*math.pi: current_initial_angle -= 2*math.pi
         
         for unit_id in dict_with_units:
-            if dict_with_units[unit_id].team_id != self.team_id and dict_with_units[unit_id].is_alive:
+            if dict_with_units[unit_id].team_id != self.team_id and dict_with_units[unit_id].player_id and dict_with_units[unit_id].is_alive:
                 # dist = dist_two_points(unit.coord, self.coord)
                 dist = math.hypot(self.coord[0]-dict_with_units[unit_id].coord[0], self.coord[1]-dict_with_units[unit_id].coord[1])
                 angle = angle_to_target(self.coord, dict_with_units[unit_id].coord)
@@ -283,7 +283,7 @@ class Side_cannon(Turret):
     # checks (by unit type) if the target can be targeted
     # return True if target is valid
         # anti land units
-        if unit_type == "land" or unit_type == "navy": return True
+        if unit_type == "land" or unit_type == "navy" or unit_type == "building": return True
         else: return False
 
 
@@ -321,7 +321,7 @@ class Medium_naval_cannon(Side_cannon):
     # checks (by unit type) if the target can be targeted
     # return True if target is valid
         # anti land units
-        if unit_type == "land" or unit_type == "navy": return True
+        if unit_type == "land" or unit_type == "navy" or unit_type == "building": return True
         else: return False
 
 
@@ -361,7 +361,7 @@ class Heavy_naval_cannon(Side_cannon):
     # checks (by unit type) if the target can be targeted
     # return True if target is valid
         # anti land units
-        if unit_type == "land" or unit_type == "navy": return True
+        if unit_type == "land" or unit_type == "navy" or unit_type == "building": return True
         else: return False
 
 
@@ -387,13 +387,11 @@ class Minigun(Turret):
     countdown_time_to_search = FRAMERATE // 6
     countdown_time_to_shot = FRAMERATE // 15
 
-    # minigun is for all targets - not to buildings
+    # minigun is for all targets
     def is_valid_target(self, unit_type):
     # checks (by unit type) if the target can be targeted
     # return True if target is valid
-        # anti-aircrafts
-        if unit_type == "building": return False    
-        else: return True
+        return True
 
 
 class Plane_minigun(Turret): 
@@ -457,7 +455,7 @@ class Plane_fixed_gun(Turret):
         
         while temp_dist <= self.max_radar_radius:
             for unit_id in dict_with_units:
-                if dict_with_units[unit_id].team_id != self.team_id and self.is_valid_target(dict_with_units[unit_id].unit_type) and dict_with_units[unit_id].is_alive:
+                if dict_with_units[unit_id].team_id != self.team_id and dict_with_units[unit_id].player_id and self.is_valid_target(dict_with_units[unit_id].unit_type) and dict_with_units[unit_id].is_alive:
                     if dict_with_units[unit_id].is_inside_hitbox(temp_coord, self.search_radius):
                     # dist = dist_two_points(unit.coord, temp_coord)
                     # if dist < self.search_radius:
@@ -527,7 +525,7 @@ class Bomb_dispenser(Plane_fixed_gun):
     # checks (by unit type) if the target can be targeted
     # return True if target is valid
         # anti-aircrafts
-        if unit_type == "land" or unit_type == "navy": return True
+        if unit_type == "land" or unit_type == "navy" or unit_type == "building": return True
         else: return False
 
 
@@ -568,7 +566,7 @@ class ASM_Launcher(Turret):
             # try to find target
             self.missiles_left = 0
             for unit_id in dict_with_units:
-                if dict_with_units[unit_id].team_id != self.team_id and dict_with_units[unit_id].is_alive:
+                if dict_with_units[unit_id].team_id != self.team_id and dict_with_units[unit_id].player_id and dict_with_units[unit_id].is_alive:
                     if self.is_valid_target(dict_with_units[unit_id].unit_type):             
                         dist = math.hypot(self.coord[0]-dict_with_units[unit_id].coord[0], self.coord[1]-dict_with_units[unit_id].coord[1])
                         if dist < self.max_radar_radius \
@@ -600,7 +598,7 @@ class ASM_Launcher(Turret):
     # checks (by unit type) if the target can be targeted
     # return True if target is valid
         # anti-aircrafts
-        if unit_type == "land" or unit_type == "navy": return True
+        if unit_type == "land" or unit_type == "navy" or unit_type == "building": return True
         else: return False
 
 

@@ -13,6 +13,10 @@
 v0.11 - Buildings
 
 ### Last changes:
+v0.11.1 - 10.03.2023
+
+* Buildings can be destroyed/disabled by shooting at them.
+
 v0.11.0 - 09.03.2023
 
 * Added new building: Generator;
@@ -30,12 +34,6 @@ v0.10.12 - 05.03.2023
 * Added progress bar to queue window;
 * Changes in adding units to building queue and removing units from queue methods;
 * Units production process completed.
-
-v0.10.11 - 03.03.2023
-
-* Fixes in class Shop_unit_label;
-* Factory management notebooks completed;
-* Added possibility to add units to the queue.
 
 <p align="center">
   <img src="screens/screenshot2_20230115.png" alt="Tomasz Empire 20022 - Fleet">

@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.11.1 - 10.03.2023
+----
+* Buildings can be destroyed/disabled by shooting at them.
+
 v0.11.0 - 09.03.2023
 ----
 * Added new building: Generator;

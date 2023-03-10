@@ -12,7 +12,7 @@ class Building:
     name = "Building"
     unit_type = "building"
     unit_level = 0
-    base_HP = 100
+    base_HP = 1000
 
     path = LIGHT_TRACK_PATH
     number_of_frames = LIGHT_TRACK_FRAMES
@@ -98,7 +98,7 @@ class Building:
 
     def draw_HP(self, win, offset_x, offset_y, scale):
     # draw HP bar
-        if self.is_on_screen:   
+        if self.is_on_screen and self.HP > 0:   
             percentage_of_HP = self.HP / self.base_HP
             start_point = [self.coord[0] - 12 * scale, self.coord[1] + 12 * scale]
             if percentage_of_HP > 0.5:
@@ -115,9 +115,20 @@ class Building:
     # life-cycle of the building
         pass
 
+    def get_hit(self, map, power):
+    # function that subtracts damage from HP and reset building if necessary
+        self.HP -= power
+        if self.HP < 0:
+            self.player_id = 0
+            self.team_id = 0
+            self.HP = 0
+
     def is_inside_hitbox(self, point, range_of_explosion=0):
     # function checks if the unit is hit - point is inside hitbox
     # return True if yes
+        if self.player_id:
+            if math.hypot(self.coord[0]-point[0], self.coord[1]-point[1]) < self.hit_box_radius + range_of_explosion:
+                return True    
         return False
     
 
@@ -224,7 +235,7 @@ class Generator(Building):
     name = "Generator"
     unit_type = "building"
     unit_level = 1
-    base_HP = 100
+    base_HP = 500
 
     path = LIGHT_TRACK_PATH
     number_of_frames = LIGHT_TRACK_FRAMES

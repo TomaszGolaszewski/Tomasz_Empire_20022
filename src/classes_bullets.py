@@ -40,6 +40,8 @@ class Bullet:
                 color = YELLOW
             elif self.target_type == "navy":
                 color = SILVER
+            elif self.target_type == "building":
+                color = ORANGE
             else:
                 color = BLUE # RED
 
@@ -61,7 +63,7 @@ class Bullet:
                     self.is_alive = False    
             # checks end of life span
             if self.distance > self.max_distance:
-                if self.target_type == "land" or self.target_type == "navy": 
+                if self.target_type == "land" or self.target_type == "navy" or self.target_type == "building": 
                     map.degrade(self.coord, 2)
                     if map.get_tile_type(self.coord) == "water" or map.get_tile_type(self.coord) == "shallow":
                         self.explosion_color = WHITE
@@ -129,6 +131,8 @@ class Plasma(Bullet):
                 color = YELLOW
             elif self.target_type == "navy":
                 color = SILVER
+            elif self.target_type == "building":
+                color = ORANGE
             else:
                 color = BLUE # RED
 
@@ -175,7 +179,7 @@ class ASMissile(Bullet):
                         self.is_alive = False    
             # checks end of life span
             if self.distance > self.max_distance:
-                if self.target_type == "land" or self.target_type == "navy" or self.target_type == "surface": 
+                if self.target_type == "land" or self.target_type == "navy" or self.target_type == "building" or self.target_type == "surface": 
                     map.degrade(self.coord, 2)
                     if map.get_tile_type(self.coord) == "water" or map.get_tile_type(self.coord) == "shallow":
                         self.explosion_color = WHITE
@@ -193,7 +197,7 @@ class ASMissile(Bullet):
                 temp_found_new_target = False
 
                 for unit_id in dict_with_units:
-                    if dict_with_units[unit_id].team_id != self.team_id and dict_with_units[unit_id].is_alive:
+                    if dict_with_units[unit_id].team_id != self.team_id and dict_with_units[unit_id].player_id and dict_with_units[unit_id].is_alive:
                         if self.is_valid_target(dict_with_units[unit_id].unit_type):
                             dist = math.hypot(self.coord[0]-dict_with_units[unit_id].coord[0], self.coord[1]-dict_with_units[unit_id].coord[1])
                             if dist < self.max_distance and dist < temp_dist:
@@ -230,11 +234,11 @@ class ASMissile(Bullet):
     # checks (by unit type) if the target can be targeted
     # return True if target is valid
         # anti-aircrafts
-        if unit_type == "land" or unit_type == "navy": return True
+        if unit_type == "land" or unit_type == "navy" or unit_type == "building": return True
         else: return False
 
     def is_hit(self, object):
     # function checks if the object is hit
     # return True if yes
-        if object.is_alive and object.team_id != self.team_id and (object.unit_type == "land" or object.unit_type == "navy") and self.distance > self.min_distance:
+        if object.is_alive and object.team_id != self.team_id and object.player_id and (object.unit_type == "land" or object.unit_type == "navy" or object.unit_type == "building") and self.distance > self.min_distance:
             return object.is_inside_hitbox(self.coord, self.hit_box_radius)
