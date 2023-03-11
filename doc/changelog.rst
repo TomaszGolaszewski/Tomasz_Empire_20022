@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.11.3 - 12.03.2023
+----
+* Building can be captured/restored now by Space Marine units family.
+
 v0.11.2 - 11.03.2023
 ----
 * New units: Space Marine, Super Space Marine and Commander.

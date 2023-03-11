@@ -18,6 +18,10 @@ class Building:
     number_of_frames = LIGHT_TRACK_FRAMES
     min_scale_to_be_visible = 0.125
 
+    body_radius = 50
+    hit_box_radius = 50
+    capture_radius = 100
+
     def __init__(self, id, coord, angle, player_id, team_id):
     # initialization of the building
 
@@ -31,11 +35,10 @@ class Building:
         self.HP = self.base_HP
 
     # variables to optimise display
-        self.body_radius = 50
-        self.hit_box_radius = 50
         self.is_on_screen = True
 
     # other variables
+        self.time_to_capture_search = FRAMERATE
         self.is_alive = True
         self.to_remove = False
         self.is_selected = False
@@ -63,6 +66,11 @@ class Building:
             self.draw_unit_type_icon(win, coord_on_screen)
             self.draw_unit_application_icon(win, coord_on_screen)
 
+        # draw capture circle
+        if not self.player_id:
+            pygame.draw.circle(win, GRAY, coord_on_screen, int(self.capture_radius * scale), 1)
+
+        # draw select circle
         if self.is_selected:
             pygame.draw.circle(win, LIME, coord_on_screen, 20, 3)       
     
@@ -113,7 +121,22 @@ class Building:
 
     def run(self, map, dict_with_game_state, dict_with_units, list_with_bullets):
     # life-cycle of the building
-        pass
+        if not self.player_id:
+            if not self.time_to_capture_search:
+                for unit_id in dict_with_units:
+                    if dict_with_units[unit_id].is_alive and \
+                                (dict_with_units[unit_id].name == "Space Marine" \
+                                or dict_with_units[unit_id].name == "Super Space Marine" \
+                                or dict_with_units[unit_id].name == "Commander"):
+                        if math.hypot(self.coord[0]-dict_with_units[unit_id].coord[0], self.coord[1]-dict_with_units[unit_id].coord[1]) < self.capture_radius:
+                            # capture the building
+                            self.player_id = dict_with_units[unit_id].player_id
+                            self.team_id = dict_with_units[unit_id].team_id
+                            self.HP = self.base_HP
+                            break
+                self.time_to_capture_search = FRAMERATE
+            else:
+                self.time_to_capture_search -= 1
 
     def get_hit(self, map, power):
     # function that subtracts damage from HP and reset building if necessary
@@ -173,6 +196,7 @@ class Factory(Building):
 
     def run(self, map, dict_with_game_state, dict_with_units, list_with_bullets):
     # life-cycle of the building
+        Building.run(self, map, dict_with_game_state, dict_with_units, list_with_bullets)
         if self.production_is_on and dict_with_game_state["list_with_energy"][self.player_id] > self.current_production_force:
             self.BP += self.current_production_force
             dict_with_game_state["list_with_energy"][self.player_id] -= self.current_production_force
@@ -209,6 +233,18 @@ class Factory(Building):
                     self.production_is_on = False
                     self.BP = 0
 
+    def get_hit(self, map, power):
+    # function that subtracts damage from HP and reset building if necessary
+        self.HP -= power
+        if self.HP < 0:
+            self.player_id = 0
+            self.team_id = 0
+            self.HP = 0
+            self.list_building_queue = []
+            self.production_is_on = False
+            self.base_BP = 100
+            self.BP = 0
+
 
 class Land_factory(Factory):
     name = "Land factory"
@@ -241,14 +277,13 @@ class Generator(Building):
     number_of_frames = LIGHT_TRACK_FRAMES
     min_scale_to_be_visible = 0.5
 
-    def __init__(self, id, coord, angle, player_id, team_id):
-    # initialization of the building
-        Building.__init__(self, id, coord, angle, player_id, team_id)
+    body_radius = 20
+    hit_box_radius = 20
+    capture_radius = 70
 
-        # TEMP
-        # variables to optimise display
-        self.body_radius = 20
-        self.hit_box_radius = 20
+    # def __init__(self, id, coord, angle, player_id, team_id):
+    # # initialization of the building
+    #     Building.__init__(self, id, coord, angle, player_id, team_id)
 
     def draw_unit_type_icon(self, win, coord_on_screen):
     # draw building type icon - factory / generator etc.
@@ -269,4 +304,6 @@ class Generator(Building):
 
     def run(self, map, dict_with_game_state, dict_with_units, list_with_bullets):
         # life-cycle of the building
+        Building.run(self, map, dict_with_game_state, dict_with_units, list_with_bullets)
+        if self.player_id:
             dict_with_game_state["list_with_energy"][self.player_id] += 1

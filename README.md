@@ -13,6 +13,10 @@
 v0.11 - Buildings
 
 ### Last changes:
+v0.11.3 - 12.03.2023
+
+* Building can be captured/restored now by Space Marine units family.
+
 v0.11.2 - 11.03.2023
 
 * New units: Space Marine, Super Space Marine and Commander.
@@ -20,16 +24,6 @@ v0.11.2 - 11.03.2023
 v0.11.1 - 10.03.2023
 
 * Buildings can be destroyed/disabled by shooting at them.
-
-v0.11.0 - 09.03.2023
-
-* Added new building: Generator;
-* Added icons for buildings;
-* Added HP bars and progress bars for buildings.
-
-v0.10.13 - 05.03.2023
-
-* Small fixes regarding creation of units.
 
 <p align="center">
   <img src="screens/screenshot2_20230115.png" alt="Tomasz Empire 20022 - Fleet">
