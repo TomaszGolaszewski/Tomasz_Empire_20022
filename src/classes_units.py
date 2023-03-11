@@ -282,6 +282,63 @@ class Spider_tank(Land_unit):
         pygame.draw.line(win, WHITE, [coord_on_screen[0], coord_on_screen[1] - 3], [coord_on_screen[0], coord_on_screen[1] + 3], 1) # |
 
 
+class Space_marine(Land_unit):
+    name = "Space Marine"
+    Vehicle_class = Space_marine_legs
+    Weapon_classes = [(Space_marine_top, (0, 0, 0)),
+                      (Capture, (0, 0, 0))]
+    unit_level = 1
+    price = FRAMERATE * 3
+
+    def draw_unit_type_icon(self, win, coord_on_screen):
+    # draw unit type icon - LAND / air / navy / etc.
+        pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, 7, 0)
+
+    def draw_unit_application_icon(self, win, coord_on_screen):
+    # draw unit application icon - tank / anti-aircraft / bomber / etc.
+        # o
+        pygame.draw.circle(win, WHITE, (coord_on_screen[0], coord_on_screen[1] - 2), 2, 1)
+        # |
+        pygame.draw.line(win, WHITE, (coord_on_screen[0], coord_on_screen[1]), (coord_on_screen[0], coord_on_screen[1] + 2), 1)
+        # leg /
+        pygame.draw.line(win, WHITE, (coord_on_screen[0], coord_on_screen[1] + 2), (coord_on_screen[0] - 2, coord_on_screen[1] + 4), 1)
+        # leg \
+        pygame.draw.line(win, WHITE, (coord_on_screen[0], coord_on_screen[1] + 2), (coord_on_screen[0] + 2, coord_on_screen[1] + 4), 1)
+        # arm /
+        pygame.draw.line(win, WHITE, (coord_on_screen[0], coord_on_screen[1] - 1), (coord_on_screen[0] - 2, coord_on_screen[1] + 1), 1)
+        # arm \
+        pygame.draw.line(win, WHITE, (coord_on_screen[0], coord_on_screen[1] - 1), (coord_on_screen[0] + 2, coord_on_screen[1] + 1), 1)
+
+class Super_space_marine(Space_marine):
+    name = "Super Space Marine"
+    Vehicle_class = Super_space_marine_legs
+    Weapon_classes = [(Super_space_marine_top, (0, 0, 0)),
+                      (Capture, (0, 0, 0))]
+    unit_level = 2
+    price = FRAMERATE * 10
+
+class Commander(Super_space_marine):
+    name = "Commander"
+    Vehicle_class = Commander_legs
+    Weapon_classes = [(Commander_top, (0, 0, 0)),
+                      (Capture, (0, 0, 0))]
+    
+    def draw_unit_application_icon(self, win, coord_on_screen):
+        # draw unit application icon - tank / anti-aircraft / bomber / etc.
+            # o
+            pygame.draw.circle(win, YELLOW, (coord_on_screen[0], coord_on_screen[1] - 2), 2, 0)
+            # |
+            pygame.draw.line(win, YELLOW, (coord_on_screen[0], coord_on_screen[1]), (coord_on_screen[0], coord_on_screen[1] + 2), 1)
+            # leg /
+            pygame.draw.line(win, YELLOW, (coord_on_screen[0], coord_on_screen[1] + 2), (coord_on_screen[0] - 2, coord_on_screen[1] + 4), 1)
+            # leg \
+            pygame.draw.line(win, YELLOW, (coord_on_screen[0], coord_on_screen[1] + 2), (coord_on_screen[0] + 2, coord_on_screen[1] + 4), 1)
+            # arm /
+            pygame.draw.line(win, YELLOW, (coord_on_screen[0], coord_on_screen[1] - 1), (coord_on_screen[0] - 2, coord_on_screen[1] + 1), 1)
+            # arm \
+            pygame.draw.line(win, YELLOW, (coord_on_screen[0], coord_on_screen[1] - 1), (coord_on_screen[0] + 2, coord_on_screen[1] + 1), 1)
+
+
 # ======================================================================
 
 

@@ -366,6 +366,80 @@ class Heavy_naval_cannon(Side_cannon):
 
 
 # ======================================================================
+# Space marines
+
+class Space_marine_top(Side_cannon): 
+    path = SPACE_MARINE_TOP_PATH
+
+    Ammunition_class = Plasma
+
+    turn_speed = 0.08
+    max_radar_radius = 300
+    min_radar_radius = 50
+
+    max_bullet_range = 600
+    barrel_length = 12
+
+    power = 5
+    description = "Minigun: 50dps (5x10/s)"
+
+    countdown_time_to_search = FRAMERATE // 6
+    countdown_time_to_shot = FRAMERATE // 10
+
+    turn_limit = math.pi / 2
+
+    def make_bullets(self, list_with_bullets):
+    # function makes and shoot the bullet
+    # return list_with_bullets
+        barrel_width = 6
+        bullet_coord = move_point_by_vector(self.coord, (self.barrel_length, barrel_width), self.angle)  
+        list_with_bullets.append(self.Ammunition_class(bullet_coord, self.angle, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id, self.power, self.target_type))         
+        return list_with_bullets
+
+    # minigun is for all targets
+    def is_valid_target(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        return True
+    
+class Super_space_marine_top(Side_cannon): 
+    path = SUPER_SPACE_MARINE_TOP_PATH
+
+    Ammunition_class = Plasma
+
+    turn_speed = 0.08
+    max_radar_radius = 400
+    min_radar_radius = 50
+
+    max_bullet_range = 600
+    barrel_length = 16
+
+    power = 10
+    description = "Minigun: 150dps (10x15/s)"
+
+    countdown_time_to_search = FRAMERATE // 6
+    countdown_time_to_shot = FRAMERATE // 15
+
+    turn_limit = math.pi / 2
+
+    def make_bullets(self, list_with_bullets):
+    # function makes and shoot the bullet
+    # return list_with_bullets
+        barrel_width = 7
+        bullet_coord = move_point_by_vector(self.coord, (self.barrel_length, barrel_width), self.angle)  
+        list_with_bullets.append(self.Ammunition_class(bullet_coord, self.angle, self.max_bullet_range, self.min_radar_radius, self.player_id, self.team_id, self.power, self.target_type))         
+        return list_with_bullets
+
+    # minigun is for all targets
+    def is_valid_target(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        return True
+    
+class Commander_top(Super_space_marine_top): 
+    path = COMMANDER_TOP_PATH
+    
+# ======================================================================
 # Miniguns
 
 
@@ -608,6 +682,12 @@ class ASM_Launcher(Turret):
 
 class Empty_slot(Turret): 
     description = ""
+    def draw(self, win, offset_x, offset_y, scale): pass
+    def draw_extra_data(self, win, offset_x, offset_y, scale): pass
+    def run(self, list_with_units, list_with_bullets): pass
+
+class Capture(Turret): 
+    description = "Capture"
     def draw(self, win, offset_x, offset_y, scale): pass
     def draw_extra_data(self, win, offset_x, offset_y, scale): pass
     def run(self, list_with_units, list_with_bullets): pass

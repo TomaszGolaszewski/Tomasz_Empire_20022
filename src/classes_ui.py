@@ -274,11 +274,11 @@ class Page_with_shop(Base_page):
 
 class Page_land_T1(Page_with_shop):
     name = "T1"
-    Product_classes = [Light_tank]
+    Product_classes = [Space_marine, Light_tank]
 
 class Page_land_T2(Page_with_shop):
     name = "T2"
-    Product_classes = [Main_battle_tank, Spider_tank]
+    Product_classes = [Super_space_marine, Main_battle_tank, Spider_tank]
 
 class Page_land_T3(Page_with_shop):
     name = "T3"

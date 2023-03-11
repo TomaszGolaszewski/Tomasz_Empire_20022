@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.11.2 - 11.03.2023
+----
+* New units: Space Marine, Super Space Marine and Commander.
+
 v0.11.1 - 10.03.2023
 ----
 * Buildings can be destroyed/disabled by shooting at them.

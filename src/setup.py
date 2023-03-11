@@ -15,6 +15,12 @@ HEAVY_TRACK_BASIC_PATH = ["imgs","vehicles","heavy_track_basic.bmp"]
 HEAVY_TRACK_BASIC_FRAMES = 6
 ANT_PATH = ["imgs","vehicles","ant.bmp"]
 ANT_FRAMES = 4
+SPACE_MARINE_LEGS_PATH = ["imgs","vehicles","space_marine_legs.bmp"]
+SPACE_MARINE_LEGS_FRAMES = 4
+SUPER_SPACE_MARINE_LEGS_PATH = ["imgs","vehicles","super_space_marine_legs.bmp"]
+SUPER_SPACE_MARINE_LEGS_FRAMES = 4
+COMMANDER_LEGS_PATH = ["imgs","vehicles","commander_legs.bmp"]
+COMMANDER_LEGS_FRAMES = 4
 
 # ships
 SMALL_SHIP_PATH = ["imgs","vehicles","small_ship.bmp"]
@@ -43,6 +49,9 @@ SIDE_CANNON_PATH = ["imgs","weapons","side_cannon.bmp"]
 HEAVY_CANNON_PATH = ["imgs","weapons","heavy_cannon.bmp"]
 MEDIUM_NAVAL_CANNON_PATH = ["imgs","weapons","medium_naval_cannon.bmp"]
 HEAVY_NAVAL_CANNON_PATH = ["imgs","weapons","heavy_naval_cannon.bmp"]
+SPACE_MARINE_TOP_PATH = ["imgs","weapons","space_marine_top.bmp"]
+SUPER_SPACE_MARINE_TOP_PATH = ["imgs","weapons","super_space_marine_top.bmp"]
+COMMANDER_TOP_PATH = ["imgs","weapons","commander_top.bmp"]
 
 
 # sprites - map

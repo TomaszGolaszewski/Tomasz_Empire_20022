@@ -13,6 +13,10 @@
 v0.11 - Buildings
 
 ### Last changes:
+v0.11.2 - 11.03.2023
+
+* New units: Space Marine, Super Space Marine and Commander.
+
 v0.11.1 - 10.03.2023
 
 * Buildings can be destroyed/disabled by shooting at them.
@@ -26,14 +30,6 @@ v0.11.0 - 09.03.2023
 v0.10.13 - 05.03.2023
 
 * Small fixes regarding creation of units.
-
-v0.10.12 - 05.03.2023
-
-* Small fixes regarding iterating dictionaries;
-* New storage dict_with_game_state to collect data about game progress;
-* Added progress bar to queue window;
-* Changes in adding units to building queue and removing units from queue methods;
-* Units production process completed.
 
 <p align="center">
   <img src="screens/screenshot2_20230115.png" alt="Tomasz Empire 20022 - Fleet">

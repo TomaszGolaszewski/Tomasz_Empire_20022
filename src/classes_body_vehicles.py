@@ -51,7 +51,7 @@ class Vehicle(Base_animated_object):
         # hit box radius
         pygame.draw.circle(win, RED, world2screen(self.coord, offset_x, offset_y, scale), self.hit_box_radius*scale, 1)
         # body radius
-        pygame.draw.circle(win, RED, world2screen(self.coord, offset_x, offset_y, scale), self.body_radius*scale, 1)
+        pygame.draw.circle(win, WHITE, world2screen(self.coord, offset_x, offset_y, scale), self.body_radius*scale, 1)
 
 
     def run(self, map, dict_with_units):
@@ -182,3 +182,34 @@ class Ant(Vehicle):
 
     hit_box_radius = 10
     base_HP = 50
+
+
+class Space_marine_legs(Vehicle):
+    path = SPACE_MARINE_LEGS_PATH
+    number_of_frames = SPACE_MARINE_LEGS_FRAMES
+    min_scale_to_be_visible = 1
+
+    v_max = 0.5
+    acceleration = 0.1
+    turn_speed = 0.04
+
+    hit_box_radius = 8
+    base_HP = 50
+
+
+class Super_space_marine_legs(Vehicle):
+    path = SUPER_SPACE_MARINE_LEGS_PATH
+    number_of_frames = SUPER_SPACE_MARINE_LEGS_FRAMES
+    min_scale_to_be_visible = 1
+
+    v_max = 0.5
+    acceleration = 0.1
+    turn_speed = 0.04
+
+    hit_box_radius = 10
+    base_HP = 100
+
+
+class Commander_legs(Super_space_marine_legs):
+    path = COMMANDER_LEGS_PATH
+    number_of_frames = COMMANDER_LEGS_FRAMES

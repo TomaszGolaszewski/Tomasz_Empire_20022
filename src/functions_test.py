@@ -125,6 +125,21 @@ def make_test_units(dict_with_game_state, dict_with_units):
         dict_with_units[id] = Generator(id, [1900, 1000 + 290*i], 0, 3, 3)
         id += 1
 
+    # space marines
+    dict_with_units[id] = Space_marine(id, [1450, 700], math.pi/2, 3, 3) # red
+    id += 1
+    dict_with_units[id] = Super_space_marine(id, [1500, 700], math.pi/2, 3, 3) # red
+    id += 1
+    dict_with_units[id] = Commander(id, [1550, 700], math.pi/2, 3, 3) # red
+    id += 1
+
+    dict_with_units[id] = Space_marine(id, [1450, 2000], 3*math.pi/2, 2, 2) # green
+    id += 1
+    dict_with_units[id] = Super_space_marine(id, [1500, 2000], 3*math.pi/2, 2, 2) # green
+    id += 1
+    dict_with_units[id] = Commander(id, [1550, 2000], 3*math.pi/2, 2, 2) # green
+    id += 1
+
     dict_with_units[id] = Small_AA_ship(id, [2800, 200], math.pi, 3, 3)
     id += 1
 
