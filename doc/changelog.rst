@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.11.4 - 22.03.2023
+----
+* New sprites for future buildings animation.
+
 v0.11.3 - 12.03.2023
 ----
 * Building can be captured/restored now by Space Marine units family.
