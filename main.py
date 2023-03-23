@@ -81,7 +81,7 @@ def run():
         "lowest_free_id": 1,
         "list_with_energy": [0, 10000, 10000, 10000, 10000],
         "list_with_energy_spent": [0, 0, 0, 0, 0],
-        "list_with_player_type": [False, "empty", "AI", "player", "empty"],
+        "list_with_player_type": [False, "empty", "AI", "AI", "empty"], # [False, "empty", "AI", "player", "empty"],
         "dict_with_new_units": {},
     }
     DICT_WITH_UNITS = {}

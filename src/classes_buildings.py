@@ -281,9 +281,25 @@ class Land_factory(Factory):
     def select_unit_for_production(self, dict_with_game_state, dict_with_units):
     # select a unit for production based on current indicator levels
         if dict_with_game_state["list_with_energy_spent"][self.player_id] > 10000:
-            return Space_marine
+            selected_number = random.randint(0,2)
+            if selected_number == 0:
+                return Super_space_marine
+            elif selected_number == 1:
+                return Heavy_artillery
+            elif selected_number == 2:
+                return Bomber
+            else:
+                return Space_marine
         elif dict_with_game_state["list_with_energy_spent"][self.player_id] > 5000:
-            return Space_marine
+            selected_number = random.randint(0,2)
+            if selected_number == 0:
+                return Super_space_marine
+            elif selected_number == 1:
+                return Main_battle_tank
+            elif selected_number == 2:
+                return Bomber
+            else:
+                return Space_marine
         else:
             return Space_marine
 
@@ -299,7 +315,11 @@ class Navy_factory(Factory):
     def select_unit_for_production(self, dict_with_game_state, dict_with_units):
     # select a unit for production based on current indicator levels
         if dict_with_game_state["list_with_energy_spent"][self.player_id] > 10000:
-            return Destroyer
+            selected_number = random.randint(0,4)
+            if selected_number:
+                return Destroyer
+            else:
+                return Battleship
         elif dict_with_game_state["list_with_energy_spent"][self.player_id] > 5000:
             return Battle_cruiser
         else:

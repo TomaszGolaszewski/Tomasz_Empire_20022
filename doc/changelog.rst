@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.11.6 - 23.03.2023
+----
+* Small fixes regarding test AI mechanics.
+
 v0.11.5 - 23.03.2023
 ----
 * First test mechanics for future AI.
