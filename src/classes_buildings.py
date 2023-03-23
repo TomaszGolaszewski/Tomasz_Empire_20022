@@ -138,6 +138,10 @@ class Building:
             else:
                 self.time_to_capture_search -= 1
 
+    def AI_run(self, dict_with_game_state, dict_with_units):
+    # AI activity
+        pass
+
     def get_hit(self, map, power):
     # function that subtracts damage from HP and reset building if necessary
         self.HP -= power
@@ -173,6 +177,10 @@ class Factory(Building):
         self.current_production_force = 1
         self.target_for_units = [move_point(coord, 200, angle)]
 
+        # AI variables
+        self.energy_spent = 0
+        self.countdown_to_AI_activity = FRAMERATE
+
     def draw_extra_data(self, win, offset_x, offset_y, scale):
     # draw extra data about the building on the screen
         # target
@@ -199,6 +207,8 @@ class Factory(Building):
         Building.run(self, map, dict_with_game_state, dict_with_units, list_with_bullets)
         if self.production_is_on and dict_with_game_state["list_with_energy"][self.player_id] > self.current_production_force:
             self.BP += self.current_production_force
+            self.energy_spent += self.current_production_force
+            dict_with_game_state["list_with_energy_spent"][self.player_id] += self.current_production_force
             dict_with_game_state["list_with_energy"][self.player_id] -= self.current_production_force
             if self.BP > self.base_BP:
                 # make new unit
@@ -208,6 +218,20 @@ class Factory(Building):
                 for target in self.target_for_units:
                     dict_with_game_state["dict_with_new_units"][new_id].set_new_target(target)
                 self.remove_unit_from_queue(0)
+
+    def AI_run(self, dict_with_game_state, dict_with_units):
+    # AI activity
+        if self.is_alive and dict_with_game_state["list_with_player_type"][self.player_id] == "AI":
+            if not self.countdown_to_AI_activity:
+                self.countdown_to_AI_activity = FRAMERATE
+                selected_class = self.select_unit_for_production(dict_with_game_state, dict_with_units)
+                self.add_unit_to_queue(selected_class(0, self.coord, self.angle, self.player_id, self.team_id))
+            else:
+                self.countdown_to_AI_activity -= 1
+
+    def select_unit_for_production(self, dict_with_game_state, dict_with_units):
+    # select a unit for production based on current indicator levels
+        return Space_marine
 
     def start_production(self):
     # start production of new unit
@@ -254,6 +278,15 @@ class Land_factory(Factory):
         # turned U
         pygame.draw.arc(win, WHITE, [coord_on_screen[0] - 4, coord_on_screen[1] - 3, 8, 8], 0, math.pi, 1)
 
+    def select_unit_for_production(self, dict_with_game_state, dict_with_units):
+    # select a unit for production based on current indicator levels
+        if dict_with_game_state["list_with_energy_spent"][self.player_id] > 10000:
+            return Space_marine
+        elif dict_with_game_state["list_with_energy_spent"][self.player_id] > 5000:
+            return Space_marine
+        else:
+            return Space_marine
+
 class Navy_factory(Factory):
     name = "Navy factory"
     unit_level = 2 # TEMP
@@ -262,6 +295,15 @@ class Navy_factory(Factory):
     # draw building application icon - land factory / navy factory etc.
         # U
         pygame.draw.arc(win, WHITE, [coord_on_screen[0] - 4, coord_on_screen[1] - 6, 8, 8], math.pi, 0, 1)
+
+    def select_unit_for_production(self, dict_with_game_state, dict_with_units):
+    # select a unit for production based on current indicator levels
+        if dict_with_game_state["list_with_energy_spent"][self.player_id] > 10000:
+            return Destroyer
+        elif dict_with_game_state["list_with_energy_spent"][self.player_id] > 5000:
+            return Battle_cruiser
+        else:
+            return Small_AA_ship
 
 
 # ======================================================================

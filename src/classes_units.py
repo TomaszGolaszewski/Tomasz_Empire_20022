@@ -58,6 +58,7 @@ class Unit:
         self.is_alive = True
         self.to_remove = False
         self.is_selected = False
+        self.countdown_to_AI_activity = FRAMERATE
 
     def draw(self, win, offset_x, offset_y, scale):
     # draw the unit on the screen
@@ -163,6 +164,32 @@ class Unit:
                 # map.degrade(self.coord, 2)
                 self.to_remove = True
 
+    def AI_run(self, dict_with_game_state, dict_with_units):
+    # AI activity
+        if self.is_alive and dict_with_game_state["list_with_player_type"][self.player_id] == "AI":
+            if not self.countdown_to_AI_activity:
+                self.countdown_to_AI_activity = FRAMERATE
+
+                # try to find closest target
+                temp_coord = [0, 0]
+                temp_dist = 9999
+                for unit_id in dict_with_units:
+                    if dict_with_units[unit_id].team_id != self.team_id and dict_with_units[unit_id].player_id and dict_with_units[unit_id].is_alive:
+                        if self.is_valid_target_for_AI(dict_with_units[unit_id].unit_type):
+                            dist = math.hypot(self.coord[0]-dict_with_units[unit_id].coord[0], self.coord[1]-dict_with_units[unit_id].coord[1])
+                            if dist < temp_dist:
+                                temp_coord = dict_with_units[unit_id].coord
+                                temp_dist = dist
+                self.set_new_target(temp_coord, True)
+            else:
+                self.countdown_to_AI_activity -= 1
+
+    def is_valid_target_for_AI(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        if unit_type == "land" or unit_type == "building": return True
+        else: return False
+
     def get_hit(self, map, power):
     # function that subtracts damage from HP and kills the unit if necessary
         self.HP -= power
@@ -209,6 +236,12 @@ class Land_unit(Unit):
     def draw_unit_type_icon(self, win, coord_on_screen):
     # draw unit type icon - LAND / air / navy / etc.
         pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, 7, 0)
+
+    def is_valid_target_for_AI(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        if unit_type == "land" or unit_type == "building": return True
+        else: return False
 
 
 class Light_tank(Land_unit):
@@ -309,6 +342,32 @@ class Space_marine(Land_unit):
         # arm \
         pygame.draw.line(win, WHITE, (coord_on_screen[0], coord_on_screen[1] - 1), (coord_on_screen[0] + 2, coord_on_screen[1] + 1), 1)
 
+    def AI_run(self, dict_with_game_state, dict_with_units):
+    # AI activity
+        if self.is_alive and dict_with_game_state["list_with_player_type"][self.player_id] == "AI":
+            if not self.countdown_to_AI_activity:
+                self.countdown_to_AI_activity = FRAMERATE
+
+                # try to find closest target
+                temp_coord = [0, 0]
+                temp_dist = 9999
+                for unit_id in dict_with_units:
+                    if dict_with_units[unit_id].team_id != self.team_id and dict_with_units[unit_id].is_alive:
+                        if self.is_valid_target_for_AI(dict_with_units[unit_id].unit_type):
+                            dist = math.hypot(self.coord[0]-dict_with_units[unit_id].coord[0], self.coord[1]-dict_with_units[unit_id].coord[1])
+                            if dist < temp_dist:
+                                temp_coord = dict_with_units[unit_id].coord
+                                temp_dist = dist
+                self.set_new_target(temp_coord, True)
+            else:
+                self.countdown_to_AI_activity -= 1
+
+    def is_valid_target_for_AI(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        if unit_type == "land" or unit_type == "building": return True
+        else: return False
+
 class Super_space_marine(Space_marine):
     name = "Super Space Marine"
     Vehicle_class = Super_space_marine_legs
@@ -338,6 +397,10 @@ class Commander(Super_space_marine):
             # arm \
             pygame.draw.line(win, YELLOW, (coord_on_screen[0], coord_on_screen[1] - 1), (coord_on_screen[0] + 2, coord_on_screen[1] + 1), 1)
 
+    def AI_run(self, dict_with_game_state, dict_with_units):
+    # AI activity
+        pass
+
 
 # ======================================================================
 
@@ -356,6 +419,12 @@ class Air_unit(Unit):
             (coord_on_screen[0] + 6, coord_on_screen[1] + 5)
         ], 0)    
 
+    def is_valid_target_for_AI(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        if unit_type == "air": return True
+        else: return False
+
 
 class Fighter(Air_unit):
     name = "Fighter"
@@ -370,6 +439,12 @@ class Fighter(Air_unit):
         pygame.draw.line(win, WHITE, [coord_on_screen[0] - 3, coord_on_screen[1] + 3], [coord_on_screen[0], coord_on_screen[1] - 3], 1) # /
         pygame.draw.line(win, WHITE, [coord_on_screen[0] + 3, coord_on_screen[1] + 3], [coord_on_screen[0], coord_on_screen[1] - 3], 1) # \
 
+    def is_valid_target_for_AI(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        if unit_type == "air": return True
+        else: return False
+
 
 class Bomber(Air_unit):
     name = "Bomber"
@@ -383,6 +458,12 @@ class Bomber(Air_unit):
     # draw unit application icon - tank / anti-aircraft / bomber / etc.
         pygame.draw.line(win, WHITE, [coord_on_screen[0] - 3, coord_on_screen[1] - 3], [coord_on_screen[0], coord_on_screen[1] + 3], 1) # \
         pygame.draw.line(win, WHITE, [coord_on_screen[0] + 3, coord_on_screen[1] - 3], [coord_on_screen[0], coord_on_screen[1] + 3], 1) # /
+
+    def is_valid_target_for_AI(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        if unit_type == "land" or unit_type == "navy" or unit_type == "building": return True
+        else: return False
 
 
 class Strategic_bomber(Air_unit):
@@ -399,6 +480,12 @@ class Strategic_bomber(Air_unit):
         pygame.draw.line(win, WHITE, [coord_on_screen[0] - 3, coord_on_screen[1] - 3], [coord_on_screen[0], coord_on_screen[1] + 3], 1) # \
         pygame.draw.line(win, WHITE, [coord_on_screen[0] + 3, coord_on_screen[1] - 3], [coord_on_screen[0], coord_on_screen[1] + 3], 1) # /
 
+    def is_valid_target_for_AI(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        if unit_type == "land" or unit_type == "navy" or unit_type == "building": return True
+        else: return False
+
 
 # ======================================================================
 
@@ -410,6 +497,12 @@ class Naval_unit(Unit):
     def draw_unit_type_icon(self, win, coord_on_screen):
     # draw unit type icon - LAND / air / navy / etc.
         pygame.draw.circle(win, player_color(self.player_id), [coord_on_screen[0], coord_on_screen[1]+4], 9, 0, draw_top_left=True, draw_top_right=True)
+
+    def is_valid_target_for_AI(self, unit_type):
+    # checks (by unit type) if the target can be targeted
+    # return True if target is valid
+        if unit_type == "navy": return True
+        else: return False
 
 
 class Small_artillery_ship(Naval_unit):

@@ -80,7 +80,9 @@ def run():
     DICT_WITH_GAME_STATE = {
         "lowest_free_id": 1,
         "list_with_energy": [0, 10000, 10000, 10000, 10000],
-        "dict_with_new_units": {}
+        "list_with_energy_spent": [0, 0, 0, 0, 0],
+        "list_with_player_type": [False, "empty", "AI", "player", "empty"],
+        "dict_with_new_units": {},
     }
     DICT_WITH_UNITS = {}
     make_test_units(DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
@@ -141,6 +143,10 @@ def run():
             print("ENERGY:", end=" ")
             for player in range(1,5):
                 print(DICT_WITH_GAME_STATE["list_with_energy"][player], end="\t")
+            print()
+            print("SPENT:", end=" ")
+            for player in range(1,5):
+                print(DICT_WITH_GAME_STATE["list_with_energy_spent"][player], end="\t")
             print()
 
         for event in pygame.event.get():
@@ -260,6 +266,9 @@ def run():
 
 
 # run the simulation
+        # life-cycles of units AI
+        for unit_id in DICT_WITH_UNITS:
+            DICT_WITH_UNITS[unit_id].AI_run(DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
 
         # life-cycles of bullets
         for bullet in LIST_WITH_BULLETS:

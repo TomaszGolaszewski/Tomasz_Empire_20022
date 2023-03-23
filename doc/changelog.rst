@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.11.5 - 23.03.2023
+----
+* First test mechanics for future AI.
+
 v0.11.4 - 22.03.2023
 ----
 * New sprites for future buildings animation.
