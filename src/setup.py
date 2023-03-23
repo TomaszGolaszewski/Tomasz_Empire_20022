@@ -40,7 +40,7 @@ BOMBER_FRAMES = 3
 STRATEGIC_BOMBER_PATH = ["imgs","vehicles","strategic_bomber.bmp"]
 STRATEGIC_BOMBER_FRAMES = 5
 
-#weapons
+# weapons
 LIGHT_CANNON_PATH = ["imgs","weapons","light_cannon.bmp"]
 MEDIUM_CANNON_PATH = ["imgs","weapons","medium_cannon.bmp"]
 MINIGUN_PATH = ["imgs","weapons","minigun.bmp"]
@@ -52,6 +52,14 @@ HEAVY_NAVAL_CANNON_PATH = ["imgs","weapons","heavy_naval_cannon.bmp"]
 SPACE_MARINE_TOP_PATH = ["imgs","weapons","space_marine_top.bmp"]
 SUPER_SPACE_MARINE_TOP_PATH = ["imgs","weapons","super_space_marine_top.bmp"]
 COMMANDER_TOP_PATH = ["imgs","weapons","commander_top.bmp"]
+
+# buildings
+GENERATOR_PATH = ["imgs","buildings","generator.bmp"]
+GENERATOR_FRAMES = 4
+LAND_FACTORY_PATH = ["imgs","buildings","land_factory.bmp"]
+LAND_FACTORY_FRAMES = 4
+NAVAL_FACTORY_PATH = ["imgs","buildings","naval_factory.bmp"]
+NAVAL_FACTORY_FRAMES = 4
 
 
 # sprites - map

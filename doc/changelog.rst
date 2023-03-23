@@ -1,6 +1,11 @@
 Changelog
 ======
 
+v0.11.7 - 23.03.2023
+----
+* Buildings are now animated;
+* Animation of building depends on their level and state.
+
 v0.11.6 - 23.03.2023
 ----
 * Small fixes regarding test AI mechanics.

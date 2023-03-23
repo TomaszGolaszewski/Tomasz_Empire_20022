@@ -4,18 +4,20 @@ import random
 
 from setup import *
 from functions_player import *
+from classes_base import *
 from classes_units import *
 # from classes_ui import *
 
 
-class Building:
+class Building(Base_animated_object):
     name = "Building"
     unit_type = "building"
     unit_level = 0
     base_HP = 1000
 
-    path = LIGHT_TRACK_PATH
-    number_of_frames = LIGHT_TRACK_FRAMES
+    path = GENERATOR_PATH
+    number_of_frames = GENERATOR_FRAMES
+    number_of_states = 1
     min_scale_to_be_visible = 0.125
 
     body_radius = 50
@@ -24,8 +26,9 @@ class Building:
 
     def __init__(self, id, coord, angle, player_id, team_id):
     # initialization of the building
+        Base_animated_object.__init__(self, coord, angle)
 
-    # basic variables     
+        # basic variables     
         self.id = id  
         self.coord = coord
         self.angle = angle
@@ -34,10 +37,10 @@ class Building:
 
         self.HP = self.base_HP
 
-    # variables to optimise display
+        # variables to optimise display
         self.is_on_screen = True
 
-    # other variables
+        # other variables
         self.time_to_capture_search = FRAMERATE
         self.is_alive = True
         self.to_remove = False
@@ -58,9 +61,10 @@ class Building:
             self.is_on_screen = True
             
             if self.min_scale_to_be_visible <= scale:
-                # pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, int(self.body_radius * scale), 0)
-                pygame.draw.circle(win, GRAY, coord_on_screen, int(self.body_radius * scale), 0)
-                pygame.draw.circle(win, BLACK, coord_on_screen, int(self.body_radius * scale), 1)
+                # # pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, int(self.body_radius * scale), 0)
+                # pygame.draw.circle(win, GRAY, coord_on_screen, int(self.body_radius * scale), 0)
+                # pygame.draw.circle(win, BLACK, coord_on_screen, int(self.body_radius * scale), 1)
+                Base_animated_object.draw(self, win, offset_x, offset_y, scale)
 
             self.draw_level_indicator(win, coord_on_screen)
             self.draw_unit_type_icon(win, coord_on_screen)
@@ -72,7 +76,14 @@ class Building:
 
         # draw select circle
         if self.is_selected:
-            pygame.draw.circle(win, LIME, coord_on_screen, 20, 3)       
+            pygame.draw.circle(win, LIME, coord_on_screen, 20, 3)     
+
+    def get_frame_index(self):
+    # count frame index to get sprite from sprite list
+        if self.player_id:
+            return self.number_of_frames * (self.unit_level - 1) + self.frame 
+        else:
+            return self.number_of_frames * (self.unit_level - 1)      
     
     def draw_level_indicator(self, win, coord_on_screen):
     # draw level indicator
@@ -102,7 +113,10 @@ class Building:
 
     def draw_extra_data(self, win, offset_x, offset_y, scale):
     # draw extra data about the building on the screen
-        pass
+        # hit box radius
+        pygame.draw.circle(win, RED, world2screen(self.coord, offset_x, offset_y, scale), self.hit_box_radius*scale, 1)
+        # body radius
+        pygame.draw.circle(win, WHITE, world2screen(self.coord, offset_x, offset_y, scale), self.body_radius*scale, 1)
 
     def draw_HP(self, win, offset_x, offset_y, scale):
     # draw HP bar
@@ -167,6 +181,10 @@ class Factory(Building):
     unit_type = "building"
     unit_level = 1
 
+    path = LAND_FACTORY_PATH
+    number_of_frames = LAND_FACTORY_FRAMES
+    number_of_states = 3
+
     def __init__(self, id, coord, angle, player_id, team_id):
     # initialization of the building
         Building.__init__(self, id, coord, angle, player_id, team_id)
@@ -181,6 +199,13 @@ class Factory(Building):
         self.energy_spent = 0
         self.countdown_to_AI_activity = FRAMERATE
 
+    def get_frame_index(self):
+    # count frame index to get sprite from sprite list
+        if self.player_id and self.production_is_on:
+            return self.number_of_frames * (self.unit_level - 1) + self.frame 
+        else:
+            return self.number_of_frames * (self.unit_level - 1)  
+
     def draw_extra_data(self, win, offset_x, offset_y, scale):
     # draw extra data about the building on the screen
         # target
@@ -190,6 +215,10 @@ class Factory(Building):
                 pygame.draw.line(win, BLUE, world2screen(last_target, offset_x, offset_y, scale), world2screen(target, offset_x, offset_y, scale))
                 pygame.draw.circle(win, BLUE, world2screen(target, offset_x, offset_y, scale), 10*scale, 1)
                 last_target = target
+        # hit box radius
+        pygame.draw.circle(win, RED, world2screen(self.coord, offset_x, offset_y, scale), self.hit_box_radius*scale, 1)
+        # body radius
+        pygame.draw.circle(win, WHITE, world2screen(self.coord, offset_x, offset_y, scale), self.body_radius*scale, 1)
 
     def draw_HP(self, win, offset_x, offset_y, scale):
     # draw HP bar
@@ -273,6 +302,10 @@ class Factory(Building):
 class Land_factory(Factory):
     name = "Land factory"
 
+    path = LAND_FACTORY_PATH
+    number_of_frames = LAND_FACTORY_FRAMES
+    number_of_states = 3
+
     def draw_unit_application_icon(self, win, coord_on_screen):
     # draw building application icon - land factory / navy factory etc.
         # turned U
@@ -307,6 +340,10 @@ class Navy_factory(Factory):
     name = "Navy factory"
     unit_level = 2 # TEMP
 
+    path = NAVAL_FACTORY_PATH
+    number_of_frames = NAVAL_FACTORY_FRAMES
+    number_of_states = 3
+
     def draw_unit_application_icon(self, win, coord_on_screen):
     # draw building application icon - land factory / navy factory etc.
         # U
@@ -335,8 +372,9 @@ class Generator(Building):
     unit_level = 1
     base_HP = 500
 
-    path = LIGHT_TRACK_PATH
-    number_of_frames = LIGHT_TRACK_FRAMES
+    path = GENERATOR_PATH
+    number_of_frames = GENERATOR_FRAMES
+    number_of_states = 1
     min_scale_to_be_visible = 0.5
 
     body_radius = 20
