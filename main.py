@@ -24,6 +24,7 @@ else:
 from settings import *
 from setup import *
 from functions_graphics import *
+from functions_make_units import *
 from functions_test import *
 from functions_windows import *
 from functions_other import *
@@ -81,12 +82,16 @@ def run():
         "lowest_free_id": 1,
         "list_with_energy": [0, 10000, 10000, 10000, 10000],
         "list_with_energy_spent": [0, 0, 0, 0, 0],
-        "list_with_player_type": [False, "empty", "AI", "AI", "empty"], # [False, "empty", "AI", "player", "empty"],
+        "list_with_player_type": [False, "AI", "AI", "AI", "AI"], # [False, "empty", "AI", "player", "empty"],
         "dict_with_new_units": {},
     }
     DICT_WITH_UNITS = {}
-    make_test_units(DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
+    # make_test_units(DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
     # LIST_WITH_UNITS = make_test_units_2()
+    make_naval_factories(MAP2, DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
+    make_land_factories(MAP2, DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
+    make_generators(MAP2, DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
+    make_start_units(MAP2, DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
     LIST_WITH_BULLETS = []
     LIST_WITH_WINDOWS = []
 

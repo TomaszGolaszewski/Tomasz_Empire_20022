@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.11.8 - 25.03.2023
+----
+* Preparation for building placement mechanics.
+
 v0.11.7 - 23.03.2023
 ----
 * Buildings are now animated;

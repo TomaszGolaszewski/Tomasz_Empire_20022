@@ -13,6 +13,10 @@
 v0.11 - Buildings
 
 ### Last changes:
+v0.11.8 - 25.03.2023
+
+* Preparation for building placement mechanics.
+
 v0.11.7 - 23.03.2023
 
 * Buildings are now animated;
@@ -21,10 +25,6 @@ v0.11.7 - 23.03.2023
 v0.11.6 - 23.03.2023
 
 * Small fixes regarding test AI mechanics.
-
-v0.11.5 - 23.03.2023
-
-* First test mechanics for future AI.
 
 <p align="center">
   <img src="screens/screenshot2_20230115.png" alt="Tomasz Empire 20022 - Fleet">

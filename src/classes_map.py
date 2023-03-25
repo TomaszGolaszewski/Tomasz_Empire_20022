@@ -29,6 +29,14 @@ class Map:
         elif self.type == "noise": self.make_noise_map()
         else: self.make_plain()
 
+        # preparing land for buildings
+        self.places_for_naval_factories = []
+        self.places_for_land_factories = []
+        self.places_for_generators = []
+        self.find_places_for_naval_factories()
+        self.find_places_for_land_factories()
+        self.find_places_for_generators()
+
     def make_plain(self):
     # method preparing the board covered with one type of terrain
         if self.type == "mars_plain": tile_type = "mars"
@@ -145,6 +153,27 @@ class Map:
         else: tile_type = "water"
 
         return tile_type, depth
+    
+    def find_places_for_naval_factories(self):
+    # find places for naval factories
+        self.places_for_naval_factories = [[2650, 1000], [2650, 2700]]
+        # self.places_for_land_factories = []
+        # self.places_for_generators = []
+
+    def find_places_for_land_factories(self):
+    # find places for land factories
+        # self.places_for_naval_factories = []
+        self.places_for_land_factories = [[2200, 1000], [2200, 2500]]
+        # self.places_for_generators = []
+        pass
+
+    def find_places_for_generators(self):
+    # find places for generators
+        for i in range(7):
+            self.places_for_generators.append([1750, 1000 + 290*i])
+        # self.places_for_naval_factories = []
+        # self.places_for_land_factories = []
+        # self.places_for_generators = []
 
     def draw(self, win):
     # draw the Map on the screen
