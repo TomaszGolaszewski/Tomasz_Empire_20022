@@ -13,6 +13,10 @@
 v0.11 - Buildings
 
 ### Last changes:
+v0.11.9 - 25.03.2023
+
+* Buildings are now procedurally placed on the map.
+
 v0.11.8 - 25.03.2023
 
 * Preparation for building placement mechanics.
@@ -21,10 +25,6 @@ v0.11.7 - 23.03.2023
 
 * Buildings are now animated;
 * Animation of building depends on their level and state.
-
-v0.11.6 - 23.03.2023
-
-* Small fixes regarding test AI mechanics.
 
 <p align="center">
   <img src="screens/screenshot2_20230115.png" alt="Tomasz Empire 20022 - Fleet">

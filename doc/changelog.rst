@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.11.9 - 25.03.2023
+----
+* Buildings are now procedurally placed on the map.
+
 v0.11.8 - 25.03.2023
 ----
 * Preparation for building placement mechanics.

@@ -156,24 +156,56 @@ class Map:
     
     def find_places_for_naval_factories(self):
     # find places for naval factories
-        self.places_for_naval_factories = [[2650, 1000], [2650, 2700]]
-        # self.places_for_land_factories = []
-        # self.places_for_generators = []
+        x_id = 5
+        while x_id < self.map_width:
+            y_id = 7
+            while y_id < self.map_height - 7:
+                if self.BOARD[y_id][x_id].type == "shallow" and (self.BOARD[y_id][x_id].depth == 3 or self.BOARD[y_id][x_id].depth == 2):
+                    # check for collisions with previous factories
+                    place_is_good = True
+                    for previous_places_coord in self.places_for_naval_factories:
+                        previous_x, previous_y = self.world2id(previous_places_coord) 
+                        if abs(previous_x - x_id) < 5 and abs(previous_y - y_id) < 5: place_is_good = False
+                    # add new place for naval factory
+                    if place_is_good: self.places_for_naval_factories.append(self.id2world([x_id, y_id]))
+                # skip middle of the map
+                if y_id == self.map_height // 3: y_id += self.map_height // 3
+                else: y_id += 1
+            x_id += 10
 
     def find_places_for_land_factories(self):
     # find places for land factories
-        # self.places_for_naval_factories = []
-        self.places_for_land_factories = [[2200, 1000], [2200, 2500]]
-        # self.places_for_generators = []
-        pass
+        y_id = 7
+        while y_id < self.map_height // 3:
+            x_id = 5
+            while x_id < self.map_width:
+                # top half of the map
+                if self.BOARD[y_id][x_id].type != "water" and self.BOARD[y_id][x_id].type != "shallow":
+                    self.places_for_land_factories.append(self.id2world([x_id, y_id]))
+                # bottom half of the map
+                if self.BOARD[self.map_height - y_id][x_id].type != "water" and self.BOARD[self.map_height - y_id][x_id].type != "shallow":
+                    self.places_for_land_factories.append(self.id2world([x_id, self.map_height - y_id]))
+                x_id += 10
+            y_id += 10
+        
 
     def find_places_for_generators(self):
     # find places for generators
-        for i in range(7):
-            self.places_for_generators.append([1750, 1000 + 290*i])
+        x_id = self.map_width // 2
+        y_id = 5
+        while y_id < self.map_height:
+            # x = -10
+            if self.BOARD[y_id][x_id - 10].type != "water" and self.BOARD[y_id][x_id - 10].type != "shallow":
+                self.places_for_generators.append(self.id2world([x_id - 10, y_id]))
+            # x = 0
+            if self.BOARD[y_id][x_id].type != "water" and self.BOARD[y_id][x_id].type != "shallow":
+                self.places_for_generators.append(self.id2world([x_id, y_id]))
+            # x = +10
+            if self.BOARD[y_id][x_id + 10].type != "water" and self.BOARD[y_id][x_id + 10].type != "shallow":
+                self.places_for_generators.append(self.id2world([x_id + 10, y_id]))
+            y_id += 10
         # self.places_for_naval_factories = []
         # self.places_for_land_factories = []
-        # self.places_for_generators = []
 
     def draw(self, win):
     # draw the Map on the screen
