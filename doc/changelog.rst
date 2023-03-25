@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.11.10 - 25.03.2023
+----
+* Added buttons for future assignment of the target for units to the factory.
+
 v0.11.9 - 25.03.2023
 ----
 * Buildings are now procedurally placed on the map.

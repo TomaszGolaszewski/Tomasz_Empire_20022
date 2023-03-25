@@ -31,9 +31,10 @@ def make_windows_from_right_mouse_button(dict_with_units, list_with_windows, scr
                 break
         
         if selected_unit_type == "air" or selected_unit_type == "land" or selected_unit_type == "navy":
-            list_with_windows.append(Base_slide_button(screen_coord, world_coord))
+            # list_with_windows.append(Base_slide_button(screen_coord, world_coord))
+            list_with_windows.append(Slide_button_with_cancel(screen_coord, world_coord))
         elif selected_unit_type == "building":
-            pass
+            list_with_windows.append(Slide_button_for_factory(screen_coord, world_coord))
         else:
             pass
             

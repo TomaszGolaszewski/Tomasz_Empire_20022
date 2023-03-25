@@ -70,7 +70,7 @@ def unit_selection(win, dict_with_units, corner1, corner2, offset_x, offset_y, s
 def set_new_target_move(dict_with_units, target, is_ctrl_down):
 # set new movement target to all selected units
 # units will move in original arrangement
-    number_of_selested_units = 0
+    number_of_selected_units = 0
     # biggest_unit_radius = 0
     slowest_unit_speed = 100
     top_left = 99999
@@ -80,7 +80,7 @@ def set_new_target_move(dict_with_units, target, is_ctrl_down):
     # search search through the list with units
     for unit_id in dict_with_units:
         if dict_with_units[unit_id].is_selected:
-            number_of_selested_units += 1
+            number_of_selected_units += 1
             # if unit.body_radius > biggest_unit_radius: biggest_unit_radius = unit.body_radius
             if dict_with_units[unit_id].v_max < slowest_unit_speed: slowest_unit_speed = dict_with_units[unit_id].v_max
             if dict_with_units[unit_id].coord[0] < top_left: top_left = dict_with_units[unit_id].coord[0]
@@ -106,14 +106,14 @@ def set_new_target_move(dict_with_units, target, is_ctrl_down):
 def set_new_target_regroup(dict_with_units, target, is_ctrl_down):
 # set new movement target to all selected units
 # units will regroup into spiral
-    number_of_selested_units = 0
+    number_of_selected_units = 0
     current_unit = 0
     biggest_unit_radius = 0
     slowest_unit_speed = 100
     # search search through the list with units
     for unit_id in dict_with_units:
         if dict_with_units[unit_id].is_selected:
-            number_of_selested_units += 1
+            number_of_selected_units += 1
             if dict_with_units[unit_id].body_radius > biggest_unit_radius: biggest_unit_radius = dict_with_units[unit_id].body_radius
             if dict_with_units[unit_id].v_max < slowest_unit_speed: slowest_unit_speed = dict_with_units[unit_id].v_max
 
