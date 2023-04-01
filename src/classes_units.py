@@ -388,6 +388,7 @@ class Space_marine(Land_unit):
                 # try to find closest target
                 temp_coord = [0, 0]
                 temp_dist = 9999
+                temp_id = 0
                 for unit_id in dict_with_units:
                     if dict_with_units[unit_id].team_id != self.team_id and dict_with_units[unit_id].is_alive:
                         if self.is_valid_target_for_AI(dict_with_units[unit_id].unit_type):
@@ -395,8 +396,20 @@ class Space_marine(Land_unit):
                             if dist < temp_dist:
                                 temp_coord = dict_with_units[unit_id].coord
                                 temp_dist = dist
-                # self.set_new_target(temp_coord, True)
+                                temp_id = unit_id
+                # if building found, stop the unit in front of that building
+                if temp_id:
+                    if dict_with_units[temp_id].unit_type == "building":
+                        if dict_with_units[temp_id].name == "Land factory": offset = 80
+                        elif dict_with_units[temp_id].name == "Navy factory": offset = 80
+                        elif dict_with_units[temp_id].name == "Generator": offset = 45
+                        else: offset = 10
+
+                        angle = angle_to_target(temp_coord, self.coord)
+                        temp_coord = move_point(temp_coord, offset, angle)
+
                 self.set_new_target_with_path_checking(map, temp_coord)
+                # self.set_new_target(temp_coord, True)
             else:
                 self.countdown_to_AI_activity -= 1
 

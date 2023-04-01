@@ -1,6 +1,12 @@
 Changelog
 ======
 
+v0.12.1 - 02.04.2023
+----
+* New HexTile: submerged_concrete;
+* Added concrete buildings foundation - pathfinding algorithm will be avoiding them;
+* Changes for Space Marine units' AI - if building found, stop the unit in front of that building.
+
 v0.12.0 - 01.04.2023
 ----
 * Added new pathfinding algorithm. Units now avoid terrain they cannot pass through.

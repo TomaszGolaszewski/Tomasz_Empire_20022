@@ -36,6 +36,7 @@ class Map:
         self.find_places_for_naval_factories()
         self.find_places_for_land_factories()
         self.find_places_for_generators()
+        self.make_buildings_foundation()
 
     def make_plain(self):
     # method preparing the board covered with one type of terrain
@@ -292,6 +293,46 @@ class Map:
         if 0 <= x_id  and x_id < self.map_width and 0 <= y_id and y_id < self.map_height:
             self.BOARD[y_id][x_id].degrade(level)
 
+    def make_buildings_foundation(self):
+    # change area around buildings into concrete
+        for naval_factory_coord in self.places_for_naval_factories:
+            self.change_tiles_around_point(naval_factory_coord, "submerged_concrete", 1)
+        for land_factory_coord in self.places_for_land_factories:
+            self.change_tiles_around_point(land_factory_coord, "concrete", 1)
+        for generator_coord in self.places_for_generators:
+            self.change_tiles_around_point(generator_coord, "concrete", 0)
+
+    def change_tiles_around_point(self, coord, new_type, radius):
+    # change type of tiles around point inside radius
+        x_id, y_id = self.world2id(coord)
+        list_with_tiles = self.get_list_with_tiles_around([x_id, y_id], radius)
+        for tile_ids in list_with_tiles:
+            x_id, y_id = tile_ids
+            if self.BOARD[y_id][x_id].type == "submerged_concrete": depth = 2
+            else: depth = 0
+            self.change_tile_type(x_id, y_id, new_type, depth)
+
+    def get_list_with_tiles_around(self, tile_ids, radius):
+    # return list with ids ot tiles around point inside radius
+        coord = self.id2world(tile_ids)
+        radius_in_pixels = radius * self.inner_tile_radius * 2 + 1
+        list_with_tiles = []
+        for y in range(self.map_height):
+            for x in range(self.map_width):
+                checked_tile_coord = self.id2world((x, y))
+                if math.hypot(coord[0]-checked_tile_coord[0], coord[1]-checked_tile_coord[1]) < radius_in_pixels:
+                    list_with_tiles.append([x, y])
+        return list_with_tiles
+
+    def change_tile_type(self, x_id, y_id, new_type, depth=0):
+    # change type of tile
+        if 0 <= x_id  and x_id < self.map_width and 0 <= y_id  and y_id < self.map_height:
+            self.BOARD[y_id][x_id].set_type(new_type, depth)
+
+    def change_tile_type_during_simulation(self, x_id, y_id, new_type, depth=0):
+    # change type of tile during simulation
+        self.change_tile_type(x_id, y_id, new_type, depth)
+
     def get_tile_type(self, coord):
     # return the tile type
         x_id, y_id = self.world2id(coord)
@@ -379,6 +420,14 @@ class Map_v2(Map):
                 for mipmap_level in range(5):
                     scale = self.mipmap2scale(mipmap_level)
                     self.BOARD[y_id][x_id].draw(self.MIPMAP_BOARD[mipmap_level], scale)
+
+    def change_tile_type_during_simulation(self, x_id, y_id, new_type, depth=0):
+    # change type of tile during simulation
+        if 0 <= x_id  and x_id < self.map_width and 0 <= y_id  and y_id < self.map_height:
+            self.BOARD[y_id][x_id].set_type(new_type, depth)
+            for mipmap_level in range(5):
+                scale = self.mipmap2scale(mipmap_level)
+                self.BOARD[y_id][x_id].draw(self.MIPMAP_BOARD[mipmap_level], scale)
 
     def scale2mipmap(self, scale):
     # calculate scale from regular scale to mipmap level

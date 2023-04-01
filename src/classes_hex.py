@@ -102,6 +102,10 @@ class HexTile:
         elif type == "concrete": 
             rand = random.randint(0, 10)
             self.color = [GRAY[0] - rand, GRAY[1] - rand, GRAY[2] - rand]
+        elif type == "submerged_concrete":
+            rand = random.randint(0, 10)
+            # self.color = [GRAY[0] - rand, GRAY[1] - rand, GRAY[2] - rand]
+            self.color = [SHALLOW[0]- 4 * depth - rand, SHALLOW[1] - 8 * depth - rand, SHALLOW[2] - 8 * depth - rand] 
         elif type == "water": 
             depth -= 5
             self.color = [WATER[0], WATER[1] - 4 * depth, WATER[2] - 8 * depth]

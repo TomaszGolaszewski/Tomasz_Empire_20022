@@ -13,6 +13,12 @@
 v0.12 - AI, performance optimization and game balance
 
 ### Last changes:
+v0.12.1 - 02.04.2023
+
+* New HexTile: submerged_concrete;
+* Added concrete buildings foundation - pathfinding algorithm will be avoiding them;
+* Changes for Space Marine units' AI - if building found, stop the unit in front of that building.
+
 v0.12.0 - 01.04.2023
 
 * Added new pathfinding algorithm. Units now avoid terrain they cannot pass through.
@@ -20,10 +26,6 @@ v0.12.0 - 01.04.2023
 v0.11.10 - 25.03.2023
 
 * Added buttons for future assignment of the target for units to the factory.
-
-v0.11.9 - 25.03.2023
-
-* Buildings are now procedurally placed on the map.
 
 <p align="center">
   <img src="screens/screenshot2_20230115.png" alt="Tomasz Empire 20022 - Fleet">

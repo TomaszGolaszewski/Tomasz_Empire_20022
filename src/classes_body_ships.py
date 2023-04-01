@@ -22,7 +22,7 @@ class Small_ship(Vehicle):
 
     def is_obstacle(self, map, coord):
         # return True if collision with map occurs
-            if map.get_tile_type(coord) == "water" or map.get_tile_type(coord) == "shallow": return False
+            if map.get_tile_type(coord) == "water" or map.get_tile_type(coord) == "shallow" or map.get_tile_type(coord) == "submerged_concrete": return False
             else: return True
 
 
