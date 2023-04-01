@@ -152,7 +152,7 @@ class Building(Base_animated_object):
             else:
                 self.time_to_capture_search -= 1
 
-    def AI_run(self, dict_with_game_state, dict_with_units):
+    def AI_run(self, map, dict_with_game_state, dict_with_units):
     # AI activity
         pass
 
@@ -248,7 +248,7 @@ class Factory(Building):
                     dict_with_game_state["dict_with_new_units"][new_id].set_new_target(target)
                 self.remove_unit_from_queue(0)
 
-    def AI_run(self, dict_with_game_state, dict_with_units):
+    def AI_run(self, map, dict_with_game_state, dict_with_units):
     # AI activity
         if self.is_alive and dict_with_game_state["list_with_player_type"][self.player_id] == "AI":
             if not self.countdown_to_AI_activity:

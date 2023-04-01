@@ -1,6 +1,14 @@
 Changelog
 ======
 
+v0.12.0 - 01.04.2023
+----
+* Added new pathfinding algorithm. Units now avoid terrain they cannot pass through.
+
+v0.12 - AI, performance optimization and game balance
+======
+
+
 v0.11.10 - 25.03.2023
 ----
 * Added buttons for future assignment of the target for units to the factory.

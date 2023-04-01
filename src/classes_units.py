@@ -164,7 +164,7 @@ class Unit:
                 # map.degrade(self.coord, 2)
                 self.to_remove = True
 
-    def AI_run(self, dict_with_game_state, dict_with_units):
+    def AI_run(self, map, dict_with_game_state, dict_with_units):
     # AI activity
         if self.is_alive and dict_with_game_state["list_with_player_type"][self.player_id] == "AI":
             if not self.countdown_to_AI_activity:
@@ -180,7 +180,8 @@ class Unit:
                             if dist < temp_dist:
                                 temp_coord = dict_with_units[unit_id].coord
                                 temp_dist = dist
-                self.set_new_target(temp_coord, True)
+                # self.set_new_target(temp_coord, True)
+                self.set_new_target_with_path_checking(map, temp_coord)
             else:
                 self.countdown_to_AI_activity -= 1
 
@@ -225,6 +226,42 @@ class Unit:
         else:
             self.base.movement_target.append(new_target)
 
+    def set_new_target_with_path_checking(self, map, new_target):
+    # set new target of the unit's movement
+        new_path = self.find_safe_path(map, self.coord, new_target, 0)
+        new_path.append(new_target)
+        self.base.movement_target = new_path
+
+    def find_safe_path(self, map, start_point, end_point, recursion_depth):
+    # recursive function returning a list with safe points of the new path
+        # check recursion depth
+        if recursion_depth > 5: return []
+        # for air units, all paths are save
+        elif self.unit_type == "air": return []
+        # for land units
+        elif self.unit_type == "land":
+            if map.check_land_path(start_point, end_point): return []
+            else:
+                middle_point = [(start_point[0] + end_point[0]) / 2, (start_point[1] + end_point[1]) / 2]
+                angle = angle_to_target(start_point, end_point)
+                middle_point = map.find_safe_middle_point(middle_point, angle, is_land_unit=True)
+                path_begining = self.find_safe_path(map, start_point, middle_point, recursion_depth + 1)
+                path_begining.append(middle_point)
+                return path_begining + self.find_safe_path(map, middle_point, end_point, recursion_depth + 1)
+        # for naval units
+        elif self.unit_type == "navy":
+            if map.check_water_path(start_point, end_point): return []
+            else:
+                middle_point = [(start_point[0] + end_point[0]) / 2, (start_point[1] + end_point[1]) / 2]
+                angle = angle_to_target(start_point, end_point)
+                middle_point = map.find_safe_middle_point(middle_point, angle, is_land_unit=False)
+                path_begining = self.find_safe_path(map, start_point, middle_point, recursion_depth + 1)
+                path_begining.append(middle_point)
+                return path_begining + self.find_safe_path(map, middle_point, end_point, recursion_depth + 1)
+         # rest of units
+        else:
+            return []
+        
 
 # ======================================================================
 
@@ -342,7 +379,7 @@ class Space_marine(Land_unit):
         # arm \
         pygame.draw.line(win, WHITE, (coord_on_screen[0], coord_on_screen[1] - 1), (coord_on_screen[0] + 2, coord_on_screen[1] + 1), 1)
 
-    def AI_run(self, dict_with_game_state, dict_with_units):
+    def AI_run(self, map, dict_with_game_state, dict_with_units):
     # AI activity
         if self.is_alive and dict_with_game_state["list_with_player_type"][self.player_id] == "AI":
             if not self.countdown_to_AI_activity:
@@ -358,7 +395,8 @@ class Space_marine(Land_unit):
                             if dist < temp_dist:
                                 temp_coord = dict_with_units[unit_id].coord
                                 temp_dist = dist
-                self.set_new_target(temp_coord, True)
+                # self.set_new_target(temp_coord, True)
+                self.set_new_target_with_path_checking(map, temp_coord)
             else:
                 self.countdown_to_AI_activity -= 1
 
@@ -397,7 +435,7 @@ class Commander(Super_space_marine):
             # arm \
             pygame.draw.line(win, YELLOW, (coord_on_screen[0], coord_on_screen[1] - 1), (coord_on_screen[0] + 2, coord_on_screen[1] + 1), 1)
 
-    def AI_run(self, dict_with_game_state, dict_with_units):
+    def AI_run(self, map, dict_with_game_state, dict_with_units):
     # AI activity
         pass
 

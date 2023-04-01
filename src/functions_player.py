@@ -67,7 +67,7 @@ def unit_selection(win, dict_with_units, corner1, corner2, offset_x, offset_y, s
     return result
 
 
-def set_new_target_move(dict_with_units, target, is_ctrl_down):
+def set_new_target_move(map, dict_with_units, target, is_ctrl_down):
 # set new movement target to all selected units
 # units will move in original arrangement
     number_of_selected_units = 0
@@ -95,15 +95,17 @@ def set_new_target_move(dict_with_units, target, is_ctrl_down):
     for unit_id in dict_with_units:
         if dict_with_units[unit_id].is_selected:
             new_target = [dict_with_units[unit_id].coord[0] + translation_vector[0], dict_with_units[unit_id].coord[1] + translation_vector[1]]
-            if is_ctrl_down:
-                dict_with_units[unit_id].set_new_target(new_target)
-                dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
-            else:
-                dict_with_units[unit_id].set_new_target(new_target, overwrite=True)
-                dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
+            # if is_ctrl_down:
+            #     dict_with_units[unit_id].set_new_target(new_target)
+            #     dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
+            # else:
+            #     dict_with_units[unit_id].set_new_target(new_target, overwrite=True)
+            #     dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
+            dict_with_units[unit_id].set_new_target_with_path_checking(map, new_target)
+            dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
 
 
-def set_new_target_regroup(dict_with_units, target, is_ctrl_down):
+def set_new_target_regroup(map, dict_with_units, target, is_ctrl_down):
 # set new movement target to all selected units
 # units will regroup into spiral
     number_of_selected_units = 0
@@ -121,12 +123,14 @@ def set_new_target_regroup(dict_with_units, target, is_ctrl_down):
     for unit_id in dict_with_units:
         if dict_with_units[unit_id].is_selected:
             new_unit_target = get_coord_on_spiral(current_unit, target, 5 * biggest_unit_radius)
-            if is_ctrl_down:
-                dict_with_units[unit_id].set_new_target(new_unit_target)
-                dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
-            else:
-                dict_with_units[unit_id].set_new_target(new_unit_target, overwrite=True)
-                dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
+            # if is_ctrl_down:
+            #     dict_with_units[unit_id].set_new_target(new_unit_target)
+            #     dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
+            # else:
+            #     dict_with_units[unit_id].set_new_target(new_unit_target, overwrite=True)
+            #     dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
+            dict_with_units[unit_id].set_new_target_with_path_checking(map, new_unit_target)
+            dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
             current_unit += 1
 
 

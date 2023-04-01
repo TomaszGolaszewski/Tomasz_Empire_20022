@@ -207,6 +207,68 @@ class Map:
         # self.places_for_naval_factories = []
         # self.places_for_land_factories = []
 
+    def check_land_path(self, start_point, end_point):
+    # return True if land path between points is safe
+    # return False if it is not safe
+        dist = math.hypot(start_point[0]-end_point[0], start_point[1]-end_point[1])
+        traveled_dist = 0
+        angle = angle_to_target(start_point, end_point)
+        temp_coord = start_point #.copy()
+        while traveled_dist < dist:
+            temp_coord = move_point(temp_coord, self.tile_edge_length, angle)
+            traveled_dist += self.tile_edge_length
+            temp_file_type = self.get_tile_type(temp_coord)
+            if temp_file_type == "water" or temp_file_type == "concrete" or temp_file_type == "submerged_concrete": return False
+        return True
+    
+    def check_water_path(self, start_point, end_point):
+    # return True if water path between points is safe
+    # return False if it is not safe
+        dist = math.hypot(start_point[0]-end_point[0], start_point[1]-end_point[1])
+        traveled_dist = 0
+        angle = angle_to_target(start_point, end_point)
+        temp_coord = start_point #.copy()
+        while traveled_dist < dist:
+            temp_coord = move_point(temp_coord, self.tile_edge_length, angle)
+            traveled_dist += self.tile_edge_length
+            temp_file_type = self.get_tile_type(temp_coord)
+            if temp_file_type != "water" and temp_file_type != "shallow": return False
+        return True
+    
+    def find_safe_middle_point(self, start_point, angle, is_land_unit=True):
+    # return safe point closest to start_point on traverse to angle
+        if is_land_unit:
+            safe_tile_function = lambda temp_file_type: temp_file_type != "water" and temp_file_type != "concrete" and temp_file_type != "submerged_concrete"
+        else:
+            safe_tile_function = lambda temp_file_type: temp_file_type == "water" # or temp_file_type == "shallow"
+        # check start point
+        temp_file_type = self.get_tile_type(start_point)
+        if safe_tile_function(temp_file_type):
+            return start_point #.copy()
+        # check left side
+        left_angle = angle - math.pi / 2
+        left_i = 0
+        left_file_type = self.get_tile_type(start_point)
+        left_point = start_point #.copy()
+        while left_file_type != "out_of_map":
+            left_point = move_point(left_point, self.tile_edge_length * 3, left_angle)
+            left_i += 1
+            left_file_type = self.get_tile_type(left_point)
+            if safe_tile_function(left_file_type): break
+        # check right side
+        right_angle = angle + math.pi / 2
+        right_i = 0
+        right_file_type = self.get_tile_type(start_point)
+        right_point = start_point #.copy()
+        while right_file_type != "out_of_map":
+            right_point = move_point(right_point, self.tile_edge_length * 3, right_angle)
+            right_i += 1
+            right_file_type = self.get_tile_type(right_point)
+            if safe_tile_function(right_file_type): break
+        # choose closer point
+        if left_i < right_i: return left_point
+        else: return right_point
+
     def draw(self, win):
     # draw the Map on the screen
         for row in self.BOARD:

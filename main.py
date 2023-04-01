@@ -82,7 +82,7 @@ def run():
         "lowest_free_id": 1,
         "list_with_energy": [0, 10000, 10000, 10000, 10000],
         "list_with_energy_spent": [0, 0, 0, 0, 0],
-        "list_with_player_type": [False, "AI", "AI", "player", "AI"], # [False, "empty", "AI", "player", "empty"],
+        "list_with_player_type": [False, "AI", "AI", "player", "AI"], # [False, "empty", "AI", "player", "empty"], [False, "empty", "empty", "player", "empty"], # 
         "dict_with_new_units": {},
     }
     DICT_WITH_UNITS = {}
@@ -199,7 +199,7 @@ def run():
 
                     # press UI windows (based on slide)
                     for ui_win in LIST_WITH_WINDOWS:
-                        ui_win.press_right(DICT_WITH_UNITS, pygame.mouse.get_pos(), keys_pressed[pygame.K_LCTRL])
+                        ui_win.press_right(MAP2, DICT_WITH_UNITS, pygame.mouse.get_pos(), keys_pressed[pygame.K_LCTRL])
 
                 # 4 - scroll up
                 if event.button == 4:
@@ -273,7 +273,7 @@ def run():
 # run the simulation
         # life-cycles of units AI
         for unit_id in DICT_WITH_UNITS:
-            DICT_WITH_UNITS[unit_id].AI_run(DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
+            DICT_WITH_UNITS[unit_id].AI_run(MAP2, DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
 
         # life-cycles of bullets
         for bullet in LIST_WITH_BULLETS:
