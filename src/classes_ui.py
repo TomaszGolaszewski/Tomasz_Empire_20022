@@ -467,10 +467,31 @@ class Building_queue(Base_window):
         origin_horz_pos = (WIN_WIDTH - window_width) // 2
         self.window_rect = pygame.Rect(origin_horz_pos, origin_vert_pos, window_width, self.field_size)
 
+        # loop button
+        self.loop_button_rect = pygame.Rect(origin_horz_pos - self.field_size, origin_vert_pos, self.field_size, self.field_size)
+        # load and prepare sprite
+        self.sprite = pygame.image.load(os.path.join(*BUTTON_4_PATH))
+        self.sprite.convert()
+        self.sprite.set_colorkey(BLACK)
+
     def draw(self, win, dict_with_units):
     # draw windows with unit's queue
         if self.id in dict_with_units:
             if dict_with_units[self.id].is_selected:
+            # draw loop button
+                # background
+                if dict_with_units[self.id].loop_mode_is_on:
+                    pygame.draw.rect(win, GRAY, self.loop_button_rect)
+                else: 
+                    pygame.draw.rect(win, BLACK, self.loop_button_rect)
+                # lines
+                pygame.draw.line(win, LIME, self.loop_button_rect.topright, self.loop_button_rect.topleft, 3) # top
+                pygame.draw.line(win, LIME, self.loop_button_rect.topleft, self.loop_button_rect.bottomleft, 3) # left
+                pygame.draw.line(win, LIME, self.loop_button_rect.bottomleft, self.loop_button_rect.bottomright, 3) # bottom
+                # icon
+                win.blit(self.sprite, self.loop_button_rect.topleft)
+
+            # draw queue bar
                 # background
                 pygame.draw.rect(win, BLACK, self.window_rect)
                 # lines of title bar
@@ -488,7 +509,7 @@ class Building_queue(Base_window):
                     dict_with_units[self.id].list_building_queue[no_of_slot].draw_unit_type_icon(win, coord_on_screen)
                     dict_with_units[self.id].list_building_queue[no_of_slot].draw_unit_application_icon(win, coord_on_screen)
 
-                # draw progress
+            # draw progress
                 pygame.draw.line(win, BLUE, 
                             [self.window_rect.left, self.window_rect.bottom + 10],
                             [self.window_rect.left + self.window_rect.width * dict_with_units[self.id].BP / dict_with_units[self.id].base_BP, self.window_rect.bottom + 10], 5)
@@ -504,6 +525,12 @@ class Building_queue(Base_window):
         if self.window_rect.collidepoint(press_coord): 
             no_of_slot = (press_coord[0] - self.window_rect.left) // self.field_size
             dict_with_units[self.id].remove_unit_from_queue(no_of_slot)
+            return True
+        elif self.loop_button_rect.collidepoint(press_coord):
+            if dict_with_units[self.id].loop_mode_is_on: 
+                dict_with_units[self.id].loop_mode_is_on = False
+            else:
+                dict_with_units[self.id].loop_mode_is_on = True
             return True
         else: return False
 

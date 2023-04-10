@@ -190,6 +190,7 @@ class Factory(Building):
         Building.__init__(self, id, coord, angle, player_id, team_id)
         self.list_building_queue = []
         self.production_is_on = False
+        self.loop_mode_is_on = False
         self.base_BP = 100
         self.BP = 0
         self.current_production_force = 1
@@ -241,12 +242,18 @@ class Factory(Building):
             dict_with_game_state["list_with_energy"][self.player_id] -= self.current_production_force
             if self.BP > self.base_BP:
                 # make new unit
+                # get a new index
                 new_id = dict_with_game_state["lowest_free_id"]
                 dict_with_game_state["lowest_free_id"] += 1
+                # make new unit
                 dict_with_game_state["dict_with_new_units"][new_id] = self.list_building_queue[0].__class__(new_id, self.coord, self.angle, self.player_id, self.team_id, self.id)
                 for target in self.target_for_units:
                     dict_with_game_state["dict_with_new_units"][new_id].set_new_target(target)
-                self.remove_unit_from_queue(0)
+                # handle building queue
+                if self.loop_mode_is_on:
+                    self.move_unit_in_queue_to_end()
+                else:
+                    self.remove_unit_from_queue(0)
 
     def AI_run(self, map, dict_with_game_state, dict_with_units):
     # AI activity
@@ -285,6 +292,12 @@ class Factory(Building):
                 if not len(self.list_building_queue): # when queue is empty
                     self.production_is_on = False
                     self.BP = 0
+
+    def move_unit_in_queue_to_end(self):
+    # move unit in the queue from the begining (index 0) to the end
+        temp_unit_container = self.list_building_queue.pop(0)
+        self.list_building_queue.append(temp_unit_container)
+        self.start_production()
 
     def get_hit(self, map, power):
     # function that subtracts damage from HP and reset building if necessary

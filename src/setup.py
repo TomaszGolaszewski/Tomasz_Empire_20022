@@ -69,6 +69,7 @@ TREES_PATH = ["imgs","map","trees.bmp"]
 BUTTON_1_PATH = ["imgs","buttons","button1.bmp"]
 BUTTON_2_PATH = ["imgs","buttons","button2.bmp"]
 BUTTON_3_PATH = ["imgs","buttons","button3.bmp"]
+BUTTON_4_PATH = ["imgs","buttons","button4.bmp"]
 
 # sprites - other
 ICON_PATH = ["imgs","other","icon.png"]

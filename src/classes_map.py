@@ -166,7 +166,7 @@ class Map:
                     place_is_good = True
                     for previous_places_coord in self.places_for_naval_factories:
                         previous_x, previous_y = self.world2id(previous_places_coord) 
-                        if abs(previous_x - x_id) < 5 and abs(previous_y - y_id) < 5: place_is_good = False
+                        if abs(previous_x - x_id) < 10 and abs(previous_y - y_id) < 10: place_is_good = False
                     # add new place for naval factory
                     if place_is_good: self.places_for_naval_factories.append(self.id2world([x_id, y_id]))
                 # skip middle of the map

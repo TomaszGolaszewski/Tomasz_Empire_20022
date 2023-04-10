@@ -1,6 +1,11 @@
 Changelog
 ======
 
+v0.12.2 - 10.04.2023
+----
+* New loop button in queue window;
+* Building queue can be now looped;
+
 v0.12.1 - 02.04.2023
 ----
 * New HexTile: submerged_concrete;
