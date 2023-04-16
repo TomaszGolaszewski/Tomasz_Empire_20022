@@ -146,24 +146,30 @@ def make_test_units(dict_with_game_state, dict_with_units):
     dict_with_game_state["lowest_free_id"] = id
 
 
-# def make_test_units_2():
-# # make test units
-#     LIST_WITH_UNITS = []
+def make_test_units_2(dict_with_game_state, dict_with_units):
+# make test units
+    id = dict_with_game_state["lowest_free_id"]
 
-#     # test vehicles for blue team
-#     number_of_test_vehicles = 30
+    # test vehicles for blue team
+    number_of_test_vehicles = 30
 
-#     # test vehicles for green team
-#     for i in range(number_of_test_vehicles):       
-#         LIST_WITH_UNITS.append(Light_tank([1000 + 100*i, 2000], 3*math.pi/2, 2, 2))
-#         LIST_WITH_UNITS.append(Light_tank([1000 + 100*i, 2100], 3*math.pi/2, 2, 2))
-#         LIST_WITH_UNITS.append(Main_battle_tank([1000 + 100*i, 2200], 3*math.pi/2, 2, 2)) 
+    # test vehicles for green team
+    for i in range(number_of_test_vehicles):       
+        dict_with_units[id] = Light_tank(id, [1000 + 100*i, 2000], 3*math.pi/2, 2, 2)
+        id += 1
+        dict_with_units[id] = Light_tank(id, [1000 + 100*i, 2100], 3*math.pi/2, 2, 2)
+        id += 1
+        dict_with_units[id] = Main_battle_tank(id, [1000 + 100*i, 2200], 3*math.pi/2, 2, 2)
+        id += 1
 
-#     # test vehicles for red team
-#     for i in range(number_of_test_vehicles):       
-#         LIST_WITH_UNITS.append(Light_tank([1000 + 100*i, 700], math.pi/2, 3, 3))
-#         LIST_WITH_UNITS.append(Light_tank([1000 + 100*i, 600], math.pi/2, 3, 3))
-#         LIST_WITH_UNITS.append(Main_battle_tank([1000 + 100*i, 500], math.pi/2, 3, 3)) 
-    
+    # test vehicles for red team
+    for i in range(number_of_test_vehicles):       
+        dict_with_units[id] = Light_tank(id, [1000 + 100*i, 700], math.pi/2, 3, 3)
+        id += 1
+        dict_with_units[id] = Light_tank(id, [1000 + 100*i, 600], math.pi/2, 3, 3)
+        id += 1
+        dict_with_units[id] = Main_battle_tank(id, [1000 + 100*i, 500], math.pi/2, 3, 3)
+        id += 1
 
-#     return LIST_WITH_UNITS
+    dict_with_game_state["lowest_free_id"] = id
+

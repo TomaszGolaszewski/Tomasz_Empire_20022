@@ -2,7 +2,7 @@ import pygame
 import math
 import random
 
-# from settings import *
+from settings import *
 from setup import *
 from functions_math import *
 from classes_base import *
@@ -33,6 +33,9 @@ class Vehicle(Base_animated_object):
         self.v_max_squad = self.v_max
         self.movement_target = []
 
+        self.time_to_search_for_collisions = 0
+        self.list_with_closest_vehicles_ids = []
+
         if self.frame_height > self.frame_width: self.body_radius = self.frame_height // 2
         else: self.body_radius = self.frame_width // 2
 
@@ -56,12 +59,20 @@ class Vehicle(Base_animated_object):
 
     def run(self, map, dict_with_units):
     # life-cycle of the vehicle
+
+        # one time per second search for closest vehicles:
+        if not self.time_to_search_for_collisions:
+            self.time_to_search_for_collisions = FRAMERATE
+            self.find_nearest_units(dict_with_units)
+        else:
+            self.time_to_search_for_collisions -= 1
+
+        # check current movement target
         if len(self.movement_target):
             dist_to_target = dist_two_points(self.coord, self.movement_target[0])
 
             if dist_to_target > 20:
                 self.accelerate()
-                # self.turn_to_target()
                 new_angle = self.get_new_angle()
             else:
                 self.decelerate()
@@ -72,9 +83,14 @@ class Vehicle(Base_animated_object):
             self.decelerate()
             new_angle = self.angle
 
-        # self.move(list_with_units)
+        # new coord from the unit's basic movement:
         new_coord = move_point(self.coord, self.v_current, new_angle)
-        if not self.is_obstacle(map, new_coord) and not self.is_collision(dict_with_units, new_coord):
+
+        # new coord after checking collisions with other units
+        new_coord = self.check_collisions_with_other_units(dict_with_units, new_coord)
+
+        # new coord after checking terrain with map:
+        if not self.is_obstacle(map, new_coord): # and not self.is_collision(dict_with_units, new_coord):
             self.coord = new_coord
             self.angle = new_angle
         else:
@@ -103,8 +119,38 @@ class Vehicle(Base_animated_object):
     # return new angle closer to the movement target
         target_angle = angle_to_target(self.coord, self.movement_target[0])
         return turn_to_target_angle(self.angle, target_angle, self.turn_speed)
+    
+    def find_nearest_units(self, dict_with_units):
+    # find the nearest units that may collide in the future with this unit
+    # use taxicab geometry - it is faster
+    # ids of found units store in list (self.list_with_closest_vehicles_ids)
+        self.list_with_closest_vehicles_ids = []
+        for unit_id in dict_with_units:
+            if dict_with_units[unit_id].is_alive \
+                        and unit_id != self.id \
+                        and unit_id != self.factory_id \
+                        and (dict_with_units[unit_id].unit_type == "land" \
+                        or dict_with_units[unit_id].unit_type == "navy" \
+                        or dict_with_units[unit_id].unit_type == "building"):
+                hit_distance = self.hit_box_radius + dict_with_units[unit_id].hit_box_radius + FRAMERATE # fastest unit is ant with speed = 1
+                dist_in_taxicab_geometry = abs(self.coord[0] - dict_with_units[unit_id].coord[0]) + abs(self.coord[1] - dict_with_units[unit_id].coord[1])
 
-    def is_collision(self, dict_with_units, coord):
+                if dist_in_taxicab_geometry < hit_distance:
+                    self.list_with_closest_vehicles_ids.append(unit_id)
+
+    def check_collisions_with_other_units(self, dict_with_units, coord):
+    # check collisions with units from the list (self.list_with_closest_vehicles_ids)
+    # if collision occurs move unit one pixel back
+    # return new position of the unit
+        for unit_id in self.list_with_closest_vehicles_ids:
+            hit_distance = self.hit_box_radius + dict_with_units[unit_id].hit_box_radius
+            dist = math.hypot(coord[0]-dict_with_units[unit_id].coord[0], coord[1]-dict_with_units[unit_id].coord[1])
+            if dist < hit_distance:
+                push_angle = angle_to_target(dict_with_units[unit_id].coord, coord)
+                coord = move_point(coord, 1, push_angle)
+        return coord
+
+    def is_collision_OLD(self, dict_with_units, coord):
     # return True if collision with other object occurs
         for unit_id in dict_with_units:
             if dict_with_units[unit_id].is_alive \

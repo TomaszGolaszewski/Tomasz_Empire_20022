@@ -64,7 +64,7 @@ def run():
     number_of_selected_units = 0
 
     # initialize the game
-    PLAYER_ID = 3
+    PLAYER_ID = 0 #3
     size = "L"
     type_of_map = "island" # "mars_poles" "lake" "bridge" "island" "noise" "forest" "snow_forest"
 
@@ -92,7 +92,7 @@ def run():
 
     DICT_WITH_UNITS = {}
     # make_test_units(DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
-    # LIST_WITH_UNITS = make_test_units_2()
+    # make_test_units_2(DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
     make_naval_factories(MAP2, DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
     make_land_factories(MAP2, DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
     make_generators(MAP2, DICT_WITH_GAME_STATE, DICT_WITH_UNITS)

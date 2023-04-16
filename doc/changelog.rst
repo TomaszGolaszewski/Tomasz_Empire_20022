@@ -1,6 +1,15 @@
 Changelog
 ======
 
+v0.12.3 - 16.04.2023
+----
+* Small fixes in building queue loop;
+* New mechanics for collision checking between units:
+  * once a second search for the nearest units that may collide in the future - store their ids in a list,
+  * during each frame check for collisions with units from the list;
+  * when collision occurs, move unit back;
+* Small fixes in building's default target for newly produced units.
+
 v0.12.2 - 10.04.2023
 ----
 * New loop button in queue window;

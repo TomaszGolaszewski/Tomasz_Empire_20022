@@ -308,6 +308,7 @@ class Factory(Building):
             self.HP = 0
             self.list_building_queue = []
             self.production_is_on = False
+            self.loop_mode_is_on = False
             self.base_BP = 100
             self.BP = 0
 
