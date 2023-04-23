@@ -70,6 +70,8 @@ BUTTON_1_PATH = ["imgs","buttons","button1.bmp"]
 BUTTON_2_PATH = ["imgs","buttons","button2.bmp"]
 BUTTON_3_PATH = ["imgs","buttons","button3.bmp"]
 BUTTON_4_PATH = ["imgs","buttons","button4.bmp"]
+BUTTON_5_PATH = ["imgs","buttons","button5.bmp"]
+BUTTON_6_PATH = ["imgs","buttons","button6.bmp"]
 
 # sprites - other
 ICON_PATH = ["imgs","other","icon.png"]

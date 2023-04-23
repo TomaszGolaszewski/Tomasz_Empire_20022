@@ -13,6 +13,13 @@
 v0.12 - AI, performance optimization and game balance
 
 ### Last changes:
+v0.12.4 - 23.04.2023
+
+* Small fixes in collision checking;
+* New pause button in queue window;
+* Building queue can be now passed;
+* AI can now stop production when it has limited resources.
+
 v0.12.3 - 16.04.2023
 
 * Small fixes in building queue loop;
@@ -26,12 +33,6 @@ v0.12.2 - 10.04.2023
 
 * New loop button in queue window;
 * Building queue can be now looped;
-
-v0.12.1 - 02.04.2023
-
-* New HexTile: submerged_concrete;
-* Added concrete buildings foundation - pathfinding algorithm will be avoiding them;
-* Changes for Space Marine units' AI - if building found, stop the unit in front of that building.
 
 <p align="center">
   <img src="screens/screenshot2_20230115.png" alt="Tomasz Empire 20022 - Fleet">

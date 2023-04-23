@@ -467,17 +467,41 @@ class Building_queue(Base_window):
         origin_horz_pos = (WIN_WIDTH - window_width) // 2
         self.window_rect = pygame.Rect(origin_horz_pos, origin_vert_pos, window_width, self.field_size)
 
+        # pause button
+        self.pause_button_rect = pygame.Rect(origin_horz_pos - 2*self.field_size, origin_vert_pos, self.field_size, self.field_size)
         # loop button
         self.loop_button_rect = pygame.Rect(origin_horz_pos - self.field_size, origin_vert_pos, self.field_size, self.field_size)
         # load and prepare sprite
-        self.sprite = pygame.image.load(os.path.join(*BUTTON_4_PATH))
-        self.sprite.convert()
-        self.sprite.set_colorkey(BLACK)
+        self.sprite_loop = pygame.image.load(os.path.join(*BUTTON_4_PATH))
+        self.sprite_loop.convert()
+        self.sprite_loop.set_colorkey(BLACK)
+        self.sprite_pause = pygame.image.load(os.path.join(*BUTTON_5_PATH))
+        self.sprite_pause.convert()
+        self.sprite_pause.set_colorkey(BLACK)
+        self.sprite_play = pygame.image.load(os.path.join(*BUTTON_6_PATH))
+        self.sprite_play.convert()
+        self.sprite_play.set_colorkey(BLACK)
 
     def draw(self, win, dict_with_units):
     # draw windows with unit's queue
         if self.id in dict_with_units:
             if dict_with_units[self.id].is_selected:
+            # draw pause button
+                # background and icon
+                if dict_with_units[self.id].production_is_on:
+                    pygame.draw.rect(win, BLACK, self.pause_button_rect)
+                    win.blit(self.sprite_play, self.pause_button_rect.topleft)
+                else: 
+                    if len(dict_with_units[self.id].list_building_queue): # when queue is not empty
+                        pygame.draw.rect(win, GRAY, self.pause_button_rect)
+                    else:
+                        pygame.draw.rect(win, BLACK, self.pause_button_rect)
+                    win.blit(self.sprite_pause, self.pause_button_rect.topleft)
+                # lines
+                pygame.draw.line(win, LIME, self.pause_button_rect.topright, self.pause_button_rect.topleft, 3) # top
+                pygame.draw.line(win, LIME, self.pause_button_rect.topleft, self.pause_button_rect.bottomleft, 3) # left
+                pygame.draw.line(win, LIME, self.pause_button_rect.bottomleft, self.pause_button_rect.bottomright, 3) # bottom
+
             # draw loop button
                 # background
                 if dict_with_units[self.id].loop_mode_is_on:
@@ -489,7 +513,7 @@ class Building_queue(Base_window):
                 pygame.draw.line(win, LIME, self.loop_button_rect.topleft, self.loop_button_rect.bottomleft, 3) # left
                 pygame.draw.line(win, LIME, self.loop_button_rect.bottomleft, self.loop_button_rect.bottomright, 3) # bottom
                 # icon
-                win.blit(self.sprite, self.loop_button_rect.topleft)
+                win.blit(self.sprite_loop, self.loop_button_rect.topleft)
 
             # draw queue bar
                 # background
@@ -526,11 +550,20 @@ class Building_queue(Base_window):
             no_of_slot = (press_coord[0] - self.window_rect.left) // self.field_size
             dict_with_units[self.id].remove_unit_from_queue(no_of_slot)
             return True
+        # loop button
         elif self.loop_button_rect.collidepoint(press_coord):
             if dict_with_units[self.id].loop_mode_is_on: 
                 dict_with_units[self.id].loop_mode_is_on = False
             else:
                 dict_with_units[self.id].loop_mode_is_on = True
+            return True
+        # pause button
+        elif self.pause_button_rect.collidepoint(press_coord):
+            if dict_with_units[self.id].production_is_on: 
+                dict_with_units[self.id].production_is_on = False
+            else:
+                if len(dict_with_units[self.id].list_building_queue): # when queue is not empty
+                    dict_with_units[self.id].production_is_on = True
             return True
         else: return False
 

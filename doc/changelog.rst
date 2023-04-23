@@ -1,13 +1,20 @@
 Changelog
 ======
 
+v0.12.4 - 23.04.2023
+----
+* Small fixes in collision checking;
+* New pause button in queue window;
+* Building queue can be now passed;
+* AI can now stop production when it has limited resources.
+
 v0.12.3 - 16.04.2023
 ----
 * Small fixes in building queue loop;
 * New mechanics for collision checking between units:
-  * once a second search for the nearest units that may collide in the future - store their ids in a list,
-  * during each frame check for collisions with units from the list;
-  * when collision occurs, move unit back;
+    * once a second search for the nearest units that may collide in the future - store their ids in a list,
+    * during each frame check for collisions with units from the list;
+    * when collision occurs, move unit back;
 * Small fixes in building's default target for newly produced units.
 
 v0.12.2 - 10.04.2023

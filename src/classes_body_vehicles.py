@@ -132,7 +132,7 @@ class Vehicle(Base_animated_object):
                         and (dict_with_units[unit_id].unit_type == "land" \
                         or dict_with_units[unit_id].unit_type == "navy" \
                         or dict_with_units[unit_id].unit_type == "building"):
-                hit_distance = self.hit_box_radius + dict_with_units[unit_id].hit_box_radius + FRAMERATE # fastest unit is ant with speed = 1
+                hit_distance = self.hit_box_radius + dict_with_units[unit_id].hit_box_radius + 2 * FRAMERATE # fastest unit is ant with speed = 1 and they are facing each other
                 dist_in_taxicab_geometry = abs(self.coord[0] - dict_with_units[unit_id].coord[0]) + abs(self.coord[1] - dict_with_units[unit_id].coord[1])
 
                 if dist_in_taxicab_geometry < hit_distance:
@@ -150,22 +150,22 @@ class Vehicle(Base_animated_object):
                 coord = move_point(coord, 1, push_angle)
         return coord
 
-    def is_collision_OLD(self, dict_with_units, coord):
-    # return True if collision with other object occurs
-        for unit_id in dict_with_units:
-            if dict_with_units[unit_id].is_alive \
-                        and (dict_with_units[unit_id].unit_type == "land" \
-                        or dict_with_units[unit_id].unit_type == "navy" \
-                        or dict_with_units[unit_id].unit_type == "building"):
-                hit_distance = self.hit_box_radius + dict_with_units[unit_id].hit_box_radius
-                # first check distance in taxicab geometry - is faster
-                dist_in_taxicab_geometry = abs(coord[0] - dict_with_units[unit_id].coord[0]) + abs(coord[1] - dict_with_units[unit_id].coord[1])
-                if dist_in_taxicab_geometry < 1.5 * hit_distance and dist_in_taxicab_geometry > 5: # dist > 5 is to avoid a collision with yourself
-                    dist = math.hypot(coord[0]-dict_with_units[unit_id].coord[0], coord[1]-dict_with_units[unit_id].coord[1])
-                    if dist < hit_distance:
-                        if unit_id == self.factory_id: return False # to avoid collision inside the factory
-                        else: return True
-        return False
+    # def is_collision_OLD(self, dict_with_units, coord):
+    # # return True if collision with other object occurs
+    #     for unit_id in dict_with_units:
+    #         if dict_with_units[unit_id].is_alive \
+    #                     and (dict_with_units[unit_id].unit_type == "land" \
+    #                     or dict_with_units[unit_id].unit_type == "navy" \
+    #                     or dict_with_units[unit_id].unit_type == "building"):
+    #             hit_distance = self.hit_box_radius + dict_with_units[unit_id].hit_box_radius
+    #             # first check distance in taxicab geometry - is faster
+    #             dist_in_taxicab_geometry = abs(coord[0] - dict_with_units[unit_id].coord[0]) + abs(coord[1] - dict_with_units[unit_id].coord[1])
+    #             if dist_in_taxicab_geometry < 1.5 * hit_distance and dist_in_taxicab_geometry > 5: # dist > 5 is to avoid a collision with yourself
+    #                 dist = math.hypot(coord[0]-dict_with_units[unit_id].coord[0], coord[1]-dict_with_units[unit_id].coord[1])
+    #                 if dist < hit_distance:
+    #                     if unit_id == self.factory_id: return False # to avoid collision inside the factory
+    #                     else: return True
+    #     return False
 
     def is_obstacle(self, map, coord):
     # return True if collision with map occurs

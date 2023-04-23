@@ -332,7 +332,10 @@ class Land_factory(Factory):
             if selected_number == 0:
                 return Super_space_marine
             elif selected_number == 1:
-                return Heavy_artillery
+                if dict_with_game_state["list_with_energy_current_production"][self.player_id] > 40:
+                    return Heavy_artillery
+                else:
+                    return Super_space_marine
             elif selected_number == 2:
                 return Bomber
             else:
@@ -342,7 +345,10 @@ class Land_factory(Factory):
             if selected_number == 0:
                 return Super_space_marine
             elif selected_number == 1:
-                return Main_battle_tank
+                if dict_with_game_state["list_with_energy_current_production"][self.player_id] > 40:
+                    return Main_battle_tank
+                else:
+                    return Space_marine
             elif selected_number == 2:
                 return Bomber
             else:
@@ -365,6 +371,11 @@ class Navy_factory(Factory):
 
     def select_unit_for_production(self, dict_with_game_state, dict_with_units):
     # select a unit for production based on current indicator levels
+        if dict_with_game_state["list_with_energy_current_production"][self.player_id] < 0:
+            self.production_is_on = False
+        elif dict_with_game_state["list_with_energy_current_production"][self.player_id] > 40:
+            self.production_is_on = True
+
         if dict_with_game_state["list_with_energy_spent"][self.player_id] > 10000:
             selected_number = random.randint(0,4)
             if selected_number:
