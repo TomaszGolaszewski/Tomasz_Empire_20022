@@ -1,6 +1,15 @@
 Changelog
 ======
 
+
+v0.13.0 - 23.09.2023
+----
+* Added pause (space button).
+
+v0.13 - New ideas and further development
+======
+
+
 v0.12.4 - 23.04.2023
 ----
 * Small fixes in collision checking;

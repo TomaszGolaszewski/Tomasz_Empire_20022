@@ -85,7 +85,9 @@ def run():
         "list_with_energy_last": [0, 0, 0, 0, 0],
         "list_with_energy_current_production": [0, 0, 0, 0, 0],
         "list_with_energy_spent": [0, 0, 0, 0, 0],
-        "list_with_player_type": [False, "AI", "AI", "AI", "AI"], # [False, "empty", "AI", "player", "empty"], [False, "empty", "empty", "player", "empty"], # 
+        # "list_with_player_type": [False, "AI", "AI", "AI", "AI"],
+        # "list_with_player_type": [False, "empty", "AI", "player", "empty"],
+        "list_with_player_type": [False, "empty", "empty", "player", "empty"],
         "dict_with_new_units": {},
     }
     DICT_WITH_GAME_STATE["list_with_player_type"][PLAYER_ID] = "player"
@@ -102,6 +104,7 @@ def run():
 
 # main loop
     running = True
+    pause = False
     while running:
         CLOCK.tick(FRAMERATE)
         CURRENT_FRAME += 1
@@ -150,9 +153,10 @@ def run():
             print()
 
             # calculate energy
-            for i in range(1,5):
-                DICT_WITH_GAME_STATE["list_with_energy_current_production"][i] = DICT_WITH_GAME_STATE["list_with_energy"][i] - DICT_WITH_GAME_STATE["list_with_energy_last"][i]
-            DICT_WITH_GAME_STATE["list_with_energy_last"] = DICT_WITH_GAME_STATE["list_with_energy"].copy()
+            if not pause:
+                for i in range(1,5):
+                    DICT_WITH_GAME_STATE["list_with_energy_current_production"][i] = DICT_WITH_GAME_STATE["list_with_energy"][i] - DICT_WITH_GAME_STATE["list_with_energy_last"][i]
+                DICT_WITH_GAME_STATE["list_with_energy_last"] = DICT_WITH_GAME_STATE["list_with_energy"].copy()
 
             # energy
             print("ENERGY:", end=" ")
@@ -248,10 +252,14 @@ def run():
 # keys that can be pressed only ones
             if event.type == pygame.KEYDOWN:
                 # manual close
-                if event.key == pygame.K_ESCAPE or event.key == pygame.K_RETURN:
+                if event.key == pygame.K_ESCAPE or event.key == pygame.K_RETURN or event.key == pygame.K_q:
                     running = False
                     pygame.quit()
                     quit()
+                # pause
+                if event.key == pygame.K_SPACE:
+                    if pause: pause = False
+                    else: pause = True
                 # center
                 if event.key == pygame.K_c:
                     OFFSET_HORIZONTAL = 100
@@ -285,17 +293,23 @@ def run():
 
 
 # run the simulation
-        # life-cycles of units AI
-        for unit_id in DICT_WITH_UNITS:
-            DICT_WITH_UNITS[unit_id].AI_run(MAP2, DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
+        if not pause:
+            # life-cycles of units AI
+            for unit_id in DICT_WITH_UNITS:
+                DICT_WITH_UNITS[unit_id].AI_run(MAP2, DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
 
-        # life-cycles of bullets
-        for bullet in LIST_WITH_BULLETS:
-            bullet.run(MAP2, DICT_WITH_UNITS)
+            # life-cycles of bullets
+            for bullet in LIST_WITH_BULLETS:
+                bullet.run(MAP2, DICT_WITH_UNITS)
 
-        # life-cycles of units
-        for unit_id in DICT_WITH_UNITS:
-            DICT_WITH_UNITS[unit_id].run(MAP2, DICT_WITH_GAME_STATE, DICT_WITH_UNITS, LIST_WITH_BULLETS)
+            # life-cycles of units
+            for unit_id in DICT_WITH_UNITS:
+                DICT_WITH_UNITS[unit_id].run(MAP2, DICT_WITH_GAME_STATE, DICT_WITH_UNITS, LIST_WITH_BULLETS)
+
+            # # calculate energy
+            # for i in range(1,5):
+            #     DICT_WITH_GAME_STATE["list_with_energy_current_production"][i] = DICT_WITH_GAME_STATE["list_with_energy"][i] - DICT_WITH_GAME_STATE["list_with_energy_last"][i]
+            # DICT_WITH_GAME_STATE["list_with_energy_last"] = DICT_WITH_GAME_STATE["list_with_energy"].copy()
         
 
 # draw the screen
@@ -351,6 +365,13 @@ def run():
         # draw FPS     
         text = FONT_ARIAL_20.render("FPS: %.2f" % CURRENT_FPS, True, LIME)
         WIN.blit(text, (10, 10))
+
+        # draw pause
+        if pause:
+            text_pause = FONT_ARIAL_20.render("PAUSE", True, LIME)
+            WIN.blit(text_pause, (10, 30))
+            WIN.blit(text_pause, (WIN_WIDTH//2 - 30, 10))
+
 
 # flip the screen
         pygame.display.update()
