@@ -4,6 +4,37 @@ from functions_graphics import *
 from functions_math import *
 
 
+def print_infos_about_game(dict_with_game_state):
+    pass
+
+def print_infos_about_players(dict_with_game_state):
+    # write information about the energy processed by players in the console
+    print("ENERGY:", end=" ")
+    for player in range(1,5):
+        print(dict_with_game_state["list_with_energy"][player], end="\t")
+    print()
+    print("SPENT:", end=" ")
+    for player in range(1,5):
+        print(dict_with_game_state["list_with_energy_spent"][player], end="\t")
+    print()
+    print("PROD.:", end=" ")
+    for player in range(1,5):
+        print(dict_with_game_state["list_with_energy_current_production"][player], end="\t")
+    print()
+
+def draw_infos_about_players(win, font, dict_with_game_state):
+    # write information about the energy processed by players on the screen 
+    for player in range(1,5):
+        text_line = font.render("PLAYER %d [%s]: %d (%d/s)" % (
+                    player,
+                    dict_with_game_state["list_with_player_type"][player],
+                    # dict_with_game_state["list_with_energy"][player], 
+                    dict_with_game_state["list_with_energy_last"][player], 
+                    dict_with_game_state["list_with_energy_current_production"][player]
+                ), True, player_color(player))
+        win.blit(text_line, (WIN_WIDTH - 260, 25 * player - 15))
+    
+
 def player_color(player_id):
 # return player color
     if player_id == 0:

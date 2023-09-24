@@ -2,6 +2,10 @@ Changelog
 ======
 
 
+v0.13.1 - 24.09.2023
+----
+* Added table with energy status of the players on the screen.
+
 v0.13.0 - 23.09.2023
 ----
 * Added pause (space button).

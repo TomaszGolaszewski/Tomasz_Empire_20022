@@ -82,12 +82,12 @@ def run():
     DICT_WITH_GAME_STATE = {
         "lowest_free_id": 1,
         "list_with_energy": [0, 10000, 10000, 10000, 10000],
-        "list_with_energy_last": [0, 0, 0, 0, 0],
+        "list_with_energy_last": [0, 10000, 10000, 10000, 10000], # [0, 0, 0, 0, 0],
         "list_with_energy_current_production": [0, 0, 0, 0, 0],
         "list_with_energy_spent": [0, 0, 0, 0, 0],
         # "list_with_player_type": [False, "AI", "AI", "AI", "AI"],
-        # "list_with_player_type": [False, "empty", "AI", "player", "empty"],
-        "list_with_player_type": [False, "empty", "empty", "player", "empty"],
+        "list_with_player_type": [False, "empty", "AI", "player", "empty"],
+        # "list_with_player_type": [False, "empty", "empty", "player", "empty"],
         "dict_with_new_units": {},
     }
     DICT_WITH_GAME_STATE["list_with_player_type"][PLAYER_ID] = "player"
@@ -158,19 +158,8 @@ def run():
                     DICT_WITH_GAME_STATE["list_with_energy_current_production"][i] = DICT_WITH_GAME_STATE["list_with_energy"][i] - DICT_WITH_GAME_STATE["list_with_energy_last"][i]
                 DICT_WITH_GAME_STATE["list_with_energy_last"] = DICT_WITH_GAME_STATE["list_with_energy"].copy()
 
-            # energy
-            print("ENERGY:", end=" ")
-            for player in range(1,5):
-                print(DICT_WITH_GAME_STATE["list_with_energy"][player], end="\t")
-            print()
-            print("SPENT:", end=" ")
-            for player in range(1,5):
-                print(DICT_WITH_GAME_STATE["list_with_energy_spent"][player], end="\t")
-            print()
-            print("PROD.:", end=" ")
-            for player in range(1,5):
-                print(DICT_WITH_GAME_STATE["list_with_energy_current_production"][player], end="\t")
-            print()
+            # print energy
+            print_infos_about_players(DICT_WITH_GAME_STATE)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -361,6 +350,9 @@ def run():
         # draw UI windows
         for ui_win in LIST_WITH_WINDOWS:
             ui_win.draw(WIN, DICT_WITH_UNITS)
+
+        # draw infos about players
+        draw_infos_about_players(WIN, FONT_ARIAL_20, DICT_WITH_GAME_STATE)
 
         # draw FPS     
         text = FONT_ARIAL_20.render("FPS: %.2f" % CURRENT_FPS, True, LIME)
