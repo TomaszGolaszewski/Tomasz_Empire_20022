@@ -2,6 +2,13 @@ Changelog
 ======
 
 
+v0.13.2 - 26.09.2023
+----
+* First stage of factory upgrade mechanics:
+    * Added shoping cards,
+    * Added mechanics for purchasing upgrades,
+    * Added icon modification for upgraded factory.
+
 v0.13.1 - 24.09.2023
 ----
 * Added table with energy status of the players on the screen.

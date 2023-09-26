@@ -159,7 +159,7 @@ class Shop_unit_label: #(Base_window):
                 win.blit(weapon_data_text, [self.window_rect.left + 10, self.window_rect.top + 85 + 15*i])
             i += 1
 
-    def press_left(self, dict_with_units, press_coord):
+    def press_left(self, dict_with_game_state, dict_with_units, press_coord):
     # handle actions after left button is pressed
         if self.window_rect.collidepoint(press_coord): 
             dict_with_units[self.id].add_unit_to_queue(self.Unit)
@@ -216,7 +216,7 @@ class Base_page:
         # draw title   
         win.blit(self.name_text, self.name_text_rect.topleft)
 
-    def press_left(self, dict_with_units, press_coord):
+    def press_left(self, dict_with_game_state, dict_with_units, press_coord):
     # handle actions after left button is pressed
         pass
 
@@ -266,11 +266,11 @@ class Page_with_shop(Base_page):
             for product in self.list_with_products:
                 product.draw(win)
 
-    def press_left(self, dict_with_units, press_coord):
+    def press_left(self, dict_with_game_state, dict_with_units, press_coord):
     # handle actions after left button is pressed
         if self.is_active:
             for product in self.list_with_products:
-                product.press_left(dict_with_units, press_coord)
+                product.press_left(dict_with_game_state, dict_with_units, press_coord)
 
 class Page_land_T1(Page_with_shop):
     name = "T1"
@@ -309,9 +309,73 @@ class Page_navy_T3(Page_with_shop):
     Product_classes = [Destroyer, Battleship]
     extra_wide = True
 
-class Page_factory(Page_with_shop):
+class Page_factory(Base_page):
     name = "Upgrade"
-    Product_classes = []
+
+    def __init__(self, id, dict_with_units, lvl_of_page, number_of_page):
+        Base_page.__init__(self, id, dict_with_units, lvl_of_page, number_of_page)
+        # levels
+        self.current_unit_level = dict_with_units[self.id].unit_level
+        self.current_production_force = dict_with_units[self.id].current_production_force
+        # panes rects
+        window_width = 200
+        self.page_rect_level = pygame.Rect(*self.page_rect.topleft, window_width, self.page_rect.height)
+        self.page_rect_speed = pygame.Rect(*self.page_rect_level.topright, window_width, self.page_rect.height)
+        # fonts
+        self.font_arial_20 = pygame.font.SysFont('arial', 20)
+        self.font_arial_15 = pygame.font.SysFont('arial', 15)
+        # fixed texts
+        self.level_text_title = self.font_arial_20.render("TECHNOLOGY", True, LIME)
+        self.level_text_line_1 = self.font_arial_15.render("Upgrade technology level", True, GRAY)
+        self.speed_text_title = self.font_arial_20.render("PRODUCTION", True, LIME)
+        self.speed_text_line_1 = self.font_arial_15.render("Upgrade production speed", True, GRAY)
+
+    def draw(self, win):
+    # draw the object on the screen 
+        Base_page.draw(self, win)
+        if self.is_active:
+            # lines of between bars
+            pygame.draw.line(win, RED, (self.page_rect_level.right, self.page_rect.top + 20), \
+                            (self.page_rect_level.right, self.page_rect.bottom - 20), 3) # left
+            pygame.draw.line(win, RED, (self.page_rect_speed.right, self.page_rect.top + 20), \
+                            (self.page_rect_speed.right, self.page_rect.bottom - 20), 3) # right
+            
+            # level pane
+            if self.current_unit_level < 3:
+                win.blit(self.level_text_title, [self.page_rect_level.left + 30, self.page_rect_level.top + 10])
+                win.blit(self.level_text_line_1, [self.page_rect_level.left + 10, self.page_rect_level.top + 35])
+                level_current_text = self.font_arial_15.render("Current level:  T" + str(self.current_unit_level), True, GRAY)
+                win.blit(level_current_text, [self.page_rect_level.left + 10, self.page_rect_level.top + 55])
+                level_price_text = self.font_arial_15.render("Cost:  " + str(10000), True, GRAY)
+                win.blit(level_price_text, [self.page_rect_level.left + 10, self.page_rect_level.top + 70])
+
+            # speed pane
+            if 1:
+                win.blit(self.speed_text_title, [self.page_rect_speed.left + 30, self.page_rect_speed.top + 10])
+                win.blit(self.speed_text_line_1, [self.page_rect_speed.left + 10, self.page_rect_speed.top + 35])
+                speed_current_text = self.font_arial_15.render("Current speed:  " + str(self.current_production_force), True, GRAY)
+                win.blit(speed_current_text, [self.page_rect_speed.left + 10, self.page_rect_speed.top + 55])
+                speed_price_text = self.font_arial_15.render("Cost:  " + str(10000), True, GRAY)
+                win.blit(speed_price_text, [self.page_rect_speed.left + 10, self.page_rect_speed.top + 70])
+
+
+    def press_left(self, dict_with_game_state, dict_with_units, press_coord):
+    # handle actions after left button is pressed
+        if self.is_active:
+            player_id = dict_with_units[self.id].player_id
+            if self.page_rect_level.collidepoint(press_coord) \
+                    and self.current_unit_level < 3 \
+                    and dict_with_game_state["list_with_energy"][player_id] > 10000:
+                dict_with_units[self.id].unit_level += 1
+                self.current_unit_level += 1
+                dict_with_game_state["list_with_energy"][player_id] -= 10000
+                dict_with_game_state["list_with_energy_spent"][player_id] += 10000
+            if self.page_rect_speed.collidepoint(press_coord) \
+                    and dict_with_game_state["list_with_energy"][player_id] > 10000: 
+                dict_with_units[self.id].current_production_force += 1
+                self.current_production_force += 1
+                dict_with_game_state["list_with_energy"][player_id] -= 10000
+                dict_with_game_state["list_with_energy_spent"][player_id] += 10000
 
 
 class Page_with_notebook(Base_page):
@@ -336,7 +400,7 @@ class Page_with_notebook(Base_page):
             for page in self.list_with_pages:
                 page.draw(win)
 
-    def press_left(self, dict_with_units, press_coord):
+    def press_left(self, dict_with_game_state, dict_with_units, press_coord):
     # handle actions after left button is pressed
 
         # check and handle actions after one of titles button is pressed
@@ -352,7 +416,7 @@ class Page_with_notebook(Base_page):
         # check and handle actions after one of pages is pressed
         for page in self.list_with_pages:
             if page.is_active and page.is_page_pressed(press_coord):
-                page.press_left(dict_with_units, press_coord)
+                page.press_left(dict_with_game_state, dict_with_units, press_coord)
 
 
 class Page_land(Page_with_notebook):
@@ -399,7 +463,7 @@ class Base_notebook:
         else:
             self.to_remove = True
 
-    def press_left(self, list_with_units, press_coord):
+    def press_left(self, dict_with_game_state, dict_with_units, press_coord):
     # handle actions after left button is pressed
     # return True if pressed and False if not
 
@@ -421,7 +485,7 @@ class Base_notebook:
                     if page.is_title_pressed(press_coord): # title of active tab is pressed
                         pass
                     elif page.is_page_pressed(press_coord): # page (body) is pressed
-                        page.press_left(list_with_units, press_coord)
+                        page.press_left(dict_with_game_state, dict_with_units, press_coord)
                     else: # nothing on this tab has been pressed
                         page.is_active = False
                 else:
@@ -543,7 +607,7 @@ class Building_queue(Base_window):
         else:
             self.to_remove = True
 
-    def press_left(self, dict_with_units, press_coord):
+    def press_left(self, dict_with_game_state, dict_with_units, press_coord):
     # handle actions after left button is pressed
     # return True if pressed and False if not
         if self.window_rect.collidepoint(press_coord): 

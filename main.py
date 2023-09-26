@@ -81,7 +81,7 @@ def run():
 
     DICT_WITH_GAME_STATE = {
         "lowest_free_id": 1,
-        "list_with_energy": [0, 10000, 10000, 10000, 10000],
+        "list_with_energy": [0, 10000, 10000, 100000, 10000],
         "list_with_energy_last": [0, 10000, 10000, 10000, 10000], # [0, 0, 0, 0, 0],
         "list_with_energy_current_production": [0, 0, 0, 0, 0],
         "list_with_energy_spent": [0, 0, 0, 0, 0],
@@ -176,7 +176,7 @@ def run():
                     
                     # press UI windows (based on notebooks)
                     for ui_win in LIST_WITH_WINDOWS:
-                        left_mouse_button_down |= ui_win.press_left(DICT_WITH_UNITS, left_mouse_button_coord)
+                        left_mouse_button_down |= ui_win.press_left(DICT_WITH_GAME_STATE, DICT_WITH_UNITS, left_mouse_button_coord)
 
                     left_mouse_button_down = not left_mouse_button_down
 

@@ -206,6 +206,15 @@ class Factory(Building):
             return self.number_of_frames * (self.unit_level - 1) + self.frame 
         else:
             return self.number_of_frames * (self.unit_level - 1)  
+        
+    def draw_level_indicator(self, win, coord_on_screen):
+    # draw level indicator
+        Building.draw_level_indicator(self, win, coord_on_screen)
+        # upgrade for production speed
+        if self.current_production_force > 1:
+            pygame.draw.rect(win, BLACK, [coord_on_screen[0] - 12, coord_on_screen[1] - 3 * self.current_production_force + 9, 7, 3 * self.current_production_force + 1], 0)
+            for i in range(self.current_production_force):
+                pygame.draw.line(win, WHITE, [coord_on_screen[0] - 11, coord_on_screen[1] + 7 - 3*i], [coord_on_screen[0] - 7, coord_on_screen[1] + 7 - 3*i], 2)
 
     def draw_extra_data(self, win, offset_x, offset_y, scale):
     # draw extra data about the building on the screen
@@ -358,7 +367,6 @@ class Land_factory(Factory):
 
 class Navy_factory(Factory):
     name = "Navy factory"
-    unit_level = 2 # TEMP
 
     path = NAVAL_FACTORY_PATH
     number_of_frames = NAVAL_FACTORY_FRAMES
