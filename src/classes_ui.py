@@ -335,28 +335,29 @@ class Page_factory(Base_page):
         Base_page.draw(self, win)
         if self.is_active:
             # lines of between bars
-            pygame.draw.line(win, RED, (self.page_rect_level.right, self.page_rect.top + 20), \
+            pygame.draw.line(win, LIME, (self.page_rect_level.right, self.page_rect.top + 20), \
                             (self.page_rect_level.right, self.page_rect.bottom - 20), 3) # left
-            pygame.draw.line(win, RED, (self.page_rect_speed.right, self.page_rect.top + 20), \
+            pygame.draw.line(win, LIME, (self.page_rect_speed.right, self.page_rect.top + 20), \
                             (self.page_rect_speed.right, self.page_rect.bottom - 20), 3) # right
             
-            # level pane
+            # level pane  
+            win.blit(self.level_text_title, [self.page_rect_level.left + 30, self.page_rect_level.top + 10])
+            win.blit(self.level_text_line_1, [self.page_rect_level.left + 10, self.page_rect_level.top + 35])
+            level_current_text = self.font_arial_15.render("Current level:  T" + str(self.current_unit_level), True, GRAY)
+            win.blit(level_current_text, [self.page_rect_level.left + 10, self.page_rect_level.top + 55])
             if self.current_unit_level < 3:
-                win.blit(self.level_text_title, [self.page_rect_level.left + 30, self.page_rect_level.top + 10])
-                win.blit(self.level_text_line_1, [self.page_rect_level.left + 10, self.page_rect_level.top + 35])
-                level_current_text = self.font_arial_15.render("Current level:  T" + str(self.current_unit_level), True, GRAY)
-                win.blit(level_current_text, [self.page_rect_level.left + 10, self.page_rect_level.top + 55])
                 level_price_text = self.font_arial_15.render("Cost:  " + str(10000), True, GRAY)
-                win.blit(level_price_text, [self.page_rect_level.left + 10, self.page_rect_level.top + 70])
+            else:
+                level_price_text = self.font_arial_15.render("MAX LEVEL", True, GRAY)
+            win.blit(level_price_text, [self.page_rect_level.left + 10, self.page_rect_level.top + 70])
 
             # speed pane
-            if 1:
-                win.blit(self.speed_text_title, [self.page_rect_speed.left + 30, self.page_rect_speed.top + 10])
-                win.blit(self.speed_text_line_1, [self.page_rect_speed.left + 10, self.page_rect_speed.top + 35])
-                speed_current_text = self.font_arial_15.render("Current speed:  " + str(self.current_production_force), True, GRAY)
-                win.blit(speed_current_text, [self.page_rect_speed.left + 10, self.page_rect_speed.top + 55])
-                speed_price_text = self.font_arial_15.render("Cost:  " + str(10000), True, GRAY)
-                win.blit(speed_price_text, [self.page_rect_speed.left + 10, self.page_rect_speed.top + 70])
+            win.blit(self.speed_text_title, [self.page_rect_speed.left + 30, self.page_rect_speed.top + 10])
+            win.blit(self.speed_text_line_1, [self.page_rect_speed.left + 10, self.page_rect_speed.top + 35])
+            speed_current_text = self.font_arial_15.render("Current speed:  " + str(self.current_production_force), True, GRAY)
+            win.blit(speed_current_text, [self.page_rect_speed.left + 10, self.page_rect_speed.top + 55])
+            speed_price_text = self.font_arial_15.render("Cost:  " + str(10000), True, GRAY)
+            win.blit(speed_price_text, [self.page_rect_speed.left + 10, self.page_rect_speed.top + 70])
 
 
     def press_left(self, dict_with_game_state, dict_with_units, press_coord):

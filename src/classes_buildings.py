@@ -214,7 +214,7 @@ class Factory(Building):
         if self.current_production_force > 1:
             pygame.draw.rect(win, BLACK, [coord_on_screen[0] - 12, coord_on_screen[1] - 3 * self.current_production_force + 9, 7, 3 * self.current_production_force + 1], 0)
             for i in range(self.current_production_force):
-                pygame.draw.line(win, WHITE, [coord_on_screen[0] - 11, coord_on_screen[1] + 7 - 3*i], [coord_on_screen[0] - 7, coord_on_screen[1] + 7 - 3*i], 2)
+                pygame.draw.line(win, YELLOW, [coord_on_screen[0] - 11, coord_on_screen[1] + 7 - 3*i], [coord_on_screen[0] - 7, coord_on_screen[1] + 7 - 3*i], 2)
 
     def draw_extra_data(self, win, offset_x, offset_y, scale):
     # draw extra data about the building on the screen

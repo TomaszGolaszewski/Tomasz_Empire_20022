@@ -2,6 +2,10 @@ Changelog
 ======
 
 
+v0.13.3 - 26.09.2023
+----
+* Changes in shoping card view.
+
 v0.13.2 - 26.09.2023
 ----
 * First stage of factory upgrade mechanics:
