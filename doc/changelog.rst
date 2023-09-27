@@ -2,14 +2,18 @@ Changelog
 ======
 
 
+v0.13.4 - 27.09.2023
+----
+* More changes in shoping card view - price labels turn red when there is not enough energy.
+
 v0.13.3 - 26.09.2023
 ----
-* Changes in shoping card view.
+* Changes in shopping upgrade card view.
 
 v0.13.2 - 26.09.2023
 ----
-* First stage of factory upgrade mechanics:
-    * Added shoping cards,
+* First stage of changes in factory upgrade mechanics:
+    * Added shopping upgrade cards,
     * Added mechanics for purchasing upgrades,
     * Added icon modification for upgraded factory.
 
@@ -21,7 +25,7 @@ v0.13.0 - 23.09.2023
 ----
 * Added pause (space button).
 
-v0.13 - New ideas and further development
+v0.13 - New mechanics for building and buying units
 ======
 
 

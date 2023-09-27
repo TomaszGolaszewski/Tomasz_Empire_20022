@@ -244,6 +244,7 @@ class Factory(Building):
     def run(self, map, dict_with_game_state, dict_with_units, list_with_bullets):
     # life-cycle of the building
         Building.run(self, map, dict_with_game_state, dict_with_units, list_with_bullets)
+        # TODO: waiting for refactoring
         if self.production_is_on and dict_with_game_state["list_with_energy"][self.player_id] > self.current_production_force:
             self.BP += self.current_production_force
             self.energy_spent += self.current_production_force

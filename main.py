@@ -349,7 +349,7 @@ def run():
 
         # draw UI windows
         for ui_win in LIST_WITH_WINDOWS:
-            ui_win.draw(WIN, DICT_WITH_UNITS)
+            ui_win.draw(WIN, DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
 
         # draw infos about players
         draw_infos_about_players(WIN, FONT_ARIAL_20, DICT_WITH_GAME_STATE)
@@ -360,7 +360,7 @@ def run():
 
         # draw pause
         if pause:
-            text_pause = FONT_ARIAL_20.render("PAUSE", True, LIME)
+            text_pause = FONT_ARIAL_20.render("[PAUSE]", True, LIME)
             WIN.blit(text_pause, (10, 30))
             WIN.blit(text_pause, (WIN_WIDTH//2 - 30, 10))
 

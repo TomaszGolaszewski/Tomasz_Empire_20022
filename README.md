@@ -10,29 +10,23 @@
 **Project still under development**
 
 ### Current stage:
-v0.12 - AI, performance optimization and game balance
+v0.13 - New mechanics for building and buying units
 
 ### Last changes:
-v0.12.4 - 23.04.2023
+v0.13.4 - 27.09.2023
 
-* Small fixes in collision checking;
-* New pause button in queue window;
-* Building queue can be now passed;
-* AI can now stop production when it has limited resources.
+* More changes in shoping card view - price labels turn red when there is not enough energy.
 
-v0.12.3 - 16.04.2023
+v0.13.3 - 26.09.2023
 
-* Small fixes in building queue loop;
-* New mechanics for collision checking between units:
-  * once a second search for the nearest units that may collide in the future - store their ids in a list,
-  * during each frame check for collisions with units from the list;
-  * when collision occurs, move unit back;
-* Small fixes in building's default target for newly produced units.
+* Changes in shopping upgrade card view.
 
-v0.12.2 - 10.04.2023
+v0.13.2 - 26.09.2023
 
-* New loop button in queue window;
-* Building queue can be now looped;
+* First stage of changes in factory upgrade mechanics:
+    * Added shopping upgrade cards,
+    * Added mechanics for purchasing upgrades,
+    * Added icon modification for upgraded factory.
 
 <p align="center">
   <img src="screens/screenshot2_20230115.png" alt="Tomasz Empire 20022 - Fleet">
