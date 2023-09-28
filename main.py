@@ -64,7 +64,7 @@ def run():
     number_of_selected_units = 0
 
     # initialize the game
-    PLAYER_ID = 0 #3
+    PLAYER_ID = 3
     size = "L"
     type_of_map = "island" # "mars_poles" "lake" "bridge" "island" "noise" "forest" "snow_forest"
 
@@ -354,6 +354,10 @@ def run():
         # draw infos about players
         draw_infos_about_players(WIN, FONT_ARIAL_20, DICT_WITH_GAME_STATE)
 
+        # draw player's energy
+        text = FONT_ARIAL_30.render("E: %d" % DICT_WITH_GAME_STATE["list_with_energy"][PLAYER_ID], True, player_color(PLAYER_ID))
+        WIN.blit(text, (WIN_WIDTH//2 - 50, 10))
+
         # draw FPS     
         text = FONT_ARIAL_20.render("FPS: %.2f" % CURRENT_FPS, True, LIME)
         WIN.blit(text, (10, 10))
@@ -362,7 +366,7 @@ def run():
         if pause:
             text_pause = FONT_ARIAL_20.render("[PAUSE]", True, LIME)
             WIN.blit(text_pause, (10, 30))
-            WIN.blit(text_pause, (WIN_WIDTH//2 - 30, 10))
+            WIN.blit(text_pause, (WIN_WIDTH//2 - 25, 40))
 
 
 # flip the screen

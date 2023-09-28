@@ -13,6 +13,13 @@
 v0.13 - New mechanics for building and buying units
 
 ### Last changes:
+v0.13.5 - 28.09.2023
+
+* Big changes in purchase and production mechanics:
+    * amount of energy for the product is spent not during production but once at the time of unit selection;
+* AI was adapted to the new mechanics;
+* New player's energy indicator.
+
 v0.13.4 - 27.09.2023
 
 * More changes in shoping card view - price labels turn red when there is not enough energy.
@@ -20,13 +27,6 @@ v0.13.4 - 27.09.2023
 v0.13.3 - 26.09.2023
 
 * Changes in shopping upgrade card view.
-
-v0.13.2 - 26.09.2023
-
-* First stage of changes in factory upgrade mechanics:
-    * Added shopping upgrade cards,
-    * Added mechanics for purchasing upgrades,
-    * Added icon modification for upgraded factory.
 
 <p align="center">
   <img src="screens/screenshot2_20230115.png" alt="Tomasz Empire 20022 - Fleet">

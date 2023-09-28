@@ -165,7 +165,7 @@ class Shop_unit_label: #(Base_window):
     # handle actions after left button is pressed
         if self.window_rect.collidepoint(press_coord) \
                     and dict_with_game_state["list_with_energy"][self.player_id] >= self.price: # TODO: check if necessary
-            dict_with_units[self.id].add_unit_to_queue(self.Unit)
+            dict_with_units[self.id].add_unit_to_queue(dict_with_game_state, self.Unit)
 
 
 # ======================================================================
@@ -317,9 +317,6 @@ class Page_factory(Base_page):
 
     def __init__(self, id, dict_with_units, lvl_of_page, number_of_page):
         Base_page.__init__(self, id, dict_with_units, lvl_of_page, number_of_page)
-        # levels
-        self.current_unit_level = dict_with_units[self.id].unit_level
-        self.current_production_force = dict_with_units[self.id].current_production_force
         # panes rects
         window_width = 200
         self.page_rect_level = pygame.Rect(*self.page_rect.topleft, window_width, self.page_rect.height)
@@ -347,9 +344,9 @@ class Page_factory(Base_page):
             # level pane  
             win.blit(self.level_text_title, [self.page_rect_level.left + 30, self.page_rect_level.top + 10])
             win.blit(self.level_text_line_1, [self.page_rect_level.left + 10, self.page_rect_level.top + 35])
-            level_current_text = self.font_arial_15.render("Current level:  T" + str(self.current_unit_level), True, GRAY)
+            level_current_text = self.font_arial_15.render("Current level:  T" + str(dict_with_units[self.id].unit_level), True, GRAY)
             win.blit(level_current_text, [self.page_rect_level.left + 10, self.page_rect_level.top + 55])
-            if self.current_unit_level < 3:
+            if dict_with_units[self.id].unit_level < 3:
                 if dict_with_game_state["list_with_energy"][player_id] < 10000: color = RED
                 else: color = GRAY
                 level_price_text = self.font_arial_15.render("Cost:  " + str(10000), True, color)
@@ -360,7 +357,7 @@ class Page_factory(Base_page):
             # speed pane
             win.blit(self.speed_text_title, [self.page_rect_speed.left + 30, self.page_rect_speed.top + 10])
             win.blit(self.speed_text_line_1, [self.page_rect_speed.left + 10, self.page_rect_speed.top + 35])
-            speed_current_text = self.font_arial_15.render("Current speed:  " + str(self.current_production_force), True, GRAY)
+            speed_current_text = self.font_arial_15.render("Current speed:  " + str(dict_with_units[self.id].current_production_force), True, GRAY)
             win.blit(speed_current_text, [self.page_rect_speed.left + 10, self.page_rect_speed.top + 55])
             if dict_with_game_state["list_with_energy"][player_id] < 10000: color = RED
             else: color = GRAY
@@ -373,16 +370,14 @@ class Page_factory(Base_page):
         if self.is_active:
             player_id = dict_with_units[self.id].player_id
             if self.page_rect_level.collidepoint(press_coord) \
-                    and self.current_unit_level < 3 \
+                    and dict_with_units[self.id].unit_level < 3 \
                     and dict_with_game_state["list_with_energy"][player_id] >= 10000:
                 dict_with_units[self.id].unit_level += 1
-                self.current_unit_level += 1
                 dict_with_game_state["list_with_energy"][player_id] -= 10000
                 dict_with_game_state["list_with_energy_spent"][player_id] += 10000
             if self.page_rect_speed.collidepoint(press_coord) \
                     and dict_with_game_state["list_with_energy"][player_id] >= 10000: 
                 dict_with_units[self.id].current_production_force += 1
-                self.current_production_force += 1
                 dict_with_game_state["list_with_energy"][player_id] -= 10000
                 dict_with_game_state["list_with_energy_spent"][player_id] += 10000
 

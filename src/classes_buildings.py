@@ -244,12 +244,8 @@ class Factory(Building):
     def run(self, map, dict_with_game_state, dict_with_units, list_with_bullets):
     # life-cycle of the building
         Building.run(self, map, dict_with_game_state, dict_with_units, list_with_bullets)
-        # TODO: waiting for refactoring
-        if self.production_is_on and dict_with_game_state["list_with_energy"][self.player_id] > self.current_production_force:
+        if self.production_is_on:
             self.BP += self.current_production_force
-            self.energy_spent += self.current_production_force
-            dict_with_game_state["list_with_energy_spent"][self.player_id] += self.current_production_force
-            dict_with_game_state["list_with_energy"][self.player_id] -= self.current_production_force
             if self.BP > self.base_BP:
                 # make new unit
                 # get a new index
@@ -261,7 +257,7 @@ class Factory(Building):
                     dict_with_game_state["dict_with_new_units"][new_id].set_new_target(target)
                 # handle building queue
                 if self.loop_mode_is_on:
-                    self.move_unit_in_queue_to_end()
+                    self.move_unit_in_queue_to_end(dict_with_game_state)
                 else:
                     self.remove_unit_from_queue(0)
 
@@ -270,10 +266,25 @@ class Factory(Building):
         if self.is_alive and dict_with_game_state["list_with_player_type"][self.player_id] == "AI":
             if not self.countdown_to_AI_activity:
                 self.countdown_to_AI_activity = FRAMERATE
-                selected_class = self.select_unit_for_production(dict_with_game_state, dict_with_units)
-                self.add_unit_to_queue(selected_class(0, self.coord, self.angle, self.player_id, self.team_id))
+
+                # decide about upgrade
+                self.decide_about_upgrade(dict_with_game_state)
+
+                # buy new unit
+                if len(self.list_building_queue) < 2:
+                    selected_class = self.select_unit_for_production(dict_with_game_state, dict_with_units)
+                    self.add_unit_to_queue(dict_with_game_state, selected_class(0, self.coord, self.angle, self.player_id, self.team_id))
             else:
                 self.countdown_to_AI_activity -= 1
+
+    def decide_about_upgrade(self, dict_with_game_state):
+    # decide on the purchase of upgrades
+    # buy if necessary
+        if self.unit_level < 3 and self.energy_spent > 5000 \
+                    and dict_with_game_state["list_with_energy"][self.player_id] >= 10000:
+            self.unit_level += 1
+            dict_with_game_state["list_with_energy"][self.player_id] -= 10000
+            dict_with_game_state["list_with_energy_spent"][self.player_id] += 10000
 
     def select_unit_for_production(self, dict_with_game_state, dict_with_units):
     # select a unit for production based on current indicator levels
@@ -286,10 +297,14 @@ class Factory(Building):
             self.base_BP = self.list_building_queue[0].price
             self.production_is_on = True
 
-    def add_unit_to_queue(self, unit):
+    def add_unit_to_queue(self, dict_with_game_state, unit):
     # add new unit to building queue
-        if len(self.list_building_queue) < 10:
+        if len(self.list_building_queue) < 10 \
+                    and dict_with_game_state["list_with_energy"][self.player_id] >= unit.price:
             self.list_building_queue.append(unit)
+            dict_with_game_state["list_with_energy"][self.player_id] -= unit.price
+            dict_with_game_state["list_with_energy_spent"][self.player_id] += unit.price
+            self.energy_spent += unit.price
             if len(self.list_building_queue) == 1: # when first element was changed
                 self.start_production()
 
@@ -303,10 +318,14 @@ class Factory(Building):
                     self.production_is_on = False
                     self.BP = 0
 
-    def move_unit_in_queue_to_end(self):
+    def move_unit_in_queue_to_end(self, dict_with_game_state):
     # move unit in the queue from the begining (index 0) to the end
         temp_unit_container = self.list_building_queue.pop(0)
-        self.list_building_queue.append(temp_unit_container)
+        if dict_with_game_state["list_with_energy"][self.player_id] >= temp_unit_container.price:
+            self.list_building_queue.append(temp_unit_container)
+            dict_with_game_state["list_with_energy"][self.player_id] -= temp_unit_container.price
+            dict_with_game_state["list_with_energy_spent"][self.player_id] += temp_unit_container.price
+            self.energy_spent += temp_unit_container.price
         self.start_production()
 
     def get_hit(self, map, power):
@@ -321,6 +340,7 @@ class Factory(Building):
             self.loop_mode_is_on = False
             self.base_BP = 100
             self.BP = 0
+            self.energy_spent = 0
 
 
 class Land_factory(Factory):
@@ -337,32 +357,40 @@ class Land_factory(Factory):
 
     def select_unit_for_production(self, dict_with_game_state, dict_with_units):
     # select a unit for production based on current indicator levels
-        if dict_with_game_state["list_with_energy_spent"][self.player_id] > 10000:
-            selected_number = random.randint(0,2)
+
+        # TODO: add conditions based on used energy
+        # if dict_with_game_state["list_with_energy_spent"][self.player_id] > 10000:
+        # if dict_with_game_state["list_with_energy_current_production"][self.player_id] > 40:
+
+        if self.unit_level == 1:
+            return Space_marine
+        
+        elif self.unit_level == 2:
+            selected_number = random.randint(0,4)
             if selected_number == 0:
                 return Super_space_marine
             elif selected_number == 1:
-                if dict_with_game_state["list_with_energy_current_production"][self.player_id] > 40:
-                    return Heavy_artillery
-                else:
+                return Heavy_artillery
+            elif selected_number == 2:
                     return Super_space_marine
-            elif selected_number == 2:
+            elif selected_number == 3:
                 return Bomber
             else:
                 return Space_marine
-        elif dict_with_game_state["list_with_energy_spent"][self.player_id] > 5000:
-            selected_number = random.randint(0,2)
+        elif self.unit_level == 3:
+
+            selected_number = random.randint(0,4)
             if selected_number == 0:
                 return Super_space_marine
             elif selected_number == 1:
-                if dict_with_game_state["list_with_energy_current_production"][self.player_id] > 40:
-                    return Main_battle_tank
-                else:
-                    return Space_marine
+                return Main_battle_tank
             elif selected_number == 2:
+                return Space_marine
+            elif selected_number == 3:
                 return Bomber
             else:
                 return Space_marine
+            
         else:
             return Space_marine
 
@@ -380,19 +408,28 @@ class Navy_factory(Factory):
 
     def select_unit_for_production(self, dict_with_game_state, dict_with_units):
     # select a unit for production based on current indicator levels
-        if dict_with_game_state["list_with_energy_current_production"][self.player_id] < 0:
-            self.production_is_on = False
-        elif dict_with_game_state["list_with_energy_current_production"][self.player_id] > 40:
-            self.production_is_on = True
 
-        if dict_with_game_state["list_with_energy_spent"][self.player_id] > 10000:
+        # TODO: add conditions based on used energy
+        # if dict_with_game_state["list_with_energy_current_production"][self.player_id] < 0:
+        #     self.production_is_on = False
+        # elif dict_with_game_state["list_with_energy_current_production"][self.player_id] > 40:
+        #     self.production_is_on = True
+
+        # if dict_with_game_state["list_with_energy_spent"][self.player_id] > 10000:
+
+        if self.unit_level == 1:
+            return Small_AA_ship
+        
+        if self.unit_level == 2:
+            return Battle_cruiser
+        
+        if self.unit_level == 3:
             selected_number = random.randint(0,4)
             if selected_number:
                 return Destroyer
             else:
                 return Battleship
-        elif dict_with_game_state["list_with_energy_spent"][self.player_id] > 5000:
-            return Battle_cruiser
+        
         else:
             return Small_AA_ship
 

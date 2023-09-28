@@ -2,6 +2,13 @@ Changelog
 ======
 
 
+v0.13.5 - 28.09.2023
+----
+* Big changes in purchase and production mechanics:
+    * amount of energy for the product is spent not during production but once at the time of unit selection;
+* AI was adapted to the new mechanics;
+* New player's energy indicator.
+
 v0.13.4 - 27.09.2023
 ----
 * More changes in shoping card view - price labels turn red when there is not enough energy.
