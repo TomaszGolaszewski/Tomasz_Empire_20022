@@ -2,6 +2,11 @@ Changelog
 ======
 
 
+v0.13.6 - 29.09.2023
+----
+* More changes in building upgrade AI;
+* Some fixes in unit selection AI.
+
 v0.13.5 - 28.09.2023
 ----
 * Big changes in purchase and production mechanics:

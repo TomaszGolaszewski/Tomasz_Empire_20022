@@ -48,12 +48,20 @@ def make_generators(map, dict_with_game_state, dict_with_units):
 def make_start_units(map, dict_with_game_state, dict_with_units):
 # make start units
     id = dict_with_game_state["lowest_free_id"]
+    dict_with_units[id] = Commander(id, [900, 1000], 0, 1, 1) # blue
+    id += 1
     dict_with_units[id] = Super_space_marine(id, [1000, 1000], 0, 1, 1) # blue
+    id += 1
+    dict_with_units[id] = Commander(id, [2600, 1000], 0, 3, 3) # red
     id += 1
     dict_with_units[id] = Super_space_marine(id, [2500, 1000], 0, 3, 3) # red
     id += 1
-    dict_with_units[id] = Super_space_marine(id, [2500, 2500], 0, 2, 2) # green
+    dict_with_units[id] = Commander(id, [2600, 2700], 0, 2, 2) # green
     id += 1
-    dict_with_units[id] = Super_space_marine(id, [1000, 2500], 0, 4, 4) # yellow
+    dict_with_units[id] = Super_space_marine(id, [2500, 2700], 0, 2, 2) # green
+    id += 1
+    dict_with_units[id] = Commander(id, [900, 2700], 0, 4, 4) # yellow
+    id += 1
+    dict_with_units[id] = Super_space_marine(id, [1000, 2700], 0, 4, 4) # yellow
     id += 1
     dict_with_game_state["lowest_free_id"] = id

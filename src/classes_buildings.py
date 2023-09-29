@@ -266,25 +266,45 @@ class Factory(Building):
         if self.is_alive and dict_with_game_state["list_with_player_type"][self.player_id] == "AI":
             if not self.countdown_to_AI_activity:
                 self.countdown_to_AI_activity = FRAMERATE
-
                 # decide about upgrade
-                self.decide_about_upgrade(dict_with_game_state)
-
-                # buy new unit
-                if len(self.list_building_queue) < 2:
+                if self.decide_about_upgrade(dict_with_game_state, dict_with_units):
+                    # purchase of upgrades
+                    self.unit_level += 1
+                    dict_with_game_state["list_with_energy"][self.player_id] -= 10000
+                    dict_with_game_state["list_with_energy_spent"][self.player_id] += 10000
+                # decide and buy new unit
+                if self.decide_about_purchase(dict_with_game_state, dict_with_units):
                     selected_class = self.select_unit_for_production(dict_with_game_state, dict_with_units)
                     self.add_unit_to_queue(dict_with_game_state, selected_class(0, self.coord, self.angle, self.player_id, self.team_id))
             else:
                 self.countdown_to_AI_activity -= 1
 
-    def decide_about_upgrade(self, dict_with_game_state):
+    def decide_about_upgrade(self, dict_with_game_state, dict_with_units):
     # decide on the purchase of upgrades
-    # buy if necessary
-        if self.unit_level < 3 and self.energy_spent > 5000 \
+        if self.unit_level == 1 and self.energy_spent > 1000 \
                     and dict_with_game_state["list_with_energy"][self.player_id] >= 10000:
-            self.unit_level += 1
-            dict_with_game_state["list_with_energy"][self.player_id] -= 10000
-            dict_with_game_state["list_with_energy_spent"][self.player_id] += 10000
+            return True
+        elif self.unit_level == 2 and dict_with_game_state["list_with_energy"][self.player_id] >= 10000:
+            for unit_id in dict_with_units:
+                if dict_with_units[unit_id].is_alive and \
+                        dict_with_units[unit_id].player_id == self.player_id and \
+                        dict_with_units[unit_id].unit_level == 1 and \
+                        (dict_with_units[unit_id].name == "Land factory" or \
+                         dict_with_units[unit_id].name == "Navy factory"):
+                    return False
+            return True              
+        else:
+            return False
+            
+    def decide_about_purchase(self, dict_with_game_state, dict_with_units):
+    # decide on the purchase of unit
+        if len(self.list_building_queue) < 2 and \
+                    ((self.unit_level == 1 and self.energy_spent < 2000) or \
+                    (self.unit_level == 2 and self.energy_spent < 10000) or \
+                    self.unit_level == 3):
+            return True
+        else:
+            return False
 
     def select_unit_for_production(self, dict_with_game_state, dict_with_units):
     # select a unit for production based on current indicator levels
@@ -370,24 +390,24 @@ class Land_factory(Factory):
             if selected_number == 0:
                 return Super_space_marine
             elif selected_number == 1:
-                return Heavy_artillery
+                return Main_battle_tank
             elif selected_number == 2:
-                    return Super_space_marine
+                return Spider_tank
             elif selected_number == 3:
                 return Bomber
             else:
                 return Space_marine
+            
         elif self.unit_level == 3:
-
             selected_number = random.randint(0,4)
             if selected_number == 0:
                 return Super_space_marine
             elif selected_number == 1:
-                return Main_battle_tank
+                return Heavy_tank
             elif selected_number == 2:
-                return Space_marine
+                return Heavy_artillery
             elif selected_number == 3:
-                return Bomber
+                return Strategic_bomber
             else:
                 return Space_marine
             
@@ -406,6 +426,21 @@ class Navy_factory(Factory):
         # U
         pygame.draw.arc(win, WHITE, [coord_on_screen[0] - 4, coord_on_screen[1] - 6, 8, 8], math.pi, 0, 1)
 
+    def decide_about_purchase(self, dict_with_game_state, dict_with_units):
+    # decide on the purchase of unit
+        if len(self.list_building_queue) < 2 and \
+                    ((self.unit_level == 1 and self.energy_spent < 2000) or \
+                    (self.unit_level == 2 and self.energy_spent < 10000) or \
+                    self.unit_level == 3):
+            for unit_id in dict_with_units:
+                if dict_with_units[unit_id].is_alive and \
+                        dict_with_units[unit_id].team_id != self.team_id and \
+                        dict_with_units[unit_id].unit_type == "navy":
+                    return True
+            return False   
+        else:
+            return False
+        
     def select_unit_for_production(self, dict_with_game_state, dict_with_units):
     # select a unit for production based on current indicator levels
 
