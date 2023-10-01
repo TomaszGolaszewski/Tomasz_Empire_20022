@@ -81,7 +81,7 @@ def run():
 
     DICT_WITH_GAME_STATE = {
         "lowest_free_id": 1,
-        "list_with_energy": [0, 10000, 10000, 100000, 10000],
+        "list_with_energy": [0, 10000, 10000, 10000, 10000],
         "list_with_energy_last": [0, 10000, 10000, 10000, 10000], # [0, 0, 0, 0, 0],
         "list_with_energy_current_production": [0, 0, 0, 0, 0],
         "list_with_energy_spent": [0, 0, 0, 0, 0],
@@ -262,6 +262,9 @@ def run():
                 if event.key == pygame.K_h:
                     if SHOW_HP_BARS: SHOW_HP_BARS = False
                     else: SHOW_HP_BARS = True
+                # cheat/debuging tool - give extra energy
+                if event.key == pygame.K_g:
+                    DICT_WITH_GAME_STATE["list_with_energy"][PLAYER_ID] += 100000
 
 # keys that can be pressed multiple times
         keys_pressed = pygame.key.get_pressed()

@@ -173,6 +173,8 @@ class Shop_unit_label: #(Base_window):
 
 class Base_page:
     name = "temp"
+    unlock_level = 1
+
     def __init__(self, id, dict_with_units, lvl_of_page, number_of_page):
     # initialization of the object
 
@@ -198,6 +200,7 @@ class Base_page:
         # fonts
         font_arial_20 = pygame.font.SysFont('arial', 20)
         self.name_text = font_arial_20.render(self.name, True, LIME)
+        self.name_text_locked = font_arial_20.render(self.name, True, GRAY)
         self.name_text_rect = self.name_text.get_rect(center = self.title_rect.center)
 
     def draw(self, win, dict_with_game_state, dict_with_units):
@@ -217,7 +220,10 @@ class Base_page:
             pygame.draw.line(win, LIME, self.page_rect.bottomleft, self.page_rect.topleft, 3) # left
             pygame.draw.line(win, LIME, self.page_rect.topleft, self.title_rect.bottomleft, 3) # top_left
         # draw title   
-        win.blit(self.name_text, self.name_text_rect.topleft)
+        if dict_with_units[self.id].unit_level < self.unlock_level:
+            win.blit(self.name_text_locked, self.name_text_rect.topleft)
+        else:
+            win.blit(self.name_text, self.name_text_rect.topleft)
 
     def press_left(self, dict_with_game_state, dict_with_units, press_coord):
     # handle actions after left button is pressed
@@ -277,38 +283,47 @@ class Page_with_shop(Base_page):
 
 class Page_land_T1(Page_with_shop):
     name = "T1"
+    unlock_level = 1
     Product_classes = [Space_marine, Light_tank]
 
 class Page_land_T2(Page_with_shop):
     name = "T2"
+    unlock_level = 2
     Product_classes = [Super_space_marine, Main_battle_tank, Spider_tank]
 
 class Page_land_T3(Page_with_shop):
     name = "T3"
+    unlock_level = 3
     Product_classes = [Heavy_tank, Heavy_artillery]
 
 class Page_air_T1(Page_with_shop):
     name = "T1"
+    unlock_level = 1
     Product_classes = []
 
 class Page_air_T2(Page_with_shop):
     name = "T2"
+    unlock_level = 2
     Product_classes = [Fighter, Bomber]
 
 class Page_air_T3(Page_with_shop):
     name = "T3"
+    unlock_level = 3
     Product_classes = [Strategic_bomber]
 
 class Page_navy_T1(Page_with_shop):
     name = "T1"
+    unlock_level = 1
     Product_classes = [Small_artillery_ship, Small_AA_ship]
 
 class Page_navy_T2(Page_with_shop):
     name = "T2"
+    unlock_level = 2
     Product_classes = [Battle_cruiser]
 
 class Page_navy_T3(Page_with_shop):
     name = "T3"
+    unlock_level = 3
     Product_classes = [Destroyer, Battleship]
     extra_wide = True
 
@@ -410,7 +425,9 @@ class Page_with_notebook(Base_page):
         # check and handle actions after one of titles button is pressed
         was_some_title_pressed = False
         for page in self.list_with_pages:
-            if page.is_title_pressed(press_coord): was_some_title_pressed = True
+            if page.is_title_pressed(press_coord) \
+                        and dict_with_units[self.id].unit_level >= page.unlock_level: 
+                was_some_title_pressed = True
         if was_some_title_pressed:
             for page in self.list_with_pages:
                 page.is_active = False
@@ -425,14 +442,17 @@ class Page_with_notebook(Base_page):
 
 class Page_land(Page_with_notebook):
     name = "Land"
+    unlock_level = 1
     Page_classes = [Page_land_T1, Page_land_T2, Page_land_T3]
 
 class Page_air(Page_with_notebook):
     name = "Air"
+    unlock_level = 2
     Page_classes = [Page_air_T2, Page_air_T3] # Page_air_T1, 
 
 class Page_navy(Page_with_notebook):
     name = "Navy"
+    unlock_level = 1
     Page_classes = [Page_navy_T1, Page_navy_T2, Page_navy_T3]
 
 # ======================================================================
@@ -482,6 +502,7 @@ class Base_notebook:
             else:
                 if page.is_title_pressed(press_coord): # title of inactive tab is pressed
                     was_pressed = True
+                    if dict_with_units[self.id].unit_level < page.unlock_level: return True
         # if the notebook has been pressed do the action:
         if was_pressed:
             for page in self.list_with_pages:

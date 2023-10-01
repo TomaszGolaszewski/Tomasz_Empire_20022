@@ -2,6 +2,11 @@ Changelog
 ======
 
 
+v0.13.7 - 01.10.2023
+----
+* Fix: units with higher level than factory's one can no longer be seen in shop;
+* Small fix of initial amount of players' energy.
+
 v0.13.6 - 29.09.2023
 ----
 * More changes in building upgrade AI;
