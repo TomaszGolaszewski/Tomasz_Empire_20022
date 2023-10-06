@@ -56,6 +56,14 @@ class Vehicle(Base_animated_object):
         # body radius
         pygame.draw.circle(win, WHITE, world2screen(self.coord, offset_x, offset_y, scale), self.body_radius*scale, 1)
 
+    def draw_movement_target(self, win, offset_x, offset_y, scale):
+    # draw extra data about the vehicle movement target
+        if len(self.movement_target):
+            last_target = self.coord
+            for target in self.movement_target:
+                pygame.draw.line(win, BLUE, world2screen(last_target, offset_x, offset_y, scale), world2screen(target, offset_x, offset_y, scale))
+                pygame.draw.circle(win, BLUE, world2screen(target, offset_x, offset_y, scale), 10*scale, 1)
+                last_target = target
 
     def run(self, map, dict_with_units):
     # life-cycle of the vehicle

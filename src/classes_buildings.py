@@ -13,6 +13,7 @@ class Building(Base_animated_object):
     name = "Building"
     unit_type = "building"
     unit_level = 0
+    price = 0
     base_HP = 1000
 
     path = GENERATOR_PATH
@@ -117,6 +118,10 @@ class Building(Base_animated_object):
         pygame.draw.circle(win, RED, world2screen(self.coord, offset_x, offset_y, scale), self.hit_box_radius*scale, 1)
         # body radius
         pygame.draw.circle(win, WHITE, world2screen(self.coord, offset_x, offset_y, scale), self.body_radius*scale, 1)
+
+    def draw_movement_target(self, win, offset_x, offset_y, scale):
+    # draw extra data about the building movement target
+        pass
 
     def draw_HP(self, win, offset_x, offset_y, scale):
     # draw HP bar
@@ -229,6 +234,15 @@ class Factory(Building):
         pygame.draw.circle(win, RED, world2screen(self.coord, offset_x, offset_y, scale), self.hit_box_radius*scale, 1)
         # body radius
         pygame.draw.circle(win, WHITE, world2screen(self.coord, offset_x, offset_y, scale), self.body_radius*scale, 1)
+
+    def draw_movement_target(self, win, offset_x, offset_y, scale):
+    # draw extra data about the building movement target
+        if len(self.target_for_units):
+            last_target = self.coord
+            for target in self.target_for_units:
+                pygame.draw.line(win, BLUE, world2screen(last_target, offset_x, offset_y, scale), world2screen(target, offset_x, offset_y, scale))
+                pygame.draw.circle(win, BLUE, world2screen(target, offset_x, offset_y, scale), 10*scale, 1)
+                last_target = target
 
     def draw_HP(self, win, offset_x, offset_y, scale):
     # draw HP bar

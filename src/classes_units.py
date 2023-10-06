@@ -122,6 +122,10 @@ class Unit:
         for weapon in self.Weapons:
             weapon.draw_extra_data(win, offset_x, offset_y, scale)
 
+    def draw_movement_target(self, win, offset_x, offset_y, scale):
+    # draw extra data about the unit movement target
+        self.base.draw_movement_target(win, offset_x, offset_y, scale)
+
     def draw_HP(self, win, offset_x, offset_y, scale):
     # draw HP bar     
         if self.is_alive:   

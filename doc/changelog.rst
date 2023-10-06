@@ -2,6 +2,11 @@ Changelog
 ======
 
 
+v0.13.8 - 06.10.2023
+----
+* Added pointer to show unit's movement target;
+* Added calculating players' current score.
+
 v0.13.7 - 01.10.2023
 ----
 * Fix: units with higher level than factory's one can no longer be seen in shop;

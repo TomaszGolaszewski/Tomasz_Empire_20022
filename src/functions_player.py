@@ -4,11 +4,24 @@ from functions_graphics import *
 from functions_math import *
 
 
+def calculate_score(dict_with_game_state, dict_with_units):
+# calculate current score for each player
+    dict_with_game_state["list_with_score"] = [0, 0, 0, 0, 0]
+    for unit_id in dict_with_units:
+        if dict_with_units[unit_id].is_alive:
+            dict_with_game_state["list_with_score"][dict_with_units[unit_id].player_id] += dict_with_units[unit_id].price
+
+def calculate_energy(dict_with_game_state):
+# calculate current energy production for each player
+    for i in range(1,5):
+        dict_with_game_state["list_with_energy_current_production"][i] = dict_with_game_state["list_with_energy"][i] - dict_with_game_state["list_with_energy_last"][i]
+    dict_with_game_state["list_with_energy_last"] = dict_with_game_state["list_with_energy"].copy()
+
 def print_infos_about_game(dict_with_game_state):
     pass
 
 def print_infos_about_players(dict_with_game_state):
-    # write information about the energy processed by players in the console
+# write information about the energy processed by players in the console
     print("ENERGY:", end=" ")
     for player in range(1,5):
         print(dict_with_game_state["list_with_energy"][player], end="\t")
@@ -23,13 +36,14 @@ def print_infos_about_players(dict_with_game_state):
     print()
 
 def draw_infos_about_players(win, font, dict_with_game_state):
-    # write information about the energy processed by players on the screen 
+# write information about the energy processed by players on the screen 
     for player in range(1,5):
         text_line = font.render("PLAYER %d [%s]: %d (%d/s)" % (
                     player,
                     dict_with_game_state["list_with_player_type"][player],
                     # dict_with_game_state["list_with_energy"][player], 
-                    dict_with_game_state["list_with_energy_last"][player], 
+                    # dict_with_game_state["list_with_energy_last"][player], 
+                    dict_with_game_state["list_with_score"][player],
                     dict_with_game_state["list_with_energy_current_production"][player]
                 ), True, player_color(player))
         win.blit(text_line, (WIN_WIDTH - 260, 25 * player - 15))

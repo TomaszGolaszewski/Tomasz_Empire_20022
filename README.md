@@ -13,6 +13,11 @@
 v0.13 - New mechanics for building and buying units
 
 ### Last changes:
+v0.13.8 - 06.10.2023
+
+* Added pointer to show unit's movement target;
+* Added calculating players' current score.
+
 v0.13.7 - 01.10.2023
 
 * Fix: units with higher level than factory's one can no longer be seen in shop;
@@ -22,13 +27,6 @@ v0.13.6 - 29.09.2023
 
 * More changes in building upgrade AI;
 * Some fixes in unit selection AI.
-
-v0.13.5 - 28.09.2023
-
-* Big changes in purchase and production mechanics:
-    * amount of energy for the product is spent not during production but once at the time of unit selection;
-* AI was adapted to the new mechanics;
-* New player's energy indicator.
 
 
 <p align="center">

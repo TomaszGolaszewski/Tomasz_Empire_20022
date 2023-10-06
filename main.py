@@ -56,7 +56,8 @@ def run():
     OFFSET_VERTICAL = 150
     OFFSET_HORIZONTAL = 200
     SCALE = 0.5
-    SHOW_EXTRA_DATA = False # True
+    SHOW_EXTRA_DATA = False
+    SHOW_MOVEMENT_TARGET = False
     SHOW_HP_BARS = True
 
     left_mouse_button_down = False
@@ -81,12 +82,14 @@ def run():
 
     DICT_WITH_GAME_STATE = {
         "lowest_free_id": 1,
+        "list_with_score": [0, 0, 0, 0, 0],
         "list_with_energy": [0, 10000, 10000, 10000, 10000],
         "list_with_energy_last": [0, 10000, 10000, 10000, 10000], # [0, 0, 0, 0, 0],
         "list_with_energy_current_production": [0, 0, 0, 0, 0],
         "list_with_energy_spent": [0, 0, 0, 0, 0],
         # "list_with_player_type": [False, "AI", "AI", "AI", "AI"],
-        "list_with_player_type": [False, "empty", "AI", "player", "empty"],
+        "list_with_player_type": [False, "AI", "AI", "player", "AI"],
+        # "list_with_player_type": [False, "empty", "AI", "player", "empty"],
         # "list_with_player_type": [False, "empty", "empty", "player", "empty"],
         "dict_with_new_units": {},
     }
@@ -117,7 +120,9 @@ def run():
             # print infos about fps and time
             CURRENT_FPS = CLOCK.get_fps()
             print("FPS: %.2f" % CURRENT_FPS, end="\t")
-            print("TIME: " + str(pygame.time.get_ticks() // 1000))
+            seconds_from_start = pygame.time.get_ticks() // 1000
+            minuts_from_start = seconds_from_start // 60
+            print("TIME: " + str(seconds_from_start) + "s (" + str(minuts_from_start) + "min)" )
 
             # print infos about view position
             print("HORIZ:", end=" ")
@@ -154,12 +159,14 @@ def run():
 
             # calculate energy
             if not pause:
-                for i in range(1,5):
-                    DICT_WITH_GAME_STATE["list_with_energy_current_production"][i] = DICT_WITH_GAME_STATE["list_with_energy"][i] - DICT_WITH_GAME_STATE["list_with_energy_last"][i]
-                DICT_WITH_GAME_STATE["list_with_energy_last"] = DICT_WITH_GAME_STATE["list_with_energy"].copy()
+                calculate_energy(DICT_WITH_GAME_STATE)
+                calculate_score(DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
+                # for i in range(1,5):
+                #     DICT_WITH_GAME_STATE["list_with_energy_current_production"][i] = DICT_WITH_GAME_STATE["list_with_energy"][i] - DICT_WITH_GAME_STATE["list_with_energy_last"][i]
+                # DICT_WITH_GAME_STATE["list_with_energy_last"] = DICT_WITH_GAME_STATE["list_with_energy"].copy()
 
-            # print energy
-            print_infos_about_players(DICT_WITH_GAME_STATE)
+            # # print energy
+            # print_infos_about_players(DICT_WITH_GAME_STATE)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -241,7 +248,7 @@ def run():
 # keys that can be pressed only ones
             if event.type == pygame.KEYDOWN:
                 # manual close
-                if event.key == pygame.K_ESCAPE or event.key == pygame.K_RETURN or event.key == pygame.K_q:
+                if event.key == pygame.K_ESCAPE or event.key == pygame.K_RETURN: # or event.key == pygame.K_q:
                     running = False
                     pygame.quit()
                     quit()
@@ -258,6 +265,10 @@ def run():
                 if event.key == pygame.K_m:
                     if SHOW_EXTRA_DATA: SHOW_EXTRA_DATA = False
                     else: SHOW_EXTRA_DATA = True
+                # show movement target
+                if event.key == pygame.K_q:
+                    if SHOW_MOVEMENT_TARGET: SHOW_MOVEMENT_TARGET = False
+                    else: SHOW_MOVEMENT_TARGET = True
                 # show HP bars
                 if event.key == pygame.K_h:
                     if SHOW_HP_BARS: SHOW_HP_BARS = False
@@ -319,6 +330,12 @@ def run():
         if SHOW_EXTRA_DATA:
             for unit_id in DICT_WITH_UNITS:
                 DICT_WITH_UNITS[unit_id].draw_extra_data(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
+
+        # show movement target
+        if SHOW_MOVEMENT_TARGET:
+            for unit_id in DICT_WITH_UNITS:
+                if DICT_WITH_UNITS[unit_id].player_id == PLAYER_ID:
+                    DICT_WITH_UNITS[unit_id].draw_movement_target(WIN, OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
 
         # draw land and naval units
         for unit_id in DICT_WITH_UNITS:
