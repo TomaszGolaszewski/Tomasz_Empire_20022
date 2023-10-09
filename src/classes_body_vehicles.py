@@ -31,7 +31,8 @@ class Vehicle(Base_animated_object):
         
         self.v_current = 0
         self.v_max_squad = self.v_max
-        self.movement_target = []
+        self.movement_target = [] # main target of the unit movement
+        self.movement_path = [] # path to the closest target
 
         self.time_to_search_for_collisions = 0
         self.list_with_closest_vehicles_ids = []
@@ -43,6 +44,13 @@ class Vehicle(Base_animated_object):
     def draw_extra_data(self, win, offset_x, offset_y, scale):
     # draw extra data about the vehicle on the screen
         
+        # path
+        if len(self.movement_path):
+            last_segment = self.coord
+            for segment in self.movement_path:
+                pygame.draw.line(win, HOTPINK, world2screen(last_segment, offset_x, offset_y, scale), world2screen(segment, offset_x, offset_y, scale))
+                pygame.draw.circle(win, HOTPINK, world2screen(segment, offset_x, offset_y, scale), 10*scale, 1)
+                last_segment = segment
         # target
         if len(self.movement_target):
             last_target = self.coord
@@ -78,15 +86,26 @@ class Vehicle(Base_animated_object):
         # check current movement target
         if len(self.movement_target):
             dist_to_target = dist_two_points(self.coord, self.movement_target[0])
+            if dist_to_target < 30:
+                self.movement_target.pop(0) # remove the achieved target
 
-            if dist_to_target > 20:
+        # check current movement path
+        if len(self.movement_path):
+            dist_to_segment = dist_two_points(self.coord, self.movement_path[0])
+
+            if dist_to_segment > 10:
                 self.accelerate()
                 new_angle = self.get_new_angle()
             else:
-                self.decelerate()
-                new_angle = self.angle
-                self.movement_target.pop(0) # remove the achieved target
-
+                self.movement_path.pop(0) # remove the achieved target
+                if not len(self.movement_path) and len(self.movement_target): # if there is continuation of path
+                    self.movement_path = [self.movement_target[0].copy()]
+                    self.accelerate()
+                    new_angle = self.get_new_angle()
+                else: # if this was the last segment
+                    self.decelerate()
+                    new_angle = self.angle
+                
         else:
             self.decelerate()
             new_angle = self.angle
@@ -125,7 +144,7 @@ class Vehicle(Base_animated_object):
 
     def get_new_angle(self):
     # return new angle closer to the movement target
-        target_angle = angle_to_target(self.coord, self.movement_target[0])
+        target_angle = angle_to_target(self.coord, self.movement_path[0])
         return turn_to_target_angle(self.angle, target_angle, self.turn_speed)
     
     def find_nearest_units(self, dict_with_units):

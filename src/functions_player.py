@@ -11,14 +11,17 @@ def calculate_score(dict_with_game_state, dict_with_units):
         if dict_with_units[unit_id].is_alive:
             dict_with_game_state["list_with_score"][dict_with_units[unit_id].player_id] += dict_with_units[unit_id].price
 
+
 def calculate_energy(dict_with_game_state):
 # calculate current energy production for each player
     for i in range(1,5):
         dict_with_game_state["list_with_energy_current_production"][i] = dict_with_game_state["list_with_energy"][i] - dict_with_game_state["list_with_energy_last"][i]
     dict_with_game_state["list_with_energy_last"] = dict_with_game_state["list_with_energy"].copy()
 
+
 def print_infos_about_game(dict_with_game_state):
     pass
+
 
 def print_infos_about_players(dict_with_game_state):
 # write information about the energy processed by players in the console
@@ -34,6 +37,7 @@ def print_infos_about_players(dict_with_game_state):
     for player in range(1,5):
         print(dict_with_game_state["list_with_energy_current_production"][player], end="\t")
     print()
+
 
 def draw_infos_about_players(win, font, dict_with_game_state):
 # write information about the energy processed by players on the screen 
@@ -84,6 +88,7 @@ def unit_selection(win, dict_with_units, corner1, corner2, offset_x, offset_y, s
 
     rect = set_rectangle_with_two_corners(corner1, corner2)
 
+    # TODO: fix selection is point
     # if selection is point
     if dist_two_points(corner1, corner2) < 5:
         point = screen2world(corner1, offset_x, offset_y, scale)
@@ -110,6 +115,19 @@ def unit_selection(win, dict_with_units, corner1, corner2, offset_x, offset_y, s
     for unit_id in dict_with_units:
         if dict_with_units[unit_id].is_selected: result += 1
     return result
+
+
+def set_new_target_factory(map, dict_with_units, target, is_ctrl_down):
+# set new movement target for units to all selected factories
+    number_of_selected_units = 0
+    # search search through the list with units
+    for unit_id in dict_with_units:
+        if dict_with_units[unit_id].is_selected:
+            number_of_selected_units += 1
+            if is_ctrl_down:
+                dict_with_units[unit_id].target_for_units.append(target)
+            else:
+                dict_with_units[unit_id].target_for_units = [target]
 
 
 def set_new_target_move(map, dict_with_units, target, is_ctrl_down):
@@ -140,13 +158,15 @@ def set_new_target_move(map, dict_with_units, target, is_ctrl_down):
     for unit_id in dict_with_units:
         if dict_with_units[unit_id].is_selected:
             new_target = [dict_with_units[unit_id].coord[0] + translation_vector[0], dict_with_units[unit_id].coord[1] + translation_vector[1]]
-            # if is_ctrl_down:
-            #     dict_with_units[unit_id].set_new_target(new_target)
-            #     dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
-            # else:
-            #     dict_with_units[unit_id].set_new_target(new_target, overwrite=True)
-            #     dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
-            dict_with_units[unit_id].set_new_target_with_path_checking(map, new_target)
+            if is_ctrl_down:
+                dict_with_units[unit_id].set_new_target(new_target)
+            else:
+                dict_with_units[unit_id].set_new_target(new_target, overwrite=True)
+
+            # when only first segment of movement target is changed
+            if len(dict_with_units[unit_id].base.movement_target) == 1: 
+                dict_with_units[unit_id].set_new_path_with_path_checking(map, new_target)
+
             dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
 
 
@@ -168,13 +188,15 @@ def set_new_target_regroup(map, dict_with_units, target, is_ctrl_down):
     for unit_id in dict_with_units:
         if dict_with_units[unit_id].is_selected:
             new_unit_target = get_coord_on_spiral(current_unit, target, 5 * biggest_unit_radius)
-            # if is_ctrl_down:
-            #     dict_with_units[unit_id].set_new_target(new_unit_target)
-            #     dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
-            # else:
-            #     dict_with_units[unit_id].set_new_target(new_unit_target, overwrite=True)
-            #     dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
-            dict_with_units[unit_id].set_new_target_with_path_checking(map, new_unit_target)
+            if is_ctrl_down:
+                dict_with_units[unit_id].set_new_target(new_unit_target)
+            else:
+                dict_with_units[unit_id].set_new_target(new_unit_target, overwrite=True)
+
+            # when only first segment of movement target is changed
+            if len(dict_with_units[unit_id].base.movement_target) == 1:
+                dict_with_units[unit_id].set_new_path_with_path_checking(map, new_unit_target)
+                
             dict_with_units[unit_id].set_v_max_squad(slowest_unit_speed)
             current_unit += 1
 

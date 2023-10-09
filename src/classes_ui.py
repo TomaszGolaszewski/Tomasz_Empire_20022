@@ -746,18 +746,18 @@ class Slide_button_for_factory(Base_slide_button):
         # check if center is pressed
         dist = math.hypot(self.screen_coord[0]-press_coord[0], self.screen_coord[1]-press_coord[1])
         if dist < 25:
-            print("center")
-            # set_new_target_move(dict_with_units, self.world_coord, is_ctrl_down)
+            # print("center")
+            set_new_target_factory(map, dict_with_units, self.world_coord, is_ctrl_down)
         else:
             # check sector       
             angle = math.degrees(angle_to_target(self.screen_coord, press_coord))
             if angle < 60 or angle > 120:
-                print("outside")
-                # set_new_target_regroup(dict_with_units, self.world_coord, is_ctrl_down)
+                # print("outside")
+                set_new_target_factory(map, dict_with_units, self.world_coord, is_ctrl_down)
             else:
-                print("cancel")
-                # pass
-        print()
+                # print("cancel")
+                pass
+        # print()
         self.to_remove = True
     # return True if pressed and False if not
         return False

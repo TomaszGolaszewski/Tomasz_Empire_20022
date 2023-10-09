@@ -266,9 +266,11 @@ class Factory(Building):
                 new_id = dict_with_game_state["lowest_free_id"]
                 dict_with_game_state["lowest_free_id"] += 1
                 # make new unit
-                dict_with_game_state["dict_with_new_units"][new_id] = self.list_building_queue[0].__class__(new_id, self.coord, self.angle, self.player_id, self.team_id, self.id)
+                angle = angle_to_target(self.coord, self.target_for_units[0])
+                dict_with_game_state["dict_with_new_units"][new_id] = self.list_building_queue[0].__class__(new_id, self.coord, angle, self.player_id, self.team_id, self.id)
                 for target in self.target_for_units:
                     dict_with_game_state["dict_with_new_units"][new_id].set_new_target(target)
+                dict_with_game_state["dict_with_new_units"][new_id].set_new_path(self.target_for_units[0], overwrite=True)
                 # handle building queue
                 if self.loop_mode_is_on:
                     self.move_unit_in_queue_to_end(dict_with_game_state)

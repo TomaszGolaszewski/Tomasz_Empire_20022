@@ -161,9 +161,6 @@ def run():
             if not pause:
                 calculate_energy(DICT_WITH_GAME_STATE)
                 calculate_score(DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
-                # for i in range(1,5):
-                #     DICT_WITH_GAME_STATE["list_with_energy_current_production"][i] = DICT_WITH_GAME_STATE["list_with_energy"][i] - DICT_WITH_GAME_STATE["list_with_energy_last"][i]
-                # DICT_WITH_GAME_STATE["list_with_energy_last"] = DICT_WITH_GAME_STATE["list_with_energy"].copy()
 
             # # print energy
             # print_infos_about_players(DICT_WITH_GAME_STATE)
@@ -308,11 +305,6 @@ def run():
             # life-cycles of units
             for unit_id in DICT_WITH_UNITS:
                 DICT_WITH_UNITS[unit_id].run(MAP2, DICT_WITH_GAME_STATE, DICT_WITH_UNITS, LIST_WITH_BULLETS)
-
-            # # calculate energy
-            # for i in range(1,5):
-            #     DICT_WITH_GAME_STATE["list_with_energy_current_production"][i] = DICT_WITH_GAME_STATE["list_with_energy"][i] - DICT_WITH_GAME_STATE["list_with_energy_last"][i]
-            # DICT_WITH_GAME_STATE["list_with_energy_last"] = DICT_WITH_GAME_STATE["list_with_energy"].copy()
         
 
 # draw the screen
@@ -408,6 +400,7 @@ def run():
 # add new units - move new units form DICT_WITH_GAME_STATE["dict_with_new_units"] to DICT_WITH_UNITS
         DICT_WITH_UNITS |= DICT_WITH_GAME_STATE["dict_with_new_units"]
         DICT_WITH_GAME_STATE["dict_with_new_units"] = {}
+
 
 if __name__ == "__main__":
     run()

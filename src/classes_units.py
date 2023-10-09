@@ -58,7 +58,7 @@ class Unit:
         self.is_alive = True
         self.to_remove = False
         self.is_selected = False
-        self.countdown_to_AI_activity = FRAMERATE
+        self.countdown_to_AI_activity = 2 * FRAMERATE
 
     def draw(self, win, offset_x, offset_y, scale):
     # draw the unit on the screen
@@ -170,22 +170,27 @@ class Unit:
 
     def AI_run(self, map, dict_with_game_state, dict_with_units):
     # AI activity
-        if self.is_alive and dict_with_game_state["list_with_player_type"][self.player_id] == "AI":
+        if self.is_alive:
             if not self.countdown_to_AI_activity:
                 self.countdown_to_AI_activity = FRAMERATE
 
-                # try to find closest target
-                temp_coord = [0, 0]
-                temp_dist = 9999
-                for unit_id in dict_with_units:
-                    if dict_with_units[unit_id].team_id != self.team_id and dict_with_units[unit_id].player_id and dict_with_units[unit_id].is_alive:
-                        if self.is_valid_target_for_AI(dict_with_units[unit_id].unit_type):
-                            dist = math.hypot(self.coord[0]-dict_with_units[unit_id].coord[0], self.coord[1]-dict_with_units[unit_id].coord[1])
-                            if dist < temp_dist:
-                                temp_coord = dict_with_units[unit_id].coord
-                                temp_dist = dist
-                # self.set_new_target(temp_coord, True)
-                self.set_new_target_with_path_checking(map, temp_coord)
+                # try to find closest target for AI player
+                if dict_with_game_state["list_with_player_type"][self.player_id] == "AI":
+                    
+                    temp_coord = [0, 0]
+                    temp_dist = 9999
+                    for unit_id in dict_with_units:
+                        if dict_with_units[unit_id].team_id != self.team_id and dict_with_units[unit_id].player_id and dict_with_units[unit_id].is_alive:
+                            if self.is_valid_target_for_AI(dict_with_units[unit_id].unit_type):
+                                dist = math.hypot(self.coord[0]-dict_with_units[unit_id].coord[0], self.coord[1]-dict_with_units[unit_id].coord[1])
+                                if dist < temp_dist:
+                                    temp_coord = dict_with_units[unit_id].coord
+                                    temp_dist = dist
+                    self.set_new_target(temp_coord, True)
+                
+                # check path for all players' units
+                if len(self.base.movement_target):
+                    self.set_new_path_with_path_checking(map, self.base.movement_target[0])
             else:
                 self.countdown_to_AI_activity -= 1
 
@@ -230,11 +235,20 @@ class Unit:
         else:
             self.base.movement_target.append(new_target)
 
-    def set_new_target_with_path_checking(self, map, new_target):
-    # set new target of the unit's movement
+    def set_new_path(self, new_target, overwrite=False):
+    # set new path of the unit's movement
+    # without path checking 
+        if overwrite:
+            self.base.movement_path = [new_target]
+        else:
+            self.base.movement_path.append(new_target)
+
+    def set_new_path_with_path_checking(self, map, new_target):
+    # set new path of the unit's movement
+    # use path checking algorithm
         new_path = self.find_safe_path(map, self.coord, new_target, 0)
         new_path.append(new_target)
-        self.base.movement_target = new_path
+        self.base.movement_path = new_path
 
     def find_safe_path(self, map, start_point, end_point, recursion_depth):
     # recursive function returning a list with safe points of the new path
@@ -385,35 +399,39 @@ class Space_marine(Land_unit):
 
     def AI_run(self, map, dict_with_game_state, dict_with_units):
     # AI activity
-        if self.is_alive and dict_with_game_state["list_with_player_type"][self.player_id] == "AI":
+        if self.is_alive:
             if not self.countdown_to_AI_activity:
                 self.countdown_to_AI_activity = FRAMERATE
 
-                # try to find closest target
-                temp_coord = [0, 0]
-                temp_dist = 9999
-                temp_id = 0
-                for unit_id in dict_with_units:
-                    if dict_with_units[unit_id].team_id != self.team_id and dict_with_units[unit_id].is_alive:
-                        if self.is_valid_target_for_AI(dict_with_units[unit_id].unit_type):
-                            dist = math.hypot(self.coord[0]-dict_with_units[unit_id].coord[0], self.coord[1]-dict_with_units[unit_id].coord[1])
-                            if dist < temp_dist:
-                                temp_coord = dict_with_units[unit_id].coord
-                                temp_dist = dist
-                                temp_id = unit_id
-                # if building found, stop the unit in front of that building
-                if temp_id:
-                    if dict_with_units[temp_id].unit_type == "building":
-                        if dict_with_units[temp_id].name == "Land factory": offset = 80
-                        elif dict_with_units[temp_id].name == "Navy factory": offset = 80
-                        elif dict_with_units[temp_id].name == "Generator": offset = 45
-                        else: offset = 10
+                # try to find closest target for AI player
+                if dict_with_game_state["list_with_player_type"][self.player_id] == "AI":
 
-                        angle = angle_to_target(temp_coord, self.coord)
-                        temp_coord = move_point(temp_coord, offset, angle)
+                    temp_coord = [0, 0]
+                    temp_dist = 9999
+                    temp_id = 0
+                    for unit_id in dict_with_units:
+                        if dict_with_units[unit_id].team_id != self.team_id and dict_with_units[unit_id].is_alive:
+                            if self.is_valid_target_for_AI(dict_with_units[unit_id].unit_type):
+                                dist = math.hypot(self.coord[0]-dict_with_units[unit_id].coord[0], self.coord[1]-dict_with_units[unit_id].coord[1])
+                                if dist < temp_dist:
+                                    temp_coord = dict_with_units[unit_id].coord
+                                    temp_dist = dist
+                                    temp_id = unit_id
+                    # if building found, stop the unit in front of that building
+                    if temp_id:
+                        if dict_with_units[temp_id].unit_type == "building":
+                            if dict_with_units[temp_id].name == "Land factory": offset = 80
+                            elif dict_with_units[temp_id].name == "Navy factory": offset = 80
+                            elif dict_with_units[temp_id].name == "Generator": offset = 45
+                            else: offset = 10
 
-                self.set_new_target_with_path_checking(map, temp_coord)
-                # self.set_new_target(temp_coord, True)
+                            angle = angle_to_target(temp_coord, self.coord)
+                            temp_coord = move_point(temp_coord, offset, angle)
+                    self.set_new_target(temp_coord, True)
+                
+                # check path for all players' units
+                if len(self.base.movement_target):
+                    self.set_new_path_with_path_checking(map, self.base.movement_target[0])
             else:
                 self.countdown_to_AI_activity -= 1
 
@@ -454,7 +472,20 @@ class Commander(Super_space_marine):
 
     def AI_run(self, map, dict_with_game_state, dict_with_units):
     # AI activity
-        pass
+        if self.is_alive:
+            if not self.countdown_to_AI_activity:
+                self.countdown_to_AI_activity = FRAMERATE
+
+                # try to find closest target for AI player
+                if dict_with_game_state["list_with_player_type"][self.player_id] == "AI":
+                    # at this point - don't move
+                    pass
+                
+                # check path for all players' units
+                if len(self.base.movement_target):
+                    self.set_new_path_with_path_checking(map, self.base.movement_target[0])
+            else:
+                self.countdown_to_AI_activity -= 1
 
 
 # ======================================================================

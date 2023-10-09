@@ -24,7 +24,7 @@ class Plane(Vehicle):
     def run(self, map, dict_with_units):
     # life-cycle of the Plane
         if len(self.movement_target):
-            dist_to_target = dist_two_points(self.coord, self.movement_target[0])
+            dist_to_target = dist_two_points(self.coord, self.movement_target[0]) # TODO: check movement target mechanics
             self.accelerate()
             self.angle = self.get_new_angle()
             self.coord = move_point(self.coord, self.v_current, self.angle)

@@ -2,6 +2,13 @@ Changelog
 ======
 
 
+v0.13.9 - 09.10.2023
+----
+* New way of storing movement targets;
+* Player's units have AI engine to check and adjust movement path now;
+* Added possibility to assign movement target to units produced by factories;
+* Lot of small fixes.
+
 v0.13.8 - 06.10.2023
 ----
 * Added pointer to show unit's movement target;

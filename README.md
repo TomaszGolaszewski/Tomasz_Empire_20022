@@ -13,6 +13,13 @@
 v0.13 - New mechanics for building and buying units
 
 ### Last changes:
+v0.13.9 - 09.10.2023
+
+* New way of storing movement targets;
+* Player's units have AI engine to check and adjust movement path now;
+* Added possibility to assign movement target to units produced by factories;
+* Lot of small fixes.
+
 v0.13.8 - 06.10.2023
 
 * Added pointer to show unit's movement target;
@@ -22,11 +29,6 @@ v0.13.7 - 01.10.2023
 
 * Fix: units with higher level than factory's one can no longer be seen in shop;
 * Small fix of initial amount of players' energy.
-
-v0.13.6 - 29.09.2023
-
-* More changes in building upgrade AI;
-* Some fixes in unit selection AI.
 
 
 <p align="center">
