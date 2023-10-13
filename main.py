@@ -102,6 +102,8 @@ def run():
     make_land_factories(MAP2, DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
     make_generators(MAP2, DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
     make_start_units(MAP2, DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
+    OFFSET_HORIZONTAL, OFFSET_VERTICAL = get_start_position(DICT_WITH_UNITS, SCALE, PLAYER_ID)
+
     LIST_WITH_BULLETS = []
     LIST_WITH_WINDOWS = []
 
@@ -255,9 +257,8 @@ def run():
                     else: pause = True
                 # center
                 if event.key == pygame.K_c:
-                    OFFSET_HORIZONTAL = 100
-                    OFFSET_VERTICAL = 100
                     SCALE = 1
+                    OFFSET_HORIZONTAL, OFFSET_VERTICAL = get_start_position(DICT_WITH_UNITS, SCALE, PLAYER_ID)
                 # show extra data
                 if event.key == pygame.K_m:
                     if SHOW_EXTRA_DATA: SHOW_EXTRA_DATA = False

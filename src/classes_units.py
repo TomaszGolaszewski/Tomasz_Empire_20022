@@ -87,6 +87,8 @@ class Unit:
 
                 if self.is_selected:
                     pygame.draw.circle(win, LIME, coord_on_screen, 20, 3)
+                    for weapon in self.Weapons:
+                        weapon.draw_range(win, offset_x, offset_y, scale)
             # if the unit is dead
             else:
                 # pygame.draw.circle(win, player_color(self.player_id), coord_on_screen, int(body_radius_on_screen), 0)
@@ -124,7 +126,8 @@ class Unit:
 
     def draw_movement_target(self, win, offset_x, offset_y, scale):
     # draw extra data about the unit movement target
-        self.base.draw_movement_target(win, offset_x, offset_y, scale)
+        if self.is_alive:
+            self.base.draw_movement_target(win, offset_x, offset_y, scale)
 
     def draw_HP(self, win, offset_x, offset_y, scale):
     # draw HP bar     

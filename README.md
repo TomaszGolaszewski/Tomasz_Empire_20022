@@ -13,6 +13,12 @@
 v0.13 - New mechanics for building and buying units
 
 ### Last changes:
+v0.13.10 - 13.10.2023
+
+* Changes in methods that draw additional data about units;
+* Basic extra data is now shown when unit is selected;
+* Fix in start camera position.
+
 v0.13.9 - 09.10.2023
 
 * New way of storing movement targets;
@@ -24,11 +30,6 @@ v0.13.8 - 06.10.2023
 
 * Added pointer to show unit's movement target;
 * Added calculating players' current score.
-
-v0.13.7 - 01.10.2023
-
-* Fix: units with higher level than factory's one can no longer be seen in shop;
-* Small fix of initial amount of players' energy.
 
 
 <p align="center">

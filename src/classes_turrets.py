@@ -1,4 +1,5 @@
 import pygame
+import pygame.gfxdraw
 import math
 import random
 
@@ -52,10 +53,21 @@ class Turret(Base_object):
         
         # target
         if self.target_locked:
-            pygame.draw.line(win, RED, world2screen(self.coord, offset_x, offset_y, scale), world2screen(self.target_coord, offset_x, offset_y, scale))
+            pygame.draw.line(win, RED, world2screen(self.coord, offset_x, offset_y, scale), 
+                        world2screen(self.target_coord, offset_x, offset_y, scale))
             pygame.draw.circle(win, RED, world2screen(self.target_coord, offset_x, offset_y, scale), 10*scale, 1)
 
+        # draw current position
+        pygame.draw.line(win, YELLOW, world2screen(self.coord, offset_x, offset_y, scale), 
+                        world2screen(move_point(self.coord, self.max_radar_radius, self.angle), offset_x, offset_y, scale))
+
         # radar radius
+        pygame.draw.circle(win, YELLOW, world2screen(self.coord, offset_x, offset_y, scale), self.max_radar_radius*scale, 1)
+        pygame.draw.circle(win, LIME, world2screen(self.coord, offset_x, offset_y, scale), self.min_radar_radius*scale, 1)
+
+
+    def draw_range(self, win, offset_x, offset_y, scale):
+    # draw extra data about the range of the weapon on the screen
         pygame.draw.circle(win, YELLOW, world2screen(self.coord, offset_x, offset_y, scale), self.max_radar_radius*scale, 1)
         pygame.draw.circle(win, LIME, world2screen(self.coord, offset_x, offset_y, scale), self.min_radar_radius*scale, 1)
 
@@ -239,6 +251,46 @@ class Side_cannon(Turret):
     countdown_time_to_shot = FRAMERATE
 
     turn_limit = math.pi / 4
+
+    def draw_extra_data(self, win, offset_x, offset_y, scale):
+    # draw extra data about the weapon on the screen
+        
+        # target
+        if self.target_locked:
+            pygame.draw.line(win, RED, world2screen(self.coord, offset_x, offset_y, scale), 
+                        world2screen(self.target_coord, offset_x, offset_y, scale))
+            pygame.draw.circle(win, RED, world2screen(self.target_coord, offset_x, offset_y, scale), 10*scale, 1)
+
+        # draw current position
+        pygame.draw.line(win, YELLOW, world2screen(self.coord, offset_x, offset_y, scale), 
+                        world2screen(move_point(self.coord, self.max_radar_radius, self.angle), offset_x, offset_y, scale))
+
+        # radar radius
+        coord_x, coord_y = world2screen(self.coord, offset_x, offset_y, scale)
+        pygame.gfxdraw.arc(win, int(coord_x), int(coord_y), 
+                           int(self.max_radar_radius*scale), 
+                           int(math.degrees(self.base_angle + self.initial_angle - self.turn_limit)), 
+                           int(math.degrees(self.base_angle + self.initial_angle + self.turn_limit)),
+                           YELLOW) # pygame.gfxdraw.pie
+        pygame.gfxdraw.arc(win, int(coord_x), int(coord_y), 
+                           int(self.min_radar_radius*scale), 
+                           int(math.degrees(self.base_angle + self.initial_angle - self.turn_limit)), 
+                           int(math.degrees(self.base_angle + self.initial_angle + self.turn_limit)),
+                           LIME)
+
+    def draw_range(self, win, offset_x, offset_y, scale):
+    # draw extra data about the range of the weapon on the screen
+        coord_x, coord_y = world2screen(self.coord, offset_x, offset_y, scale)
+        pygame.gfxdraw.pie(win, int(coord_x), int(coord_y), 
+                           int(self.max_radar_radius*scale), 
+                           int(math.degrees(self.base_angle + self.initial_angle - self.turn_limit)), 
+                           int(math.degrees(self.base_angle + self.initial_angle + self.turn_limit)),
+                           YELLOW)
+        pygame.gfxdraw.arc(win, int(coord_x), int(coord_y), 
+                           int(self.min_radar_radius*scale), 
+                           int(math.degrees(self.base_angle + self.initial_angle - self.turn_limit)), 
+                           int(math.degrees(self.base_angle + self.initial_angle + self.turn_limit)),
+                           LIME)
 
     def find_target(self, dict_with_units):
     # find closest target - difference that movement is limited
@@ -684,10 +736,12 @@ class Empty_slot(Turret):
     description = ""
     def draw(self, win, offset_x, offset_y, scale): pass
     def draw_extra_data(self, win, offset_x, offset_y, scale): pass
+    def draw_range(self, win, offset_x, offset_y, scale): pass
     def run(self, list_with_units, list_with_bullets): pass
 
 class Capture(Turret): 
     description = "Capture"
     def draw(self, win, offset_x, offset_y, scale): pass
     def draw_extra_data(self, win, offset_x, offset_y, scale): pass
+    def draw_range(self, win, offset_x, offset_y, scale): pass
     def run(self, list_with_units, list_with_bullets): pass

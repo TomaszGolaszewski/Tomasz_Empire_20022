@@ -70,8 +70,8 @@ class Vehicle(Base_animated_object):
             last_target = self.coord
             for target in self.movement_target:
                 pygame.draw.line(win, BLUE, world2screen(last_target, offset_x, offset_y, scale), world2screen(target, offset_x, offset_y, scale))
-                pygame.draw.circle(win, BLUE, world2screen(target, offset_x, offset_y, scale), 10*scale, 1)
                 last_target = target
+            pygame.draw.circle(win, BLUE, world2screen(target, offset_x, offset_y, scale), 10*scale, 1)
 
     def run(self, map, dict_with_units):
     # life-cycle of the vehicle

@@ -235,3 +235,11 @@ def get_coord_on_spiral(unit_n, center, step_size):
         current_n += 1
 
     return (x, y)
+
+
+def get_start_position(dict_with_units, scale, player_id):
+    for unit_id in dict_with_units:
+        if dict_with_units[unit_id].player_id == player_id \
+                    and dict_with_units[unit_id].name == "Commander":
+            x, y = dict_with_units[unit_id].coord 
+            return -x + WIN_WIDTH // scale // 2, -y + WIN_HEIGHT // scale // 2
