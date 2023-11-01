@@ -1,6 +1,6 @@
 # Tomasz Empire RTS 2022
 # By Tomasz Golaszewski
-# 10.2022
+# 10.2022 - 12.2023
 
 # 
 
@@ -53,8 +53,6 @@ def run():
     FONT_ARIAL_30 = pygame.font.SysFont('arial', 30)
 
     # window variables
-    OFFSET_VERTICAL = 150
-    OFFSET_HORIZONTAL = 200
     SCALE = 0.5
     SHOW_EXTRA_DATA = False
     SHOW_MOVEMENT_TARGET = False
@@ -102,7 +100,7 @@ def run():
     make_land_factories(MAP2, DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
     make_generators(MAP2, DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
     make_start_units(MAP2, DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
-    OFFSET_HORIZONTAL, OFFSET_VERTICAL = get_start_position(DICT_WITH_UNITS, SCALE, PLAYER_ID)
+    OFFSET_HORIZONTAL, OFFSET_VERTICAL = center_view_on_commander(DICT_WITH_UNITS, SCALE, PLAYER_ID)
 
     LIST_WITH_BULLETS = []
     LIST_WITH_WINDOWS = []
@@ -126,45 +124,14 @@ def run():
             minuts_from_start = seconds_from_start // 60
             print("TIME: " + str(seconds_from_start) + "s (" + str(minuts_from_start) + "min)" )
 
-            # print infos about view position
-            print("HORIZ:", end=" ")
-            print(OFFSET_HORIZONTAL, end="\t")
-            print("VERT:", end=" ")
-            print(OFFSET_VERTICAL, end="\t")
-            print("SCALE:", end=" ")
-            print(SCALE)
-
-            # print infos about amount of objects
-            print("BULLETS:", end=" ")
-            print(len(LIST_WITH_BULLETS), end="\t")
-            print("UNITS:", end=" ")
-            print(len(DICT_WITH_UNITS), end="\t")
-            unit_count = 0
-            for unit_id in DICT_WITH_UNITS:
-                if DICT_WITH_UNITS[unit_id].is_on_screen: unit_count += 1
-            print("UNITS ON SCREEN:", end=" ")
-            print(unit_count, end="\t")
-            unit_count = 0
-            for unit_id in DICT_WITH_UNITS:
-                if DICT_WITH_UNITS[unit_id].is_selected: unit_count += 1
-            print("SELECTED UNITS:", end=" ")
-            print(unit_count)
-
-            # print infos about ui windows
-            print("WINDOWS:", end=" ")
-            print(len(LIST_WITH_WINDOWS), end="\t")
-
-            # other infos
-            print("MAX_ID:", end=" ")
-            print(DICT_WITH_GAME_STATE["lowest_free_id"], end="\t")
-            print()
-
+            print_infos_about_view_position(OFFSET_HORIZONTAL, OFFSET_VERTICAL, SCALE)
+            print_infos_about_amount_of_objects(DICT_WITH_GAME_STATE, DICT_WITH_UNITS, LIST_WITH_BULLETS, LIST_WITH_WINDOWS)
+            
             # calculate energy
             if not pause:
                 calculate_energy(DICT_WITH_GAME_STATE)
                 calculate_score(DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
 
-            # # print energy
             # print_infos_about_players(DICT_WITH_GAME_STATE)
 
         for event in pygame.event.get():
@@ -258,7 +225,7 @@ def run():
                 # center
                 if event.key == pygame.K_c:
                     SCALE = 1
-                    OFFSET_HORIZONTAL, OFFSET_VERTICAL = get_start_position(DICT_WITH_UNITS, SCALE, PLAYER_ID)
+                    OFFSET_HORIZONTAL, OFFSET_VERTICAL = center_view_on_commander(DICT_WITH_UNITS, SCALE, PLAYER_ID)
                 # show extra data
                 if event.key == pygame.K_m:
                     if SHOW_EXTRA_DATA: SHOW_EXTRA_DATA = False

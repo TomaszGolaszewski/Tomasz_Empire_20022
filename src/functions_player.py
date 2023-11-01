@@ -19,26 +19,6 @@ def calculate_energy(dict_with_game_state):
     dict_with_game_state["list_with_energy_last"] = dict_with_game_state["list_with_energy"].copy()
 
 
-def print_infos_about_game(dict_with_game_state):
-    pass
-
-
-def print_infos_about_players(dict_with_game_state):
-# write information about the energy processed by players in the console
-    print("ENERGY:", end=" ")
-    for player in range(1,5):
-        print(dict_with_game_state["list_with_energy"][player], end="\t")
-    print()
-    print("SPENT:", end=" ")
-    for player in range(1,5):
-        print(dict_with_game_state["list_with_energy_spent"][player], end="\t")
-    print()
-    print("PROD.:", end=" ")
-    for player in range(1,5):
-        print(dict_with_game_state["list_with_energy_current_production"][player], end="\t")
-    print()
-
-
 def draw_infos_about_players(win, font, dict_with_game_state):
 # write information about the energy processed by players on the screen 
     for player in range(1,5):
@@ -237,7 +217,7 @@ def get_coord_on_spiral(unit_n, center, step_size):
     return (x, y)
 
 
-def get_start_position(dict_with_units, scale, player_id):
+def center_view_on_commander(dict_with_units, scale, player_id):
     for unit_id in dict_with_units:
         if dict_with_units[unit_id].player_id == player_id \
                     and dict_with_units[unit_id].name == "Commander":

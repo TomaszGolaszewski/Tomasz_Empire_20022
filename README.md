@@ -13,6 +13,10 @@
 v0.13 - New mechanics for building and buying units
 
 ### Last changes:
+v0.13.11 - 01.11.2023
+
+* Code cleaning.
+
 v0.13.10 - 13.10.2023
 
 * Changes in methods that draw additional data about units;

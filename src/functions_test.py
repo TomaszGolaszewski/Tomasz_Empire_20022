@@ -4,6 +4,73 @@ from classes_units import *
 from classes_buildings import *
 
 
+# ============== debug functions ============
+
+
+def print_infos_about_view_position(offset_x, offset_y, scale):
+# write information about view position in the console
+    print("HORIZ:", end=" ")
+    print(offset_x, end="\t")
+    print("VERT:", end=" ")
+    print(offset_y, end="\t")
+    print("SCALE:", end=" ")
+    print(scale)
+
+
+def print_infos_about_amount_of_objects(dict_with_game_state, dict_with_units, list_with_bullets, list_with_windows):
+# write information about amount of game objects in the console  
+
+    # print amount of bullets objects   
+    print("BULLETS:", end=" ")
+    print(len(list_with_bullets), end="\t")
+
+    # print amount of units objects 
+    print("UNITS:", end=" ")
+    print(len(dict_with_units), end="\t")
+
+    # print amount of on-screen units objects 
+    unit_count = 0
+    for unit_id in dict_with_units:
+        if dict_with_units[unit_id].is_on_screen: unit_count += 1
+    print("UNITS ON SCREEN:", end=" ")
+    print(unit_count, end="\t")
+
+    # print amount of selected units objects
+    unit_count = 0
+    for unit_id in dict_with_units:
+        if dict_with_units[unit_id].is_selected: unit_count += 1
+    print("SELECTED UNITS:", end=" ")
+    print(unit_count)
+
+    # print infos about ui windows
+    print("WINDOWS:", end=" ")
+    print(len(list_with_windows), end="\t")
+
+    # other infos
+    print("MAX_ID:", end=" ")
+    print(dict_with_game_state["lowest_free_id"], end="\t")
+    print()
+
+
+def print_infos_about_players(dict_with_game_state):
+# write information about the energy processed by players in the console
+    print("ENERGY:", end=" ")
+    for player in range(1,5):
+        print(dict_with_game_state["list_with_energy"][player], end="\t")
+    print()
+    print("SPENT:", end=" ")
+    for player in range(1,5):
+        print(dict_with_game_state["list_with_energy_spent"][player], end="\t")
+    print()
+    print("PROD.:", end=" ")
+    for player in range(1,5):
+        print(dict_with_game_state["list_with_energy_current_production"][player], end="\t")
+    print()
+
+
+# ============== make test units ============
+
+
 def make_test_units(dict_with_game_state, dict_with_units):
 # make test units
 
