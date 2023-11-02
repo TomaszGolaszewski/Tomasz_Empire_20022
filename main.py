@@ -28,6 +28,7 @@ from functions_make_units import *
 from functions_test import *
 from functions_windows import *
 from functions_other import *
+from classes_scenes import *
 from classes_map import *
 from classes_units import *
 from classes_buildings import *
@@ -370,6 +371,66 @@ def run():
         DICT_WITH_GAME_STATE["dict_with_new_units"] = {}
 
 
+# future releases:
+def run_2():
+# main function - runs the game
+    
+    # initialize the pygame
+    pygame.init()
+
+    # set window title bar
+    pygame.display.set_caption("Tomasz Empire 20022")
+    ICON_IMGS = pygame.image.load(os.path.join(*ICON_PATH))
+    pygame.display.set_icon(ICON_IMGS)
+
+    # create the window
+    WIN = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
+    CLOCK = pygame.time.Clock()
+    active_scene = TitleScene()
+
+    # main loop
+    while active_scene != None:
+        
+        # event filtering
+        pressed_keys = pygame.key.get_pressed()
+        filtered_events = []
+        for event in pygame.event.get():
+            quit_attempt = False
+            if event.type == pygame.QUIT:
+                quit_attempt = True
+            elif event.type == pygame.KEYDOWN:
+                alt_pressed = pressed_keys[pygame.K_LALT] or \
+                              pressed_keys[pygame.K_RALT]
+                if event.key == pygame.K_ESCAPE:
+                    quit_attempt = True
+                elif event.key == pygame.K_F4 and alt_pressed:
+                    quit_attempt = True
+            
+            if quit_attempt:
+                active_scene.terminate()
+            else:
+                filtered_events.append(event)
+        
+        # handling events, mouse and keyboard
+        active_scene.process_input(filtered_events, pressed_keys)
+
+        # run simulation
+        active_scene.update()
+
+        # draw scene on the screen
+        active_scene.render(WIN)
+        
+        # jump to next scene (or to self)
+        active_scene = active_scene.next
+        
+        # flip the screen
+        pygame.display.flip()
+
+        # control fps
+        CLOCK.tick(FRAMERATE)
+
+
 if __name__ == "__main__":
     run()
+    # run_2()
 

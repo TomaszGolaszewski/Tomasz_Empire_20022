@@ -10,9 +10,13 @@
 **Project still under development**
 
 ### Current stage:
-v0.13 - New mechanics for building and buying units
+v0.14 - Menu and Scenes
 
 ### Last changes:
+v0.14.0 - 02.11.2023
+
+* Preparation of the scene changing mechanism.
+
 v0.13.11 - 01.11.2023
 
 * Code cleaning.
@@ -29,11 +33,6 @@ v0.13.9 - 09.10.2023
 * Player's units have AI engine to check and adjust movement path now;
 * Added possibility to assign movement target to units produced by factories;
 * Lot of small fixes.
-
-v0.13.8 - 06.10.2023
-
-* Added pointer to show unit's movement target;
-* Added calculating players' current score.
 
 
 <p align="center">

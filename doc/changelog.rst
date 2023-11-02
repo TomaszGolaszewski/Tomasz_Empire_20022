@@ -1,6 +1,13 @@
 Changelog
 ======
 
+v0.14.0 - 02.11.2023
+----
+* Preparation of the scene changing mechanism.
+
+v0.14 - Menu and Scenes
+======
+
 
 v0.13.11 - 01.11.2023
 ----
