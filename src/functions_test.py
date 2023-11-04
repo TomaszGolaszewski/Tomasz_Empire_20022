@@ -54,7 +54,11 @@ def print_infos_about_amount_of_objects(dict_with_game_state, dict_with_units, l
 
 def print_infos_about_players(dict_with_game_state):
 # write information about the energy processed by players in the console
-    print("ENERGY:", end=" ")
+    print("PLAYER:", end="\t")
+    for player in range(1,5):
+        print(player_name(player), end="\t")
+    print()
+    print("ENERGY:", end="\t")
     for player in range(1,5):
         print(dict_with_game_state["list_with_energy"][player], end="\t")
     print()

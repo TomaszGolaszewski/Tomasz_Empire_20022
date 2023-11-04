@@ -386,12 +386,10 @@ def run_2():
     # create the window
     win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
     clock = pygame.time.Clock()
+    active_scene = TitleScene()
     current_frame = 0
     current_fps = 0
-    active_scene = TitleScene()
-
-    # fonts
-    font_arial_20 = pygame.font.SysFont('arial', 20)
+    fps_text = DynamicText((50, 20), "FPS: %.2f" % FRAMERATE, 20)
 
     # main loop
     while active_scene != None:
@@ -402,23 +400,24 @@ def run_2():
             current_frame = 0
             
             # print infos about fps and time
-            print()
             current_fps = clock.get_fps()
-            print("FPS: %.2f" % current_fps, end="\t")
+            fps_text.set_text("FPS: %.2f" % current_fps)
             seconds_from_start = pygame.time.get_ticks() // 1000
             minuts_from_start = seconds_from_start // 60
+            print()
+            print("FPS: %.2f" % current_fps, end="\t")
             print("TIME: " + str(seconds_from_start) + "s (" + str(minuts_from_start) + "min)" )
         
         # event filtering
-        pressed_keys = pygame.key.get_pressed()
+        keys_pressed = pygame.key.get_pressed()
         filtered_events = []
         for event in pygame.event.get():
             quit_attempt = False
             if event.type == pygame.QUIT:
                 quit_attempt = True
             elif event.type == pygame.KEYDOWN:
-                alt_pressed = pressed_keys[pygame.K_LALT] or \
-                              pressed_keys[pygame.K_RALT]
+                alt_pressed = keys_pressed[pygame.K_LALT] or \
+                              keys_pressed[pygame.K_RALT]
                 if event.key == pygame.K_ESCAPE:
                     quit_attempt = True
                 elif event.key == pygame.K_F4 and alt_pressed:
@@ -430,7 +429,7 @@ def run_2():
                 filtered_events.append(event)
         
         # handling events, mouse and keyboard
-        active_scene.process_input(filtered_events, pressed_keys)
+        active_scene.process_input(filtered_events, keys_pressed)
 
         # run simulation
         active_scene.update()
@@ -441,9 +440,8 @@ def run_2():
         # jump to next scene (or to self)
         active_scene = active_scene.next
         
-        # draw FPS     
-        text = font_arial_20.render("FPS: %.2f" % current_fps, True, LIME)
-        win.blit(text, (10, 10))
+        # draw FPS  
+        fps_text.draw(win)   
 
         # flip the screen
         pygame.display.flip()

@@ -47,6 +47,20 @@ def player_color(player_id):
         return YELLOW
     else: return WHITE
 
+def player_name(player_id):
+# return player color
+    if player_id == 0:
+        return "BLACK"
+    elif player_id == 1:
+        return "BLUE"
+    elif player_id == 2:
+        return "GREEN"
+    elif player_id == 3:
+        return "RED"
+    elif player_id == 4:
+        return "YELLOW"
+    else: return "WHITE"
+
 
 def unit_selection(win, dict_with_units, corner1, corner2, offset_x, offset_y, scale, player_id):
 # draw selection rectangle, then set units to selection mode

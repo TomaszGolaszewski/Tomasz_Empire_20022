@@ -1,6 +1,11 @@
 Changelog
 ======
 
+v0.14.2 - 04.11.2023
+----
+* New features for building scenes: DynamicText;
+* Refactoring of game engine to work with new scenes mechanism.
+
 v0.14.1 - 04.11.2023
 ----
 * Fixes in the scene changing mechanism;
