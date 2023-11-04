@@ -380,16 +380,34 @@ def run_2():
 
     # set window title bar
     pygame.display.set_caption("Tomasz Empire 20022")
-    ICON_IMGS = pygame.image.load(os.path.join(*ICON_PATH))
-    pygame.display.set_icon(ICON_IMGS)
+    icon_img = pygame.image.load(os.path.join(*ICON_PATH))
+    pygame.display.set_icon(icon_img)
 
     # create the window
-    WIN = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
-    CLOCK = pygame.time.Clock()
+    win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
+    clock = pygame.time.Clock()
+    current_frame = 0
+    current_fps = 0
     active_scene = TitleScene()
+
+    # fonts
+    font_arial_20 = pygame.font.SysFont('arial', 20)
 
     # main loop
     while active_scene != None:
+        # control fps
+        clock.tick(FRAMERATE)
+        current_frame += 1
+        if current_frame == FRAMERATE:
+            current_frame = 0
+            
+            # print infos about fps and time
+            print()
+            current_fps = clock.get_fps()
+            print("FPS: %.2f" % current_fps, end="\t")
+            seconds_from_start = pygame.time.get_ticks() // 1000
+            minuts_from_start = seconds_from_start // 60
+            print("TIME: " + str(seconds_from_start) + "s (" + str(minuts_from_start) + "min)" )
         
         # event filtering
         pressed_keys = pygame.key.get_pressed()
@@ -418,16 +436,17 @@ def run_2():
         active_scene.update()
 
         # draw scene on the screen
-        active_scene.render(WIN)
+        active_scene.render(win)
         
         # jump to next scene (or to self)
         active_scene = active_scene.next
         
+        # draw FPS     
+        text = font_arial_20.render("FPS: %.2f" % current_fps, True, LIME)
+        win.blit(text, (10, 10))
+
         # flip the screen
         pygame.display.flip()
-
-        # control fps
-        CLOCK.tick(FRAMERATE)
 
 
 if __name__ == "__main__":

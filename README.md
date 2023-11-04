@@ -13,6 +13,12 @@
 v0.14 - Menu and Scenes
 
 ### Last changes:
+v0.14.1 - 04.11.2023
+
+* Fixes in the scene changing mechanism;
+* New features for building scenes: FixText and BaseButton;
+* Added Title Scene (currently hidden).
+
 v0.14.0 - 02.11.2023
 
 * Preparation of the scene changing mechanism.
