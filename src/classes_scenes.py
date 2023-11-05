@@ -67,14 +67,14 @@ class TitleScene(SceneBase):
                     self.switch_scene(ChooseMapScene())
                 # quick start
                 if event.key == pygame.K_q:
-                    self.switch_scene(GameScene())
+                    self.switch_scene(LoadingScene())
 
             # mouse button down
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_coord = pygame.mouse.get_pos()
                 # quick start
                 if self.quick_start_button.is_inside(mouse_coord):
-                    self.switch_scene(GameScene())
+                    self.switch_scene(LoadingScene())
                 # move to the next scene
                 else:
                     self.switch_scene(ChooseMapScene())
@@ -114,14 +114,14 @@ class ChooseMapScene(SceneBase):
             if event.type == pygame.KEYDOWN:
                 # move to the next scene
                 if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
-                    self.switch_scene(GameScene())
+                    self.switch_scene(LoadingScene())
 
             # mouse button down
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_coord = pygame.mouse.get_pos()
                 # move to the next scene
                 if self.start_button.is_inside(mouse_coord):
-                    self.switch_scene(GameScene())
+                    self.switch_scene(LoadingScene())
                 if self.island_button.is_inside(mouse_coord):
                     global GAME_MAP
                     GAME_MAP = "mars_poles"
@@ -138,6 +138,36 @@ class ChooseMapScene(SceneBase):
         self.title.draw(win)
         self.start_button.draw(win)
         self.island_button.draw(win)
+
+
+# ======================================================================
+
+
+class LoadingScene(SceneBase):
+    def __init__(self):
+    # initialization of the scene
+        SceneBase.__init__(self)
+        self.loading_text = FixText((WIN_WIDTH/2, WIN_HEIGHT/2), "Loading ...", 30)
+        self.ticks = 0
+    
+    def process_input(self, events, keys_pressed):
+    # receive all the events that happened since the last frame
+    # handle all received events
+        pass
+        
+    def update(self):
+    # game logic for the scene
+        self.ticks += 1
+        # automatically jump to the GameScene after the first cycle
+        if self.ticks > 1:
+            self.switch_scene(GameScene())
+    
+    def render(self, win):
+    # draw scene on the screen
+        # clear screen
+        win.fill(BLACK)
+        # print loading text
+        self.loading_text.draw(win)
 
 
 # ======================================================================
@@ -185,7 +215,13 @@ class GameScene(SceneBase):
         }
         
         self.player_id = self.dict_with_game_state["list_with_player_type"].index("player") \
-                                                    if "player" in self.dict_with_game_state["list_with_player_type"] else 0
+                                            if "player" in self.dict_with_game_state["list_with_player_type"] else 0
+        
+        # on-screen infos
+        self.pause_text = FixText((WIN_WIDTH/2, 50), "[PAUSE]", 20)
+        self.player_energy_text = DynamicText((WIN_WIDTH//2, 25), 
+                                            "E: %d" % self.dict_with_game_state["list_with_energy"][self.player_id], 30, 
+                                            color=player_color(self.player_id))
 
         # create initial units
         self.dict_with_units = {}
@@ -326,6 +362,7 @@ class GameScene(SceneBase):
             if not self.pause:
                 calculate_energy(self.dict_with_game_state)
                 calculate_score(self.dict_with_game_state, self.dict_with_units)
+                self.player_energy_text.set_text("E: %d" % self.dict_with_game_state["list_with_energy"][self.player_id])
 
             # print debug infos
             print_infos_about_view_position(self.offset_horizontal, self.offset_vertical, self.scale)
@@ -415,18 +452,15 @@ class GameScene(SceneBase):
         for ui_win in self.list_with_windows:
             ui_win.draw(win, self.dict_with_game_state, self.dict_with_units)
 
-        # # draw infos about players
-        # draw_infos_about_players(win, FONT_ARIAL_20, DICT_WITH_GAME_STATE)
+        # draw infos about players
+        draw_infos_about_players(win, self.dict_with_game_state)
 
-        # # draw player's energy
-        # text = FONT_ARIAL_30.render("E: %d" % DICT_WITH_GAME_STATE["list_with_energy"][PLAYER_ID], True, player_color(PLAYER_ID))
-        # WIN.blit(text, (WIN_WIDTH//2 - 50, 10))
+        # draw player's energy
+        self.player_energy_text.draw(win)
 
-        # # draw pause
-        # if self.pause:
-        #     text_pause = FONT_ARIAL_20.render("[PAUSE]", True, LIME)
-        #     WIN.blit(text_pause, (10, 30))
-        #     WIN.blit(text_pause, (WIN_WIDTH//2 - 25, 40))
+        # draw pause
+        if self.pause:
+            self.pause_text.draw(win)
 
 
 # ======================================================================

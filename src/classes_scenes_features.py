@@ -21,6 +21,7 @@ class DynamicText(FixText):
     def __init__(self, coord, text="Dynamic Text", size=20, font="arial", color=LIME):
     # initialization of the text
         FixText.__init__(self, coord, text, size, font, color)
+        self.font_obj = pygame.font.SysFont(font, size)
         self.text = text
         self.size = size
         self.font = font
@@ -29,8 +30,7 @@ class DynamicText(FixText):
     def set_text(self, text):
     # set new text and next recalculate object attributes
         self.text = text
-        font_obj = pygame.font.SysFont(self.font, self.size)
-        self.text_obj = font_obj.render(text, True, self.color)
+        self.text_obj = self.font_obj.render(text, True, self.color)
         self.text_rect = self.text_obj.get_rect(center=self.coord)
 
 

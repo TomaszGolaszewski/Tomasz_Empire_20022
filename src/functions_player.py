@@ -19,8 +19,9 @@ def calculate_energy(dict_with_game_state):
     dict_with_game_state["list_with_energy_last"] = dict_with_game_state["list_with_energy"].copy()
 
 
-def draw_infos_about_players(win, font, dict_with_game_state):
+def draw_infos_about_players(win, dict_with_game_state):
 # write information about the energy processed by players on the screen 
+    font = pygame.font.SysFont('arial', 20)
     for player in range(1,5):
         text_line = font.render("PLAYER %d [%s]: %d (%d/s)" % (
                     player,

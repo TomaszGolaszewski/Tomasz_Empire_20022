@@ -13,6 +13,11 @@
 v0.14 - Menu and Scenes
 
 ### Last changes:
+v0.14.3 - 05.11.2023
+
+* Added Loading Scene;
+* Lots of fixes in Game Scene;
+
 v0.14.2 - 04.11.2023
 
 * New features for building scenes: DynamicText;

@@ -333,7 +333,8 @@ def run():
             ui_win.draw(WIN, DICT_WITH_GAME_STATE, DICT_WITH_UNITS)
 
         # draw infos about players
-        draw_infos_about_players(WIN, FONT_ARIAL_20, DICT_WITH_GAME_STATE)
+        draw_infos_about_players(WIN, DICT_WITH_GAME_STATE)
+        # draw_infos_about_players(WIN, FONT_ARIAL_20, DICT_WITH_GAME_STATE)
 
         # draw player's energy
         text = FONT_ARIAL_30.render("E: %d" % DICT_WITH_GAME_STATE["list_with_energy"][PLAYER_ID], True, player_color(PLAYER_ID))
