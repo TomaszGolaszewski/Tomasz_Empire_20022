@@ -13,10 +13,16 @@
 v0.14 - Menu and Scenes
 
 ### Last changes:
+v0.14.4 - 06.11.2023
+
+* Added Map Choose Scene (currently hidden);
+* New features for building scenes: AdvancedButton;
+* Added option to show map without buildings foundation.
+
 v0.14.3 - 05.11.2023
 
 * Added Loading Scene;
-* Lots of fixes in Game Scene;
+* Lots of fixes in Game Scene.
 
 v0.14.2 - 04.11.2023
 

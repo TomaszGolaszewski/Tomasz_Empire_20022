@@ -51,9 +51,8 @@ class TitleScene(SceneBase):
         SceneBase.__init__(self)
         self.title = FixText((WIN_WIDTH/2, WIN_HEIGHT/2 - 30), "TOMASZ EMPIRE 20022", 70)
         self.subtitle = FixText((WIN_WIDTH/2, WIN_HEIGHT/2 + 20), "Supreme Commander", 40)
-        self.start_button = BaseButton((WIN_WIDTH/2, WIN_HEIGHT/2 + 100), "[Start Game]", 30, color=GRAY)
-        self.quick_start_button = BaseButton((WIN_WIDTH/2, WIN_HEIGHT/2 + 140), "[Quick Start]", 30, color=GRAY)
-
+        self.start_button = AdvancedButton((WIN_WIDTH/2, WIN_HEIGHT/2 + 100), "[Start Game]", 30, color=GRAY)
+        self.quick_start_button = AdvancedButton((WIN_WIDTH/2, WIN_HEIGHT/2 + 140), "[Quick Start]", 30, color=GRAY)
         self.ticks = 0
     
     def process_input(self, events, keys_pressed):
@@ -82,6 +81,10 @@ class TitleScene(SceneBase):
     def update(self):
     # game logic for the scene
         self.ticks += 1
+        # check hovering of the mouse
+        mouse_coord = pygame.mouse.get_pos()
+        self.start_button.check_hovering(mouse_coord)
+        self.quick_start_button.check_hovering(mouse_coord)
     
     def render(self, win):
     # draw scene on the screen
@@ -102,13 +105,23 @@ class ChooseMapScene(SceneBase):
     def __init__(self):
     # initialization of the scene
         SceneBase.__init__(self)
-        self.title = FixText((WIN_WIDTH/2, 100), "Choose map", 70)
-        self.start_button = BaseButton((WIN_WIDTH/2, WIN_HEIGHT - 100), "[Start Game]", 30, color=GRAY)
-        self.island_button = BaseButton((WIN_WIDTH/2, 200), "[Island]", 30, color=GRAY)
+        self.title = FixText((WIN_WIDTH/2, 60), "Choose map", 50)
+        # self.start_button = AdvancedButton((WIN_WIDTH/2, WIN_HEIGHT - 75), "[Start Game]", 30, color=GRAY)
+        self.start_button = AdvancedButton((WIN_WIDTH/2, WIN_HEIGHT - 75), "[Next]", 30, color=LIME, color_hover=LIME, width=WIN_WIDTH/2 + 360)
+
+        self.list_with_maps = ["island", "lake"] #, "bridge", "mars_poles", "noise"]
+        self.list_with_buttons = []
+        for i, map in enumerate(self.list_with_maps):
+            self.list_with_buttons.append(AdvancedButton((WIN_WIDTH/4, 150 + 60*i), "["+map.replace("_", " ").capitalize()+"]", 30, color=GRAY, option=map))
+        self.list_with_buttons[0].active = True
+
+        # initialize map
+        self.map = Map_v2(25, 32, type=self.list_with_maps[0], tile_edge_length=10, clean=True)
 
     def process_input(self, events, keys_pressed):
     # receive all the events that happened since the last frame
     # handle all received events
+        global GAME_MAP
         for event in events:
             # keys that can be pressed only ones
             if event.type == pygame.KEYDOWN:
@@ -122,13 +135,19 @@ class ChooseMapScene(SceneBase):
                 # move to the next scene
                 if self.start_button.is_inside(mouse_coord):
                     self.switch_scene(LoadingScene())
-                if self.island_button.is_inside(mouse_coord):
-                    global GAME_MAP
-                    GAME_MAP = "mars_poles"
-                
+                # choose map
+                for button in self.list_with_buttons:
+                    if button.check_pressing(mouse_coord):
+                        self.map = Map_v2(25, 32, type=button.option, tile_edge_length=10, clean=True)
+                        GAME_MAP = button.option
+     
     def update(self):
     # game logic for the scene
-        pass
+        # check hovering of the mouse
+        mouse_coord = pygame.mouse.get_pos()
+        self.start_button.check_hovering(mouse_coord)
+        for button in self.list_with_buttons:
+            button.check_hovering(mouse_coord)
     
     def render(self, win):
     # draw scene on the screen
@@ -137,7 +156,10 @@ class ChooseMapScene(SceneBase):
         # print titles and buttons
         self.title.draw(win)
         self.start_button.draw(win)
-        self.island_button.draw(win)
+        for button in self.list_with_buttons:
+            button.draw(win)
+        # draw the map
+        self.map.draw(win, WIN_WIDTH/2 + 80, 120, 1)
 
 
 # ======================================================================

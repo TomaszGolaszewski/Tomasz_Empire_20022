@@ -7,7 +7,7 @@ from settings import *
 from classes_hex import *
 
 class Map:
-    def __init__(self, map_width, map_height, type="mars_plain", tile_edge_length=30):
+    def __init__(self, map_width, map_height, type="mars_plain", tile_edge_length=30, clean=False):
     # initialization of the map
         self.map_width = map_width # number of tiles horizontally
         self.map_height = map_height # number of tiles vertically
@@ -33,10 +33,11 @@ class Map:
         self.places_for_naval_factories = []
         self.places_for_land_factories = []
         self.places_for_generators = []
-        self.find_places_for_naval_factories()
-        self.find_places_for_land_factories()
-        self.find_places_for_generators()
-        self.make_buildings_foundation()
+        if not clean:
+            self.find_places_for_naval_factories()
+            self.find_places_for_land_factories()
+            self.find_places_for_generators()
+            self.make_buildings_foundation()
 
     def make_plain(self):
     # method preparing the board covered with one type of terrain
@@ -378,9 +379,9 @@ class Map:
 # ==========================================================
 
 class Map_v2(Map):
-    def __init__(self, map_width, map_height, type="snow_plain", tile_edge_length=25):
+    def __init__(self, map_width, map_height, type="snow_plain", tile_edge_length=25, clean=False):
     # initialization of the map
-        Map.__init__(self, map_width, map_height, type, tile_edge_length)
+        Map.__init__(self, map_width, map_height, type, tile_edge_length, clean)
 
         self.map_sprite_width_world = (self.map_width * 2 - 1) * self.inner_tile_radius
         self.map_sprite_height_world = (self.map_height - 1) * self.outer_tile_radius * 3 / 2
