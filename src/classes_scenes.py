@@ -51,8 +51,9 @@ class TitleScene(SceneBase):
         SceneBase.__init__(self)
         self.title = FixText((WIN_WIDTH/2, WIN_HEIGHT/2 - 30), "TOMASZ EMPIRE 20022", 70)
         self.subtitle = FixText((WIN_WIDTH/2, WIN_HEIGHT/2 + 20), "Supreme Commander", 40)
-        self.start_button = AdvancedButton((WIN_WIDTH/2, WIN_HEIGHT/2 + 100), "[Start Game]", 30, color=GRAY)
-        self.quick_start_button = AdvancedButton((WIN_WIDTH/2, WIN_HEIGHT/2 + 140), "[Quick Start]", 30, color=GRAY)
+        self.start_button = AdvancedButton((WIN_WIDTH/2, WIN_HEIGHT/2 + 100), "[Prepare Game]", 30, color=GRAY)
+        self.quick_start_button = AdvancedButton((WIN_WIDTH/2, WIN_HEIGHT/2 + 150), "[Quick Start]", 30, color=GRAY)
+        self.exit_button = AdvancedButton((WIN_WIDTH/2, WIN_HEIGHT/2 + 200), "[Exit]", 30, color=GRAY)
         self.ticks = 0
     
     def process_input(self, events, keys_pressed):
@@ -74,6 +75,9 @@ class TitleScene(SceneBase):
                 # quick start
                 if self.quick_start_button.is_inside(mouse_coord):
                     self.switch_scene(LoadingScene())
+                # exit
+                elif self.exit_button.is_inside(mouse_coord):
+                    self.terminate()
                 # move to the next scene
                 else:
                     self.switch_scene(ChooseMapScene())
@@ -85,6 +89,7 @@ class TitleScene(SceneBase):
         mouse_coord = pygame.mouse.get_pos()
         self.start_button.check_hovering(mouse_coord)
         self.quick_start_button.check_hovering(mouse_coord)
+        self.exit_button.check_hovering(mouse_coord)
     
     def render(self, win):
     # draw scene on the screen
@@ -96,6 +101,7 @@ class TitleScene(SceneBase):
         if self.ticks > 3*FRAMERATE:
             self.start_button.draw(win)
             self.quick_start_button.draw(win)
+            self.exit_button.draw(win)
 
 
 # ======================================================================
@@ -109,10 +115,13 @@ class ChooseMapScene(SceneBase):
         # self.start_button = AdvancedButton((WIN_WIDTH/2, WIN_HEIGHT - 75), "[Start Game]", 30, color=GRAY)
         self.start_button = AdvancedButton((WIN_WIDTH/2, WIN_HEIGHT - 75), "[Next]", 30, color=LIME, color_hover=LIME, width=WIN_WIDTH/2 + 360)
 
-        self.list_with_maps = ["island", "lake"] #, "bridge", "mars_poles", "noise"]
+        self.list_with_maps = ["island", "mars_poles", "mars_plain", "grass_plain", "snow_plain"] # "lake", "bridge", "noise", "concrete_floor"]
         self.list_with_buttons = []
         for i, map in enumerate(self.list_with_maps):
-            self.list_with_buttons.append(AdvancedButton((WIN_WIDTH/4, 150 + 60*i), "["+map.replace("_", " ").capitalize()+"]", 30, color=GRAY, option=map))
+            self.list_with_buttons.append(AdvancedButton((WIN_WIDTH/4, 150 + 50*i), "["+map.replace("_", " ").capitalize()+"]", 30, color=GRAY, option=map))
+        # set first map as active as default
+        global GAME_MAP
+        GAME_MAP = self.list_with_maps[0]
         self.list_with_buttons[0].active = True
 
         # initialize map
@@ -127,14 +136,14 @@ class ChooseMapScene(SceneBase):
             if event.type == pygame.KEYDOWN:
                 # move to the next scene
                 if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
-                    self.switch_scene(LoadingScene())
+                    self.switch_scene(ChooseSizeScene())
 
             # mouse button down
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_coord = pygame.mouse.get_pos()
                 # move to the next scene
                 if self.start_button.is_inside(mouse_coord):
-                    self.switch_scene(LoadingScene())
+                    self.switch_scene(ChooseSizeScene())
                 # choose map
                 for button in self.list_with_buttons:
                     if button.check_pressing(mouse_coord):
@@ -160,6 +169,174 @@ class ChooseMapScene(SceneBase):
             button.draw(win)
         # draw the map
         self.map.draw(win, WIN_WIDTH/2 + 80, 120, 1)
+
+
+# ======================================================================
+
+
+class ChooseSizeScene(SceneBase):
+    def __init__(self):
+    # initialization of the scene
+        SceneBase.__init__(self)
+        self.start_button = AdvancedButton((WIN_WIDTH/2, WIN_HEIGHT - 75), "[Next]", 30, color=LIME, color_hover=LIME, width=WIN_WIDTH/2 + 300) # + 360
+
+        # create groups of buttons for shape and size
+        self.title_shape = FixText((WIN_WIDTH/2, 60), "Choose shape", 50)
+        self.shape_button_groups = [
+                AdvancedButton((WIN_WIDTH/4, 150), "[Horizontal]", 30, color=GRAY, option="horizontal", width=300),
+                AdvancedButton((WIN_WIDTH/2, 150), "[Vertical]", 30, color=GRAY, option="vertical", width=300),
+                AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/2, 150), "[Square]", 30, color=GRAY, option="square", width=300),
+        ]
+        self.title_size = FixText((WIN_WIDTH/2, 260), "Choose size", 50)
+        self.size_button_groups = [
+                AdvancedButton((WIN_WIDTH/4, 350), "[Small]", 30, color=GRAY, option="S", width=300),
+                AdvancedButton((WIN_WIDTH/2, 350), "[Medium]", 30, color=GRAY, option="M", width=300),
+                AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/2, 350), "[Large]", 30, color=GRAY, option="L", width=300),
+        ]
+        # set default - large vertical
+        self.size_button_groups[2].active = True
+        self.shape_button_groups[0].active = True
+        self.save_choices_to_global()
+
+    def process_input(self, events, keys_pressed):
+    # receive all the events that happened since the last frame
+    # handle all received events
+        for event in events:
+            # keys that can be pressed only ones
+            if event.type == pygame.KEYDOWN:
+                # move to the next scene
+                if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
+                    self.save_choices_to_global()
+                    self.switch_scene(ChoosePlayersScene())
+
+            # mouse button down
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_coord = pygame.mouse.get_pos()
+                # move to the next scene
+                if self.start_button.is_inside(mouse_coord):
+                    self.save_choices_to_global()
+                    self.switch_scene(ChoosePlayersScene())
+                # press shape buttons
+                if any(button.is_inside(mouse_coord) for button in self.shape_button_groups):
+                    for button in self.shape_button_groups:
+                        button.check_pressing(mouse_coord)
+                # press size buttons
+                if any(button.is_inside(mouse_coord) for button in self.size_button_groups):
+                    for button in self.size_button_groups:
+                        button.check_pressing(mouse_coord)
+
+    def update(self):
+    # game logic for the scene
+        # check hovering over buttons
+        mouse_coord = pygame.mouse.get_pos()
+        self.start_button.check_hovering(mouse_coord)
+        for button in self.shape_button_groups:
+            button.check_hovering(mouse_coord)
+        for button in self.size_button_groups:
+            button.check_hovering(mouse_coord)
+
+    def render(self, win):
+    # draw scene on the screen
+        # clear screen
+        win.fill(BLACK)
+        # print titles and buttons
+        self.title_shape.draw(win)
+        self.title_size.draw(win)
+        for button in self.shape_button_groups:
+            button.draw(win)
+        self.start_button.draw(win)
+        for button in self.size_button_groups:
+            button.draw(win)
+
+    def save_choices_to_global(self):
+    # save chosen options to global values
+        global GAME_SIZE
+        for button in self.size_button_groups:
+            if button.active: GAME_SIZE = button.option
+
+
+# ======================================================================
+
+
+class ChoosePlayersScene(SceneBase):
+    def __init__(self):
+    # initialization of the scene
+        SceneBase.__init__(self)
+        self.title = FixText((WIN_WIDTH/2, 60), "Select Players", 50)
+        self.start_button = AdvancedButton((WIN_WIDTH/2, WIN_HEIGHT - 75), "[Start Game]", 30, color=LIME, color_hover=LIME, width=WIN_WIDTH/2 + 200) #  + 360
+        self.map = Map_v2(25, 32, type=GAME_MAP, tile_edge_length=10, clean=True)
+
+        # create groups of buttons for each player
+        self.players_button_groups = []
+        for i in range(0,4):
+            self.players_button_groups.append([
+                AdvancedButton((WIN_WIDTH/4 + i//2*WIN_WIDTH/2, 150 + i%2*300), "[Player]", 30, color=GRAY, color_active=player_color(i+1), option="player", width=200),
+                AdvancedButton((WIN_WIDTH/4 + i//2*WIN_WIDTH/2, 150 + i%2*300 + 50), "[AI]", 30, color=GRAY, color_active=player_color(i+1), option="AI", width=200),
+                AdvancedButton((WIN_WIDTH/4 + i//2*WIN_WIDTH/2, 150 + i%2*300 + 100), "[None]", 30, color=GRAY, color_active=player_color(i+1), option="empty", width=200),
+            ])
+
+        # set default - player no 3 (index = 2) as the Player and the rest as AI
+        for group in self.players_button_groups:
+            group[1].active = True
+        self.players_button_groups[2][0].active = True
+        self.players_button_groups[2][1].active = False
+        self.save_choices_to_global()
+        
+    def process_input(self, events, keys_pressed):
+    # receive all the events that happened since the last frame
+    # handle all received events
+        for event in events:
+            # keys that can be pressed only ones
+            if event.type == pygame.KEYDOWN:
+                # move to the next scene
+                if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
+                    self.save_choices_to_global()
+                    self.switch_scene(LoadingScene())
+
+            # mouse button down
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_coord = pygame.mouse.get_pos()
+                # move to the next scene
+                if self.start_button.is_inside(mouse_coord):
+                    self.save_choices_to_global()
+                    self.switch_scene(LoadingScene())
+                # choose type of players
+                for group in self.players_button_groups:
+                    if any(button.is_inside(mouse_coord) for button in group):
+                        for button in group:
+                            button.check_pressing(mouse_coord)
+
+    def update(self):
+    # game logic for the scene
+        # check hovering of the mouse
+        mouse_coord = pygame.mouse.get_pos()
+        self.start_button.check_hovering(mouse_coord)
+        # check hovering over buttons
+        for group in self.players_button_groups:
+            for button in group:
+                button.check_hovering(mouse_coord)
+
+    def render(self, win):
+    # draw scene on the screen
+        # clear screen
+        win.fill(BLACK)
+        # print titles and buttons
+        self.title.draw(win)
+        self.start_button.draw(win)
+        # draw the map
+        self.map.draw(win, WIN_WIDTH/2 - self.map.map_sprite_width_world//2, 120, 1)
+        # draw groups of buttons
+        for group in self.players_button_groups:
+            for button in group:
+                button.draw(win)
+
+    def save_choices_to_global(self):
+    # save chosen options to global values
+        global GAME_PLAYERS
+        for i, group in enumerate(self.players_button_groups):
+            for button in group:
+                if button.active:
+                    GAME_PLAYERS[i] = button.option
 
 
 # ======================================================================

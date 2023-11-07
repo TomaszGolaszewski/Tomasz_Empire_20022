@@ -13,6 +13,11 @@
 v0.14 - Menu and Scenes
 
 ### Last changes:
+v0.14.5 - 06.11.2023
+
+* Added Size and Players Choose Scenes;
+* All scenes are now used.
+
 v0.14.4 - 06.11.2023
 
 * Added Map Choose Scene (currently hidden);
@@ -23,21 +28,6 @@ v0.14.3 - 05.11.2023
 
 * Added Loading Scene;
 * Lots of fixes in Game Scene.
-
-v0.14.2 - 04.11.2023
-
-* New features for building scenes: DynamicText;
-* Refactoring of game engine to work with new scenes mechanism.
-
-v0.14.1 - 04.11.2023
-
-* Fixes in the scene changing mechanism;
-* New features for building scenes: FixText and BaseButton;
-* Added Title Scene (currently hidden).
-
-v0.14.0 - 02.11.2023
-
-* Preparation of the scene changing mechanism.
 
 
 <p align="center">

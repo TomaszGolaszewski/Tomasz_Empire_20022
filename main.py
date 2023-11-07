@@ -36,7 +36,7 @@ from classes_ui import *
 from classes_base import *
 
 
-def run():
+def run_OLD():
 # main function - runs the game
     
     # initialize the pygame
@@ -372,8 +372,7 @@ def run():
         DICT_WITH_GAME_STATE["dict_with_new_units"] = {}
 
 
-# future releases:
-def run_2():
+def run():
 # main function - runs the game
     
     # initialize the pygame
@@ -450,5 +449,3 @@ def run_2():
 
 if __name__ == "__main__":
     run()
-    # run_2()
-
