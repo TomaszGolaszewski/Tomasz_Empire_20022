@@ -54,7 +54,17 @@ class TitleScene(SceneBase):
         self.start_button = AdvancedButton((WIN_WIDTH/2, WIN_HEIGHT/2 + 100), "[Prepare Game]", 30, color=GRAY)
         self.quick_start_button = AdvancedButton((WIN_WIDTH/2, WIN_HEIGHT/2 + 150), "[Quick Start]", 30, color=GRAY)
         self.exit_button = AdvancedButton((WIN_WIDTH/2, WIN_HEIGHT/2 + 200), "[Exit]", 30, color=GRAY)
-        self.ticks = 0
+        self.seconds_since_start = 0
+        self.current_frame = 0
+
+        # setup for animation of battle
+        self.map = Map(10, 10, clean=True)
+        self.dict_with_units = {}
+        self.list_with_bullets = []
+        self.dict_with_game_state = {
+            "lowest_free_id": 1,
+            "list_with_player_type": [False, "AI", "AI", "AI", "AI"],
+        }
     
     def process_input(self, events, keys_pressed):
     # receive all the events that happened since the last frame
@@ -84,21 +94,55 @@ class TitleScene(SceneBase):
 
     def update(self):
     # game logic for the scene
-        self.ticks += 1
         # check hovering of the mouse
         mouse_coord = pygame.mouse.get_pos()
         self.start_button.check_hovering(mouse_coord)
         self.quick_start_button.check_hovering(mouse_coord)
         self.exit_button.check_hovering(mouse_coord)
+
+        self.current_frame += 1
+        if self.current_frame == FRAMERATE:
+            self.current_frame = 0
+            self.seconds_since_start += 1
+            # make more units
+            make_more_units_for_title_scene(self.map, self.dict_with_game_state, self.dict_with_units)
+            # print debug infos
+            print_infos_about_amount_of_objects(self.dict_with_game_state, self.dict_with_units, self.list_with_bullets, [])
+
+        # run the simulation
+        if self.seconds_since_start > 4:
+            # life-cycles of units AI
+            for unit_id in self.dict_with_units:
+                self.dict_with_units[unit_id].AI_run(self.map, self.dict_with_game_state, self.dict_with_units)
+            # life-cycles of bullets
+            for bullet in self.list_with_bullets:
+                bullet.run(self.map, self.dict_with_units)
+            # life-cycles of units
+            for unit_id in self.dict_with_units:
+                self.dict_with_units[unit_id].run(self.map, self.dict_with_game_state, self.dict_with_units, self.list_with_bullets)
+        # clear dead elements
+        # dead bullets
+        remove_few_dead_elements_from_list(self.list_with_bullets)
+        # dead units
+        remove_dead_elements_from_dict(self.dict_with_units)
     
     def render(self, win):
     # draw scene on the screen
         # clear screen
         win.fill(BLACK)
+
+        # draw animation
+        # draw air units
+        for unit_id in self.dict_with_units:
+            self.dict_with_units[unit_id].draw(win, 0, 0, 1)
+        # draw bullets
+        for bullet in self.list_with_bullets:
+            bullet.draw(win, 0, 0, 1)
+
         # print titles and buttons
         self.title.draw(win)
         self.subtitle.draw(win)
-        if self.ticks > 3*FRAMERATE:
+        if self.seconds_since_start > 2:
             self.start_button.draw(win)
             self.quick_start_button.draw(win)
             self.exit_button.draw(win)

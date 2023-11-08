@@ -2,6 +2,10 @@ Changelog
 ======
 
 
+v0.14.6 - 08.11.2023
+----
+* Added animation of a battle on Title Scene.
+
 v0.14.5 - 06.11.2023
 ----
 * Added Size and Players Choose Scenes;

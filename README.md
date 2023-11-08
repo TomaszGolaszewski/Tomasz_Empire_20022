@@ -13,6 +13,10 @@
 v0.14 - Menu and Scenes
 
 ### Last changes:
+v0.14.6 - 08.11.2023
+
+* Added animation of a battle on Title Scene.
+
 v0.14.5 - 06.11.2023
 
 * Added Size and Players Choose Scenes;
@@ -23,11 +27,6 @@ v0.14.4 - 06.11.2023
 * Added Map Choose Scene (currently hidden);
 * New features for building scenes: AdvancedButton;
 * Added option to show map without buildings foundation.
-
-v0.14.3 - 05.11.2023
-
-* Added Loading Scene;
-* Lots of fixes in Game Scene.
 
 
 <p align="center">

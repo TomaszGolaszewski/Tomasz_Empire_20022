@@ -47,6 +47,7 @@ def make_generators(map, dict_with_game_state, dict_with_units):
 
 def make_start_units(map, dict_with_game_state, dict_with_units):
 # make start units
+    # TODO: math.pi
     id = dict_with_game_state["lowest_free_id"]
     dict_with_units[id] = Commander(id, [900, 1000], 0, 1, 1) # blue
     id += 1
@@ -63,5 +64,14 @@ def make_start_units(map, dict_with_game_state, dict_with_units):
     dict_with_units[id] = Commander(id, [900, 2700], 0, 2, 2) # green
     id += 1
     dict_with_units[id] = Super_space_marine(id, [1000, 2700], 0, 2, 2) # green
+    id += 1
+    dict_with_game_state["lowest_free_id"] = id
+
+def make_more_units_for_title_scene(map, dict_with_game_state, dict_with_units):
+# make units for animation on Title Scene
+    id = dict_with_game_state["lowest_free_id"]
+    dict_with_units[id] = Space_marine(id, [-50, random.randint(50, WIN_HEIGHT-50)], 0, 1, 1) # blue
+    id += 1
+    dict_with_units[id] = Space_marine(id, [WIN_WIDTH+50, random.randint(50, WIN_HEIGHT-50)], 0, 3, 3) # red
     id += 1
     dict_with_game_state["lowest_free_id"] = id
