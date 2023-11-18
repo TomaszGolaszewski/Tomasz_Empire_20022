@@ -80,18 +80,20 @@ class TitleScene(SceneBase):
                     self.switch_scene(LoadingScene())
 
             # mouse button down
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN \
+                        and self.seconds_since_start > 2 \
+                        and event.button in [1,2,3]: # 1 - left; 2 - middle; 3 - right click
                 mouse_coord = pygame.mouse.get_pos()
+                # move to the next scene
+                if self.start_button.is_inside(mouse_coord):
+                    self.switch_scene(ChooseMapScene())
                 # quick start
                 if self.quick_start_button.is_inside(mouse_coord):
                     self.switch_scene(LoadingScene())
                 # exit
-                elif self.exit_button.is_inside(mouse_coord):
+                if self.exit_button.is_inside(mouse_coord):
                     self.terminate()
-                # move to the next scene
-                else:
-                    self.switch_scene(ChooseMapScene())
-
+                  
     def update(self):
     # game logic for the scene
         # check hovering of the mouse
@@ -183,16 +185,17 @@ class ChooseMapScene(SceneBase):
                     self.switch_scene(ChooseSizeScene())
 
             # mouse button down
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button in [1,2,3]: # 1 - left; 2 - middle; 3 - right click
                 mouse_coord = pygame.mouse.get_pos()
                 # move to the next scene
                 if self.start_button.is_inside(mouse_coord):
                     self.switch_scene(ChooseSizeScene())
                 # choose map
-                for button in self.list_with_buttons:
-                    if button.check_pressing(mouse_coord):
-                        self.map = Map_v2(25, 32, type=button.option, tile_edge_length=10, clean=True)
-                        GAME_MAP = button.option
+                if any([button.is_inside(mouse_coord) for button in self.list_with_buttons]):
+                    for button in self.list_with_buttons:
+                        if button.check_pressing(mouse_coord):
+                            self.map = Map_v2(25, 32, type=button.option, tile_edge_length=10, clean=True)
+                            GAME_MAP = button.option
      
     def update(self):
     # game logic for the scene
@@ -254,7 +257,7 @@ class ChooseSizeScene(SceneBase):
                     self.switch_scene(ChoosePlayersScene())
 
             # mouse button down
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button in [1,2,3]: # 1 - left; 2 - middle; 3 - right click
                 mouse_coord = pygame.mouse.get_pos()
                 # move to the next scene
                 if self.start_button.is_inside(mouse_coord):
@@ -338,7 +341,7 @@ class ChoosePlayersScene(SceneBase):
                     self.switch_scene(LoadingScene())
 
             # mouse button down
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button in [1,2,3]: # 1 - left; 2 - middle; 3 - right click
                 mouse_coord = pygame.mouse.get_pos()
                 # move to the next scene
                 if self.start_button.is_inside(mouse_coord):

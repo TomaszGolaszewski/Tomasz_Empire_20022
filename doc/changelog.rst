@@ -2,6 +2,10 @@ Changelog
 ======
 
 
+v0.14.7 - 18.11.2023
+----
+* Fixes regarding scroll mouse button in game setup scenes.
+
 v0.14.6 - 08.11.2023
 ----
 * Added animation of a battle on Title Scene.
