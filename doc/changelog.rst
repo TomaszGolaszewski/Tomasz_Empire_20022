@@ -2,6 +2,14 @@ Changelog
 ======
 
 
+v0.15.0 - 07.12.2023
+----
+* New map generating algorithm: map island has more water, map lake is more square.
+
+v0.15 - Map stage III
+======
+
+
 v0.14.7 - 18.11.2023
 ----
 * Fixes regarding scroll mouse button in game setup scenes.

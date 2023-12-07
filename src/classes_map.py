@@ -76,21 +76,26 @@ class Map:
         center_y = self.map_height // 2
         if self.type == "lake": 
             # method preparing the board in shape of lake
-            function = lambda x, y: abs(center_x - x)**2 / (center_x**2) + abs(center_y - y)**2 / (center_y**2)
-            factor = 0.6
+            function = lambda x, y: 0.5 * max([abs(center_x - x) / center_x, abs(center_y - y) / center_y]) + \
+                                    0.3 * ((center_x - x)**2 / center_x**2 + (center_y - y)**2 / center_y**2) - 0.2
+            factor = 0.4
         elif self.type == "island": 
             # method preparing the board in shape of island
-            function = lambda x, y: 1 - abs(center_x - x)**2 / (center_x**2) - abs(center_y - y)**2 / (center_y**2)
-            factor = 0.6
+            function = lambda x, y: 1 - (center_x - x)**2 / center_x**2 - (center_y - y)**2 / center_y**2 - 0.3
+            factor = 0.45
         elif self.type == "bridge":
             # method preparing the board in shape of bridge
             function = lambda x, y: (center_x - abs(center_x - x))**2 / (center_x**2) * 0.5 + 1 * abs(center_y - y)**2 / (center_y**2)
+            factor = 0.6
+        elif self.type == "corners":
+            # method preparing the board in shape of 4 corners
+            function = lambda x, y: abs((center_x - x)*(center_y - y)) / (center_x * center_y)
             factor = 0.6
 
         for y in range(self.map_height):
             row = []
             for x in range(self.map_width):
-                tile_type, depth = self.decide_type_tile(function(x, y) + 0.125 * noise([x / self.map_width, y / self.map_height]), factor)
+                tile_type, depth = self.decide_type_tile(function(x, y) + 0.125 * noise([x / self.map_width, y / self.map_height]), factor, forest_on = False)
                 if depth > 20: depth = 20
                 row.append(HexTile((x, y), self.id2world((x, y)), self.tile_edge_length, tile_type, depth))
             self.BOARD.append(row)

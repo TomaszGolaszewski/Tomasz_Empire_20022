@@ -161,7 +161,7 @@ class ChooseMapScene(SceneBase):
         # self.start_button = AdvancedButton((WIN_WIDTH/2, WIN_HEIGHT - 75), "[Start Game]", 30, color=GRAY)
         self.start_button = AdvancedButton((WIN_WIDTH/2, WIN_HEIGHT - 75), "[Next]", 30, color=LIME, color_hover=LIME, width=WIN_WIDTH/2 + 360)
 
-        self.list_with_maps = ["island", "mars_poles", "mars_plain", "grass_plain", "snow_plain"] # "lake", "bridge", "noise", "concrete_floor"]
+        self.list_with_maps = ["island", "lake", "mars_poles", "mars_plain", "grass_plain", "snow_plain"] # "lake", "bridge", "noise", "concrete_floor"]
         self.list_with_buttons = []
         for i, map in enumerate(self.list_with_maps):
             self.list_with_buttons.append(AdvancedButton((WIN_WIDTH/4, 150 + 50*i), "["+map.replace("_", " ").capitalize()+"]", 30, color=GRAY, option=map))
@@ -236,9 +236,13 @@ class ChooseSizeScene(SceneBase):
         ]
         self.title_size = FixText((WIN_WIDTH/2, 260), "Choose size", 50)
         self.size_button_groups = [
-                AdvancedButton((WIN_WIDTH/4, 350), "[Small]", 30, color=GRAY, option="S", width=300),
-                AdvancedButton((WIN_WIDTH/2, 350), "[Medium]", 30, color=GRAY, option="M", width=300),
-                AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/2, 350), "[Large]", 30, color=GRAY, option="L", width=300),
+                # AdvancedButton((WIN_WIDTH/4, 350), "[Small]", 30, color=GRAY, option="S", width=300),
+                # AdvancedButton((WIN_WIDTH/2, 350), "[Medium]", 30, color=GRAY, option="M", width=300),
+                # AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/2, 350), "[Large]", 30, color=GRAY, option="L", width=300),
+                AdvancedButton((WIN_WIDTH/4 - 40, 350), "[Small]", 30, color=GRAY, option="S", width=220),
+                AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/6 - 15, 350), "[Medium]", 30, color=GRAY, option="M", width=220),
+                AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/3 + 15, 350), "[Large]", 30, color=GRAY, option="L", width=220),
+                AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/2 + 40, 350), "[Super Large]", 30, color=GRAY, option="XL", width=220),
         ]
         # set default - large vertical
         self.size_button_groups[2].active = True
@@ -439,12 +443,17 @@ class GameScene(SceneBase):
 
         # initialize the map
         size = GAME_SIZE
-        if size == "S": dimensions = (30, 40)
-        elif size == "M": dimensions = (45, 75)
-        elif size == "L": dimensions = (80, 100)
-        elif size == "XL": dimensions = (120, 150)
-        elif size == "XXL": dimensions = (150, 200)
-        elif size == "width": dimensions = (120, 75)
+        # if size == "S": dimensions = (30, 40)
+        # elif size == "M": dimensions = (45, 75)
+        # elif size == "L": dimensions = (80, 100)
+        # elif size == "XL": dimensions = (120, 150)
+        # elif size == "XXL": dimensions = (150, 200)
+        # elif size == "width": dimensions = (120, 75)
+
+        if size == "S": dimensions = (40, 50)
+        elif size == "M": dimensions = (80, 100) # old standard
+        elif size == "L": dimensions = (120, 150) # new standard
+        elif size == "XL": dimensions = (150, 200)
 
         self.map = Map_v2(*dimensions, type=GAME_MAP)
 

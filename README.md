@@ -10,9 +10,13 @@
 **Project still under development**
 
 ### Current stage:
-v0.14 - Menu and Scenes
+v0.15 - Map stage III
 
 ### Last changes:
+v0.15.0 - 07.12.2023
+
+* New map generating algorithm: map island has more water, map lake is more square.
+
 v0.14.7 - 18.11.2023
 
 * Fixes regarding scroll mouse button in game setup scenes.
@@ -20,17 +24,6 @@ v0.14.7 - 18.11.2023
 v0.14.6 - 08.11.2023
 
 * Added animation of a battle on Title Scene.
-
-v0.14.5 - 06.11.2023
-
-* Added Size and Players Choose Scenes;
-* All scenes are now used.
-
-v0.14.4 - 06.11.2023
-
-* Added Map Choose Scene (currently hidden);
-* New features for building scenes: AdvancedButton;
-* Added option to show map without buildings foundation.
 
 
 <p align="center">
