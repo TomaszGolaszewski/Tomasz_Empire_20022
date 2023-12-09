@@ -4,7 +4,7 @@ import math
 
 # game setup
 GAME_MAP = "island"
-GAME_SIZE = "L"
+GAME_SIZE = "M"
 GAME_PLAYERS = ["AI", "AI", "player", "AI"]
 
 # sprites - units

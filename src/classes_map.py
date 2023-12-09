@@ -30,9 +30,11 @@ class Map:
         else: self.make_plain()
 
         # preparing land for buildings
+        self.places_to_start = []
         self.places_for_naval_factories = []
         self.places_for_land_factories = []
         self.places_for_generators = []
+        self.find_places_to_start()
         if not clean:
             self.find_places_for_naval_factories()
             self.find_places_for_land_factories()
@@ -161,6 +163,27 @@ class Map:
 
         return tile_type, depth
     
+    def find_places_to_start(self):
+    # find the best starting locations for each player 
+
+        if self.type == "lake": 
+            temp_x = self.map_width // 10
+            temp_y = self.map_height // 10
+        elif self.type == "island": 
+            temp_x = self.map_width // 3 + 2
+            temp_y = self.map_height // 3 + 2
+        elif self.type == "bridge":
+            temp_x = self.map_width // 3
+            temp_y = self.map_height // 3
+        else:
+            temp_x = self.map_width // 6
+            temp_y = self.map_height // 6
+
+        self.places_to_start.append(self.id2world([temp_x, temp_y])) # NW # blue
+        self.places_to_start.append(self.id2world([temp_x, self.map_height - temp_y])) # SW # green
+        self.places_to_start.append(self.id2world([self.map_width - temp_x, temp_y])) # NE # red
+        self.places_to_start.append(self.id2world([self.map_width - temp_x, self.map_height - temp_y])) # SE # yellow
+        
     def find_places_for_naval_factories(self):
     # find places for naval factories
         x_id = 5
@@ -180,39 +203,52 @@ class Map:
                 else: y_id += 1
             x_id += 10
 
-    def find_places_for_land_factories(self):
+    def find_places_for_land_factories(self, buildings_in_group=3, group_radius=200):
     # find places for land factories
-        y_id = 7
-        while y_id < self.map_height // 3:
-            x_id = 5
-            while x_id < self.map_width:
-                # top half of the map
-                if self.BOARD[y_id][x_id].type != "water" and self.BOARD[y_id][x_id].type != "shallow":
-                    self.places_for_land_factories.append(self.id2world([x_id, y_id]))
-                # bottom half of the map
-                if self.BOARD[self.map_height - y_id][x_id].type != "water" and self.BOARD[self.map_height - y_id][x_id].type != "shallow":
-                    self.places_for_land_factories.append(self.id2world([x_id, self.map_height - y_id]))
-                x_id += 10
-            y_id += 10
-        
+        angle_offset = 2 * math.pi / buildings_in_group
+        center_x = self.map_width // 2
+        center_y = self.map_height // 2
+        center_world = self.id2world([center_x, center_y])
+        for place in self.places_to_start:
+            start_angle = angle_to_target(place, center_world)
+            for i in range(buildings_in_group):
+                new_point = move_point(place, group_radius, start_angle + i  * angle_offset)
+                # if self.BOARD[y_id][x_id].type != "water" and self.BOARD[y_id][x_id].type != "shallow":
+                self.places_for_land_factories.append(new_point)
+                
+    def find_places_for_generators(self, generators_per_player=6, min_dist=7, margin=5):
+    # find places for generators       
+        places_found = 0
+        max_errors = 100
+        current_error = 0
+        center_x = self.map_width // 2
+        center_y = self.map_height // 2
+        min_dist_from_center = min_dist // 2
+         
+        while places_found < generators_per_player and current_error < max_errors:
+            temp_x = random.randint(margin, center_x - min_dist_from_center)
+            temp_y = random.randint(margin, center_y - min_dist_from_center)
+            if self.BOARD[temp_y][temp_x].type != "water" and self.BOARD[temp_y][temp_x].type != "shallow" and \
+                        self.check_collision_with_buildings_on_list(self.places_for_naval_factories, [temp_x, temp_y], min_dist) and \
+                        self.check_collision_with_buildings_on_list(self.places_for_land_factories, [temp_x, temp_y], min_dist) and \
+                        self.check_collision_with_buildings_on_list(self.places_for_generators, [temp_x, temp_y], min_dist):
+                self.places_for_generators.append(self.id2world([temp_x, temp_y])) # NW
+                self.places_for_generators.append(self.id2world([self.map_width - temp_x, temp_y])) # NE
+                self.places_for_generators.append(self.id2world([self.map_width - temp_x, self.map_height - temp_y])) # SE
+                self.places_for_generators.append(self.id2world([temp_x, self.map_height - temp_y])) # SW
+                places_found += 1
+                current_error = 0
+            else:
+                current_error += 1
 
-    def find_places_for_generators(self):
-    # find places for generators
-        x_id = self.map_width // 2
-        y_id = 5
-        while y_id < self.map_height:
-            # x = -10
-            if self.BOARD[y_id][x_id - 10].type != "water" and self.BOARD[y_id][x_id - 10].type != "shallow":
-                self.places_for_generators.append(self.id2world([x_id - 10, y_id]))
-            # x = 0
-            if self.BOARD[y_id][x_id].type != "water" and self.BOARD[y_id][x_id].type != "shallow":
-                self.places_for_generators.append(self.id2world([x_id, y_id]))
-            # x = +10
-            if self.BOARD[y_id][x_id + 10].type != "water" and self.BOARD[y_id][x_id + 10].type != "shallow":
-                self.places_for_generators.append(self.id2world([x_id + 10, y_id]))
-            y_id += 10
-        # self.places_for_naval_factories = []
-        # self.places_for_land_factories = []
+    def check_collision_with_buildings_on_list(self, building_list_in_world, test_coord_in_id, min_distance):
+    # check for collisions with buildings on list
+    # return True if position is good
+        for building_coord in building_list_in_world:
+            building_x, building_y = self.world2id(building_coord) 
+            if abs(building_x - test_coord_in_id[0]) < min_distance and abs(building_y - test_coord_in_id[1]) < min_distance: 
+                return False
+        return True
 
     def check_land_path(self, start_point, end_point):
     # return True if land path between points is safe

@@ -236,16 +236,16 @@ class ChooseSizeScene(SceneBase):
         ]
         self.title_size = FixText((WIN_WIDTH/2, 260), "Choose size", 50)
         self.size_button_groups = [
-                # AdvancedButton((WIN_WIDTH/4, 350), "[Small]", 30, color=GRAY, option="S", width=300),
-                # AdvancedButton((WIN_WIDTH/2, 350), "[Medium]", 30, color=GRAY, option="M", width=300),
-                # AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/2, 350), "[Large]", 30, color=GRAY, option="L", width=300),
-                AdvancedButton((WIN_WIDTH/4 - 40, 350), "[Small]", 30, color=GRAY, option="S", width=220),
-                AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/6 - 15, 350), "[Medium]", 30, color=GRAY, option="M", width=220),
-                AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/3 + 15, 350), "[Large]", 30, color=GRAY, option="L", width=220),
-                AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/2 + 40, 350), "[Super Large]", 30, color=GRAY, option="XL", width=220),
+                AdvancedButton((WIN_WIDTH/4, 350), "[Small]", 30, color=GRAY, option="S", width=300),
+                AdvancedButton((WIN_WIDTH/2, 350), "[Medium]", 30, color=GRAY, option="M", width=300),
+                AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/2, 350), "[Large]", 30, color=GRAY, option="L", width=300),
+                # AdvancedButton((WIN_WIDTH/4 - 40, 350), "[Small]", 30, color=GRAY, option="S", width=220),
+                # AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/6 - 15, 350), "[Medium]", 30, color=GRAY, option="M", width=220),
+                # AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/3 + 15, 350), "[Large]", 30, color=GRAY, option="L", width=220),
+                # AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/2 + 40, 350), "[Super Large]", 30, color=GRAY, option="XL", width=220),
         ]
         # set default - large vertical
-        self.size_button_groups[2].active = True
+        self.size_button_groups[1].active = True
         self.shape_button_groups[0].active = True
         self.save_choices_to_global()
 
@@ -443,16 +443,9 @@ class GameScene(SceneBase):
 
         # initialize the map
         size = GAME_SIZE
-        # if size == "S": dimensions = (30, 40)
-        # elif size == "M": dimensions = (45, 75)
-        # elif size == "L": dimensions = (80, 100)
-        # elif size == "XL": dimensions = (120, 150)
-        # elif size == "XXL": dimensions = (150, 200)
-        # elif size == "width": dimensions = (120, 75)
-
-        if size == "S": dimensions = (40, 50)
-        elif size == "M": dimensions = (80, 100) # old standard
-        elif size == "L": dimensions = (120, 150) # new standard
+        if size == "S": dimensions = (80, 100) # old standard
+        elif size == "M": dimensions = (120, 150) # new standard
+        elif size == "L": dimensions = (150, 200)
         elif size == "XL": dimensions = (150, 200)
 
         self.map = Map_v2(*dimensions, type=GAME_MAP)

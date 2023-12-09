@@ -13,6 +13,11 @@
 v0.15 - Map stage III
 
 ### Last changes:
+v0.15.1 - 09.12.2023
+
+* New algorythm for finding places for land factories;
+* New algorythm for finding places for generators.
+
 v0.15.0 - 07.12.2023
 
 * New map generating algorithm: map island has more water, map lake is more square.
