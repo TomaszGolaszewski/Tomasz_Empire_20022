@@ -36,8 +36,8 @@ class Map:
         self.places_for_generators = []
         self.find_places_to_start()
         if not clean:
-            self.find_places_for_naval_factories()
             self.find_places_for_land_factories()
+            self.find_places_for_naval_factories()     
             self.find_places_for_generators()
             self.make_buildings_foundation()
 
@@ -173,8 +173,8 @@ class Map:
             temp_x = self.map_width // 3 + 2
             temp_y = self.map_height // 3 + 2
         elif self.type == "bridge":
-            temp_x = self.map_width // 3
-            temp_y = self.map_height // 3
+            temp_x = self.map_width // 10 + 2
+            temp_y = self.map_height // 15 + 2
         else:
             temp_x = self.map_width // 6
             temp_y = self.map_height // 6
@@ -184,37 +184,45 @@ class Map:
         self.places_to_start.append(self.id2world([self.map_width - temp_x, temp_y])) # NE # red
         self.places_to_start.append(self.id2world([self.map_width - temp_x, self.map_height - temp_y])) # SE # yellow
         
-    def find_places_for_naval_factories(self):
+    def find_places_for_naval_factories(self, factories_per_player=3, min_dist=7):
     # find places for naval factories
-        x_id = 5
-        while x_id < self.map_width:
+        places_found = 0
+        x_id = 4
+        while x_id < self.map_width // 2 and places_found < factories_per_player:
             y_id = 7
-            while y_id < self.map_height - 7:
-                if self.BOARD[y_id][x_id].type == "shallow" and (self.BOARD[y_id][x_id].depth == 3 or self.BOARD[y_id][x_id].depth == 2):
-                    # check for collisions with previous factories
-                    place_is_good = True
-                    for previous_places_coord in self.places_for_naval_factories:
-                        previous_x, previous_y = self.world2id(previous_places_coord) 
-                        if abs(previous_x - x_id) < 10 and abs(previous_y - y_id) < 10: place_is_good = False
-                    # add new place for naval factory
-                    if place_is_good: self.places_for_naval_factories.append(self.id2world([x_id, y_id]))
-                # skip middle of the map
-                if y_id == self.map_height // 3: y_id += self.map_height // 3
-                else: y_id += 1
+            while y_id < self.map_height // 3 and places_found < factories_per_player:
+                if self.BOARD[y_id][x_id].type == "shallow" and \
+                            self.BOARD[y_id][x_id].depth in [3] and \
+                            self.check_collision_with_buildings_on_list(self.places_for_land_factories, [x_id, y_id], min_dist) and \
+                            self.check_collision_with_buildings_on_list(self.places_for_naval_factories, [x_id, y_id], min_dist):
+                    self.append_buildings_mirrored_vertically_and_horizontally(self.places_for_naval_factories, [x_id, y_id])
+                    places_found += 1
+                y_id += 1
             x_id += 10
 
     def find_places_for_land_factories(self, buildings_in_group=3, group_radius=200):
     # find places for land factories
-        angle_offset = 2 * math.pi / buildings_in_group
-        center_x = self.map_width // 2
-        center_y = self.map_height // 2
-        center_world = self.id2world([center_x, center_y])
-        for place in self.places_to_start:
-            start_angle = angle_to_target(place, center_world)
+        if self.type == "bridge":
+            # factories in line
+            distance_in_tiles = group_radius // self.outer_tile_radius
+            x_id, y_id = self.world2id(self.places_to_start[0])
             for i in range(buildings_in_group):
-                new_point = move_point(place, group_radius, start_angle + i  * angle_offset)
-                # if self.BOARD[y_id][x_id].type != "water" and self.BOARD[y_id][x_id].type != "shallow":
-                self.places_for_land_factories.append(new_point)
+                temp_x = x_id + i * distance_in_tiles - distance_in_tiles // 2
+                temp_y = max(y_id - distance_in_tiles, 5)
+                self.append_buildings_mirrored_vertically_and_horizontally(self.places_for_land_factories, [temp_x, temp_y])
+        else:
+            # factories in circle
+            angle_offset = 2 * math.pi / buildings_in_group
+            center_x = self.map_width // 2
+            center_y = self.map_height // 2
+            center_world = self.id2world([center_x, center_y])
+            for place in self.places_to_start:
+                start_angle = angle_to_target(place, center_world)
+                for i in range(buildings_in_group):
+                    new_point = move_point(place, group_radius, start_angle + i  * angle_offset)
+                    corrected_new_point = self.id2world(self.world2id(new_point))
+                    # if self.BOARD[y_id][x_id].type != "water" and self.BOARD[y_id][x_id].type != "shallow":
+                    self.places_for_land_factories.append(corrected_new_point)
                 
     def find_places_for_generators(self, generators_per_player=6, min_dist=7, margin=5):
     # find places for generators       
@@ -232,10 +240,7 @@ class Map:
                         self.check_collision_with_buildings_on_list(self.places_for_naval_factories, [temp_x, temp_y], min_dist) and \
                         self.check_collision_with_buildings_on_list(self.places_for_land_factories, [temp_x, temp_y], min_dist) and \
                         self.check_collision_with_buildings_on_list(self.places_for_generators, [temp_x, temp_y], min_dist):
-                self.places_for_generators.append(self.id2world([temp_x, temp_y])) # NW
-                self.places_for_generators.append(self.id2world([self.map_width - temp_x, temp_y])) # NE
-                self.places_for_generators.append(self.id2world([self.map_width - temp_x, self.map_height - temp_y])) # SE
-                self.places_for_generators.append(self.id2world([temp_x, self.map_height - temp_y])) # SW
+                self.append_buildings_mirrored_vertically_and_horizontally(self.places_for_generators, [temp_x, temp_y])
                 places_found += 1
                 current_error = 0
             else:
@@ -249,6 +254,14 @@ class Map:
             if abs(building_x - test_coord_in_id[0]) < min_distance and abs(building_y - test_coord_in_id[1]) < min_distance: 
                 return False
         return True
+    
+    def append_buildings_mirrored_vertically_and_horizontally(self, list_with_places, start_coord_in_id):
+    # append buildings on a list mirrored using vertical and horizontal axis of symmetry of the map
+        temp_x, temp_y = start_coord_in_id
+        list_with_places.append(self.id2world([temp_x, temp_y])) # NW
+        list_with_places.append(self.id2world([self.map_width - temp_x, temp_y])) # NE
+        list_with_places.append(self.id2world([self.map_width - temp_x, self.map_height - temp_y])) # SE
+        list_with_places.append(self.id2world([temp_x, self.map_height - temp_y])) # SW
 
     def check_land_path(self, start_point, end_point):
     # return True if land path between points is safe

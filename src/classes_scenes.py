@@ -161,7 +161,7 @@ class ChooseMapScene(SceneBase):
         # self.start_button = AdvancedButton((WIN_WIDTH/2, WIN_HEIGHT - 75), "[Start Game]", 30, color=GRAY)
         self.start_button = AdvancedButton((WIN_WIDTH/2, WIN_HEIGHT - 75), "[Next]", 30, color=LIME, color_hover=LIME, width=WIN_WIDTH/2 + 360)
 
-        self.list_with_maps = ["island", "lake", "mars_poles", "mars_plain", "grass_plain", "snow_plain"] # "lake", "bridge", "noise", "concrete_floor"]
+        self.list_with_maps = ["island", "lake", "bridge", "mars_poles", "mars_plain", "grass_plain", "snow_plain"] # , "noise", "concrete_floor"]
         self.list_with_buttons = []
         for i, map in enumerate(self.list_with_maps):
             self.list_with_buttons.append(AdvancedButton((WIN_WIDTH/4, 150 + 50*i), "["+map.replace("_", " ").capitalize()+"]", 30, color=GRAY, option=map))
@@ -244,9 +244,15 @@ class ChooseSizeScene(SceneBase):
                 # AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/3 + 15, 350), "[Large]", 30, color=GRAY, option="L", width=220),
                 # AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/2 + 40, 350), "[Super Large]", 30, color=GRAY, option="XL", width=220),
         ]
-        # set default - large vertical
+        self.title_trees = FixText((WIN_WIDTH/2, 460), "Trees", 50)
+        self.trees_button_groups = [
+                AdvancedButton((WIN_WIDTH/4, 550), "[On]", 30, color=GRAY, option=True, width=300),
+                AdvancedButton((WIN_WIDTH/2 + WIN_WIDTH/4, 550), "[Off]", 30, color=GRAY, option=False, width=300),
+        ]
+        # set default - large vertical with no trees
         self.size_button_groups[1].active = True
         self.shape_button_groups[0].active = True
+        self.trees_button_groups[1].active = True
         self.save_choices_to_global()
 
     def process_input(self, events, keys_pressed):
@@ -275,6 +281,10 @@ class ChooseSizeScene(SceneBase):
                 if any(button.is_inside(mouse_coord) for button in self.size_button_groups):
                     for button in self.size_button_groups:
                         button.check_pressing(mouse_coord)
+                # press trees buttons
+                if any(button.is_inside(mouse_coord) for button in self.trees_button_groups):
+                    for button in self.trees_button_groups:
+                        button.check_pressing(mouse_coord)
 
     def update(self):
     # game logic for the scene
@@ -285,6 +295,8 @@ class ChooseSizeScene(SceneBase):
             button.check_hovering(mouse_coord)
         for button in self.size_button_groups:
             button.check_hovering(mouse_coord)
+        for button in self.trees_button_groups:
+            button.check_hovering(mouse_coord)
 
     def render(self, win):
     # draw scene on the screen
@@ -292,18 +304,25 @@ class ChooseSizeScene(SceneBase):
         win.fill(BLACK)
         # print titles and buttons
         self.title_shape.draw(win)
-        self.title_size.draw(win)
         for button in self.shape_button_groups:
             button.draw(win)
-        self.start_button.draw(win)
+        self.title_size.draw(win)
         for button in self.size_button_groups:
             button.draw(win)
+        self.title_trees.draw(win)
+        for button in self.trees_button_groups:
+            button.draw(win)
+        self.start_button.draw(win)
 
     def save_choices_to_global(self):
     # save chosen options to global values
-        global GAME_SIZE
+        global GAME_SIZE, GAME_SHAPE, GAME_TREES
+        for button in self.shape_button_groups:
+            if button.active: GAME_SHAPE = button.option
         for button in self.size_button_groups:
             if button.active: GAME_SIZE = button.option
+        for button in self.trees_button_groups:
+            if button.active: GAME_TREES = button.option
 
 
 # ======================================================================
@@ -610,7 +629,7 @@ class GameScene(SceneBase):
             if not self.pause:
                 calculate_energy(self.dict_with_game_state)
                 calculate_score(self.dict_with_game_state, self.dict_with_units)
-                self.player_energy_text.set_text("E: %d" % self.dict_with_game_state["list_with_energy"][self.player_id])
+            self.player_energy_text.set_text("E: %d" % self.dict_with_game_state["list_with_energy"][self.player_id])
 
             # print debug infos
             print_infos_about_view_position(self.offset_horizontal, self.offset_vertical, self.scale)

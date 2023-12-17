@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.15.2 - 17.12.2023
+----
+* Fixes in start position on bridge map;
+* New algorythm for finding places for naval factories.
 
 v0.15.1 - 09.12.2023
 ----
