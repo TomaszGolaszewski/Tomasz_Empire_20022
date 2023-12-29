@@ -230,24 +230,29 @@ class ChooseSizeScene(SceneBase):
         # create groups of buttons for shape and size
         self.title_shape = FixText((WIN_WIDTH/2, 60), "Choose shape", 50)
         self.shape_button_groups = [
-                AdvancedButton((WIN_WIDTH/4, 150), "[Horizontal]", 30, color=GRAY, option="horizontal", width=300),
-                AdvancedButton((WIN_WIDTH/2, 150), "[Vertical]", 30, color=GRAY, option="vertical", width=300),
-                AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/2, 150), "[Square]", 30, color=GRAY, option="square", width=300),
+            AdvancedButton((WIN_WIDTH/4, 150), "[Horizontal]", 30, color=GRAY, option="horizontal", width=300),
+            AdvancedButton((WIN_WIDTH/2, 150), "[Vertical]", 30, color=GRAY, option="vertical", width=300),
+            AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/2, 150), "[Square]", 30, color=GRAY, option="square", width=300),
         ]
         self.title_size = FixText((WIN_WIDTH/2, 260), "Choose size", 50)
         self.size_button_groups = [
-                AdvancedButton((WIN_WIDTH/4, 350), "[Small]", 30, color=GRAY, option="S", width=300),
-                AdvancedButton((WIN_WIDTH/2, 350), "[Medium]", 30, color=GRAY, option="M", width=300),
-                AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/2, 350), "[Large]", 30, color=GRAY, option="L", width=300),
-                # AdvancedButton((WIN_WIDTH/4 - 40, 350), "[Small]", 30, color=GRAY, option="S", width=220),
-                # AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/6 - 15, 350), "[Medium]", 30, color=GRAY, option="M", width=220),
-                # AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/3 + 15, 350), "[Large]", 30, color=GRAY, option="L", width=220),
-                # AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/2 + 40, 350), "[Super Large]", 30, color=GRAY, option="XL", width=220),
+            AdvancedButton((WIN_WIDTH/4, 350), "[Small]", 30, color=GRAY, option="S", width=300),
+            AdvancedButton((WIN_WIDTH/2, 350), "[Medium]", 30, color=GRAY, option="M", width=300),
+            AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/2, 350), "[Large]", 30, color=GRAY, option="L", width=300),
+            # AdvancedButton((WIN_WIDTH/4 - 40, 350), "[Small]", 30, color=GRAY, option="S", width=220),
+            # AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/6 - 15, 350), "[Medium]", 30, color=GRAY, option="M", width=220),
+            # AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/3 + 15, 350), "[Large]", 30, color=GRAY, option="L", width=220),
+            # AdvancedButton((WIN_WIDTH/4 + WIN_WIDTH/2 + 40, 350), "[Super Large]", 30, color=GRAY, option="XL", width=220),
+        ]
+        self.size_label_groups = [
+            ("S", DynamicText((WIN_WIDTH/4, 385), prepare_label_with_map_size("S", GAME_SHAPE), color=GRAY)),
+            ("M", DynamicText((WIN_WIDTH/2, 385), prepare_label_with_map_size("M", GAME_SHAPE), color=GRAY)),
+            ("L", DynamicText((WIN_WIDTH/4 + WIN_WIDTH/2, 385), prepare_label_with_map_size("L", GAME_SHAPE), color=GRAY)),
         ]
         self.title_trees = FixText((WIN_WIDTH/2, 460), "Trees", 50)
         self.trees_button_groups = [
-                AdvancedButton((WIN_WIDTH/4, 550), "[On]", 30, color=GRAY, option=True, width=300),
-                AdvancedButton((WIN_WIDTH/2 + WIN_WIDTH/4, 550), "[Off]", 30, color=GRAY, option=False, width=300),
+            AdvancedButton((WIN_WIDTH/4, 550), "[On]", 30, color=GRAY, option=True, width=300),
+            AdvancedButton((WIN_WIDTH/2 + WIN_WIDTH/4, 550), "[Off]", 30, color=GRAY, option=False, width=300),
         ]
         # set default - large vertical with no trees
         self.size_button_groups[1].active = True
@@ -277,6 +282,9 @@ class ChooseSizeScene(SceneBase):
                 if any(button.is_inside(mouse_coord) for button in self.shape_button_groups):
                     for button in self.shape_button_groups:
                         button.check_pressing(mouse_coord)
+                    self.save_choices_to_global()
+                    for label in self.size_label_groups:
+                        label[1].set_text(prepare_label_with_map_size(label[0], GAME_SHAPE))
                 # press size buttons
                 if any(button.is_inside(mouse_coord) for button in self.size_button_groups):
                     for button in self.size_button_groups:
@@ -309,6 +317,8 @@ class ChooseSizeScene(SceneBase):
         self.title_size.draw(win)
         for button in self.size_button_groups:
             button.draw(win)
+        for label in self.size_label_groups:
+            label[1].draw(win)
         self.title_trees.draw(win)
         for button in self.trees_button_groups:
             button.draw(win)
@@ -334,7 +344,7 @@ class ChoosePlayersScene(SceneBase):
         SceneBase.__init__(self)
         self.title = FixText((WIN_WIDTH/2, 60), "Select Players", 50)
         self.start_button = AdvancedButton((WIN_WIDTH/2, WIN_HEIGHT - 75), "[Start Game]", 30, color=LIME, color_hover=LIME, width=WIN_WIDTH/2 + 200) #  + 360
-        self.map = Map_v2(25, 32, type=GAME_MAP, tile_edge_length=10, clean=True)
+        self.map = Map_v2(25, 32, type=GAME_MAP, tile_edge_length=10, clean=True, forest_on=GAME_TREES)
 
         # create groups of buttons for each player
         self.players_button_groups = []
@@ -461,13 +471,8 @@ class GameScene(SceneBase):
         self.left_mouse_button_coord = pygame.mouse.get_pos()
 
         # initialize the map
-        size = GAME_SIZE
-        if size == "S": dimensions = (80, 100) # old standard
-        elif size == "M": dimensions = (120, 150) # new standard
-        elif size == "L": dimensions = (150, 200)
-        elif size == "XL": dimensions = (150, 200)
-
-        self.map = Map_v2(*dimensions, type=GAME_MAP)
+        dimensions = calculate_map_size(GAME_SIZE, GAME_SHAPE)
+        self.map = Map_v2(*dimensions, type=GAME_MAP, forest_on=GAME_TREES)
 
         # initialize information about game
         self.dict_with_game_state = {

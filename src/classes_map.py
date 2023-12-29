@@ -7,7 +7,7 @@ from settings import *
 from classes_hex import *
 
 class Map:
-    def __init__(self, map_width, map_height, type="mars_plain", tile_edge_length=30, clean=False):
+    def __init__(self, map_width, map_height, type="mars_plain", tile_edge_length=30, clean=False, forest_on=False):
     # initialization of the map
         self.map_width = map_width # number of tiles horizontally
         self.map_height = map_height # number of tiles vertically
@@ -24,7 +24,7 @@ class Map:
         self.type = type
         self.BOARD = [] # 2D list with HexTiles
         if self.type == "mars_poles": self.make_mars_poles()
-        elif self.type == "lake" or self.type == "island" or self.type == "bridge": self.make_map_based_on_ellipse()
+        elif self.type == "lake" or self.type == "island" or self.type == "bridge": self.make_map_based_on_ellipse(forest_on=forest_on)
         elif self.type == "forest" or self.type == "snow_forest": self.make_forest_map()
         elif self.type == "noise": self.make_noise_map()
         else: self.make_plain()
@@ -71,7 +71,7 @@ class Map:
                 row.append(HexTile((x, y), self.id2world((x, y)), self.tile_edge_length, tile_type))
             self.BOARD.append(row)
 
-    def make_map_based_on_ellipse(self):
+    def make_map_based_on_ellipse(self, forest_on=False):
     # method preparing the board with an ellipse-based shape
         noise = PerlinNoise(octaves=12)
         center_x = self.map_width // 2
@@ -81,23 +81,28 @@ class Map:
             function = lambda x, y: 0.5 * max([abs(center_x - x) / center_x, abs(center_y - y) / center_y]) + \
                                     0.3 * ((center_x - x)**2 / center_x**2 + (center_y - y)**2 / center_y**2) - 0.2
             factor = 0.4
+            forest_correction = 0.1
         elif self.type == "island": 
             # method preparing the board in shape of island
             function = lambda x, y: 1 - (center_x - x)**2 / center_x**2 - (center_y - y)**2 / center_y**2 - 0.3
             factor = 0.45
+            forest_correction = 0.2
         elif self.type == "bridge":
             # method preparing the board in shape of bridge
             function = lambda x, y: (center_x - abs(center_x - x))**2 / (center_x**2) * 0.5 + 1 * abs(center_y - y)**2 / (center_y**2)
             factor = 0.6
+            forest_correction = 0.1
         elif self.type == "corners":
             # method preparing the board in shape of 4 corners
             function = lambda x, y: abs((center_x - x)*(center_y - y)) / (center_x * center_y)
             factor = 0.6
+            forest_correction = 0
 
         for y in range(self.map_height):
             row = []
             for x in range(self.map_width):
-                tile_type, depth = self.decide_type_tile(function(x, y) + 0.125 * noise([x / self.map_width, y / self.map_height]), factor, forest_on = False)
+                tile_type, depth = self.decide_type_tile(function(x, y) + 0.125 * noise([x / self.map_width, y / self.map_height]), \
+                                                        factor, forest_on=forest_on, forest_correction=forest_correction)
                 if depth > 20: depth = 20
                 row.append(HexTile((x, y), self.id2world((x, y)), self.tile_edge_length, tile_type, depth))
             self.BOARD.append(row)
@@ -152,10 +157,10 @@ class Map:
                 row.append(HexTile((x, y), self.id2world((x, y)), self.tile_edge_length, tile_type, depth))
             self.BOARD.append(row)
 
-    def decide_type_tile(self, fun, factor, forest_on = True):
+    def decide_type_tile(self, fun, factor, forest_on=False, forest_correction=0):
     # return type of tile depending on the result of the function
         depth = int(abs(factor - fun) * 20 / factor)
-        if fun > factor * 1.9 and forest_on: tile_type = "forest"
+        if (fun > factor * 1.9 - forest_correction) and forest_on: tile_type = "forest"
         elif fun > factor * 1.3: tile_type = "grass"
         elif fun > factor: tile_type = "sand"
         elif fun > factor * 0.7: tile_type = "shallow"
@@ -188,9 +193,9 @@ class Map:
     # find places for naval factories
         places_found = 0
         x_id = 4
-        while x_id < self.map_width // 2 and places_found < factories_per_player:
+        while x_id < self.map_width // 2 - min_dist // 2 and places_found < factories_per_player:
             y_id = 7
-            while y_id < self.map_height // 3 and places_found < factories_per_player:
+            while y_id < self.map_height // 3 - min_dist // 2 and places_found < factories_per_player:
                 if self.BOARD[y_id][x_id].type == "shallow" and \
                             self.BOARD[y_id][x_id].depth in [3] and \
                             self.check_collision_with_buildings_on_list(self.places_for_land_factories, [x_id, y_id], min_dist) and \
@@ -430,12 +435,14 @@ class Map:
 
         return (x_id, y_id)
 
+
 # ==========================================================
 
+
 class Map_v2(Map):
-    def __init__(self, map_width, map_height, type="snow_plain", tile_edge_length=25, clean=False):
+    def __init__(self, map_width, map_height, type="snow_plain", tile_edge_length=25, clean=False, forest_on=False):
     # initialization of the map
-        Map.__init__(self, map_width, map_height, type, tile_edge_length, clean)
+        Map.__init__(self, map_width, map_height, type, tile_edge_length, clean, forest_on=forest_on)
 
         self.map_sprite_width_world = (self.map_width * 2 - 1) * self.inner_tile_radius
         self.map_sprite_height_world = (self.map_height - 1) * self.outer_tile_radius * 3 / 2

@@ -13,6 +13,15 @@
 v0.15 - Map stage III
 
 ### Last changes:
+v0.15.3 - 29.12.2023
+
+* Fix of critical bug in the building queue;
+* Lot of changes in Size Choose Scene:
+    * fixed choose shape option,
+    * added currently selected map dimensions,
+    * added new trees option;  
+* Lot of small fixes.
+
 v0.15.2 - 17.12.2023
 
 * Fixes in start position on bridge map;
@@ -22,18 +31,6 @@ v0.15.1 - 09.12.2023
 
 * New algorythm for finding places for land factories;
 * New algorythm for finding places for generators.
-
-v0.15.0 - 07.12.2023
-
-* New map generating algorithm: map island has more water, map lake is more square.
-
-v0.14.7 - 18.11.2023
-
-* Fixes regarding scroll mouse button in game setup scenes.
-
-v0.14.6 - 08.11.2023
-
-* Added animation of a battle on Title Scene.
 
 
 <p align="center">

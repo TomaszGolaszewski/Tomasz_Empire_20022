@@ -18,6 +18,24 @@ def calculate_energy(dict_with_game_state):
         dict_with_game_state["list_with_energy_current_production"][i] = dict_with_game_state["list_with_energy"][i] - dict_with_game_state["list_with_energy_last"][i]
     dict_with_game_state["list_with_energy_last"] = dict_with_game_state["list_with_energy"].copy()
 
+def calculate_map_size(size, shape):
+# calculate dimensions of the map based on the given size and shape
+# return tuple with calculated dimensions
+    if size == "S": base_dimension = 80 # (80, 100) # old standard
+    elif size == "M": base_dimension = 120 # (120, 150) # new standard
+    elif size == "L": base_dimension = 150 # (150, 200)
+    elif size == "XL": base_dimension = 200
+    else: base_dimension = 50
+
+    if shape == "horizontal": return (base_dimension, int(round(base_dimension * 1.6, -1))) # Golden Ratio = 1.618
+    elif shape == "vertical": return (int(round(base_dimension * 1.6, -1)), base_dimension)
+    else: return (base_dimension, base_dimension)
+
+def prepare_label_with_map_size(size, shape):
+# prepare label with calculated dimensions of the map based on the given size and shape
+# return string with calculated dimensions
+    x, y = calculate_map_size(size, shape)
+    return str(x) + "x" + str(y)
 
 def draw_infos_about_players(win, dict_with_game_state):
 # write information about the energy processed by players on the screen 

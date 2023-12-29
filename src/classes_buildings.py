@@ -328,10 +328,13 @@ class Factory(Building):
 
     def start_production(self):
     # start production of new unit
+        self.BP = 0
         if len(self.list_building_queue) > 0:
-            self.BP = 0
             self.base_BP = self.list_building_queue[0].price
             self.production_is_on = True
+        else:
+            self.base_BP = 100
+            self.production_is_on = False
 
     def add_unit_to_queue(self, dict_with_game_state, unit):
     # add new unit to building queue

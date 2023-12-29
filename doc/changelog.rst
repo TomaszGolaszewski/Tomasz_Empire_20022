@@ -1,6 +1,15 @@
 Changelog
 ======
 
+v0.15.3 - 29.12.2023
+----
+* Fix of critical bug in the building queue;
+* Lot of changes in Size Choose Scene:
+    * fixed choose shape option,
+    * added currently selected map dimensions,
+    * added new trees option;  
+* Lot of small fixes.
+
 v0.15.2 - 17.12.2023
 ----
 * Fixes in start position on bridge map;
