@@ -23,7 +23,7 @@ def calculate_map_size(size, shape):
 # return tuple with calculated dimensions
     if size == "S": base_dimension = 80 # (80, 100) # old standard
     elif size == "M": base_dimension = 120 # (120, 150) # new standard
-    elif size == "L": base_dimension = 150 # (150, 200)
+    elif size == "L": base_dimension = 160 # (150, 200)
     elif size == "XL": base_dimension = 200
     else: base_dimension = 50
 

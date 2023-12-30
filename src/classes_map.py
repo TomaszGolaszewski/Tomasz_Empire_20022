@@ -279,7 +279,7 @@ class Map:
             temp_coord = move_point(temp_coord, self.tile_edge_length, angle)
             traveled_dist += self.tile_edge_length
             temp_file_type = self.get_tile_type(temp_coord)
-            if temp_file_type == "water" or temp_file_type == "concrete" or temp_file_type == "submerged_concrete": return False
+            if temp_file_type in ["water", "concrete", "submerged_concrete"]: return False
         return True
     
     def check_water_path(self, start_point, end_point):
@@ -299,7 +299,7 @@ class Map:
     def find_safe_middle_point(self, start_point, angle, is_land_unit=True):
     # return safe point closest to start_point on traverse to angle
         if is_land_unit:
-            safe_tile_function = lambda temp_file_type: temp_file_type != "water" and temp_file_type != "concrete" and temp_file_type != "submerged_concrete"
+            safe_tile_function = lambda temp_file_type: temp_file_type not in ["water", "concrete", "submerged_concrete", "out_of_map"]
         else:
             safe_tile_function = lambda temp_file_type: temp_file_type == "water" # or temp_file_type == "shallow"
         # check start point
@@ -316,6 +316,8 @@ class Map:
             left_i += 1
             left_file_type = self.get_tile_type(left_point)
             if safe_tile_function(left_file_type): break
+        else:
+            left_i += 50 # penalty points for leaving the map
         # check right side
         right_angle = angle + math.pi / 2
         right_i = 0
@@ -326,6 +328,8 @@ class Map:
             right_i += 1
             right_file_type = self.get_tile_type(right_point)
             if safe_tile_function(right_file_type): break
+        else:
+            right_i += 50 # penalty points for leaving the map
         # choose closer point
         if left_i < right_i: return left_point
         else: return right_point
@@ -386,7 +390,7 @@ class Map:
 
     def change_tile_type(self, x_id, y_id, new_type, depth=0):
     # change type of tile
-        if 0 <= x_id  and x_id < self.map_width and 0 <= y_id  and y_id < self.map_height:
+        if 0 <= x_id and x_id < self.map_width and 0 <= y_id  and y_id < self.map_height:
             self.BOARD[y_id][x_id].set_type(new_type, depth)
 
     def change_tile_type_during_simulation(self, x_id, y_id, new_type, depth=0):
@@ -396,14 +400,14 @@ class Map:
     def get_tile_type(self, coord):
     # return the tile type
         x_id, y_id = self.world2id(coord)
-        if 0 <= x_id  and x_id < self.map_width and 0 <= y_id and y_id < self.map_height:
+        if 0 <= x_id and x_id < self.map_width and 0 <= y_id and y_id < self.map_height:
             return self.BOARD[y_id][x_id].type
         else: return "out_of_map"
 
     def get_tile_degradation_level(self, coord):
     # return the tile degradation level
         x_id, y_id = self.world2id(coord)
-        if 0 <= x_id  and x_id < self.map_width and 0 <= y_id and y_id < self.map_height:
+        if 0 <= x_id and x_id < self.map_width and 0 <= y_id and y_id < self.map_height:
             return self.BOARD[y_id][x_id].degradation_level
         else: return -1
 

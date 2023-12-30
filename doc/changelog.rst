@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.15.4 - 30.12.2023
+----
+* Fixes in pathfinding algorithm regarding units leaving the map.
+
 v0.15.3 - 29.12.2023
 ----
 * Fix of critical bug in the building queue;
