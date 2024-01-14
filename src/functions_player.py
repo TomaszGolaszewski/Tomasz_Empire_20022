@@ -27,8 +27,8 @@ def calculate_map_size(size, shape):
     elif size == "XL": base_dimension = 200
     else: base_dimension = 50
 
-    if shape == "horizontal": return (base_dimension, int(round(base_dimension * 1.6, -1))) # Golden Ratio = 1.618
-    elif shape == "vertical": return (int(round(base_dimension * 1.6, -1)), base_dimension)
+    if shape == "horizontal": return (base_dimension, int(round(base_dimension * 1.4, -1))) # Golden Ratio = 1.618
+    elif shape == "vertical": return (int(round(base_dimension * 1.4, -1)), base_dimension)
     else: return (base_dimension, base_dimension)
 
 def prepare_label_with_map_size(size, shape):
@@ -251,8 +251,10 @@ def get_coord_on_spiral(unit_n, center, step_size):
 
 
 def center_view_on_commander(dict_with_units, scale, player_id):
+# center view on Commander unit
     for unit_id in dict_with_units:
         if dict_with_units[unit_id].player_id == player_id \
                     and dict_with_units[unit_id].name == "Commander":
             x, y = dict_with_units[unit_id].coord 
             return -x + WIN_WIDTH // scale // 2, -y + WIN_HEIGHT // scale // 2
+    return -WIN_WIDTH // scale // 2, -WIN_HEIGHT // scale // 2

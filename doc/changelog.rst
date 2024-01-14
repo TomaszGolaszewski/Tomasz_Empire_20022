@@ -1,6 +1,11 @@
 Changelog
 ======
 
+v0.15.5 - 14.01.2024
+----
+* Minor changes;
+* Code cleaning.
+
 v0.15.4 - 30.12.2023
 ----
 * Fixes in pathfinding algorithm regarding units leaving the map.
