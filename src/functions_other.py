@@ -1,4 +1,11 @@
 
+def search_in_dict(dictionary, function):
+# search dictionary for items that meet the criteria provided in function
+    result = []
+    for key in dictionary:
+        if function(dictionary[key]):
+            result.append(key)
+    return result
 
 def remove_few_dead_elements_from_list(list):
 # function removes dead elements from list - good for a few dead elements

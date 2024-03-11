@@ -55,6 +55,20 @@ def make_start_units(map, dict_with_game_state, dict_with_units):
         id += 1
         dict_with_units[id] = Super_space_marine(id, [place[0] + 90, place[1]], angle, i+1, i+1)
         id += 1
+    # dict_with_units[id] = Aircraft_carrier(id, [4000, 1000], 0, 3, 3)
+    # id += 1
+    # dict_with_units[id] = Battleship(id, [4000, 1200], 0, 3, 3)
+    # id += 1
+    # dict_with_units[id] = Battleship(id, [4000, 1400], 0, 3, 3)
+    # id += 1
+    # dict_with_units[id] = Fighter(id, [4000, 200], 0, 3, 3)
+    # id += 1
+    # dict_with_units[id] = Fighter(id, [4000, 300], 0, 3, 3)
+    # id += 1
+    # dict_with_units[id] = Fighter(id, [4000, 400], 0, 3, 3)
+    # id += 1
+    # dict_with_units[id] = Fighter(id, [4000, 500], 0, 3, 3)
+    # id += 1
     dict_with_game_state["lowest_free_id"] = id
 
 def make_more_units_for_title_scene(map, dict_with_game_state, dict_with_units):

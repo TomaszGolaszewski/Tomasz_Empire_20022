@@ -36,6 +36,8 @@ DESTROYER_PATH = ["imgs","vehicles","destroyer.bmp"]
 DESTROYER_FRAMES = 4
 BATTLESHIP_PATH = ["imgs","vehicles","battleship.bmp"]
 BATTLESHIP_FRAMES = 4
+AIRCRAFT_CARRIER_PATH = ["imgs","vehicles","aircraft_carrier.bmp"]
+AIRCRAFT_CARRIER_FRAMES = 4
 # planes
 PLANE_PATH = ["imgs","vehicles","plane.bmp"]
 PLANE_FRAMES = 3

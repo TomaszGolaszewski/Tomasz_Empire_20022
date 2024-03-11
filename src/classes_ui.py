@@ -41,6 +41,9 @@ class Info_about_unit(Base_window):
         self.base_HP = dict_with_units[id].base_HP
         self.player_id = dict_with_units[id].player_id
         self.team_id = dict_with_units[id].team_id
+        self.unit_type = dict_with_units[id].unit_type
+        if self.unit_type == "air":
+            self.base_fuel = dict_with_units[id].base_fuel
         # variables for managing the graphics window
         window_height = 190
         window_width = 330
@@ -77,18 +80,23 @@ class Info_about_unit(Base_window):
                 # infos about unit
                 # column I
                 win.blit(self.name_text, [self.window_rect.left + 30, self.window_rect.top + 10])
+                offset_for_air = 0
                 if dict_with_units[self.id].is_alive:
                     percentage_of_HP = dict_with_units[self.id].HP / self.base_HP
                     if percentage_of_HP > 0.5: color = LIME
                     elif percentage_of_HP > 0.25: color = YELLOW
                     else: color = RED
                     HP_text = self.font_arial_20.render("HP: " + str(dict_with_units[self.id].HP) + " / " + str(self.base_HP), True, color)          
+                    if self.unit_type == "air":
+                        fuel_text = self.font_arial_20.render("Fuel: " + str(dict_with_units[self.id].fuel) + " / " + str(self.base_fuel), True, WATER)
+                        win.blit(fuel_text, [self.window_rect.left + 10, self.window_rect.top + 50])
+                        offset_for_air = 20
                 else:
                     HP_text = self.font_arial_20.render("Unit is dead", True, GRAY)  
                 win.blit(HP_text, [self.window_rect.left + 10, self.window_rect.top + 30])
-                win.blit(self.id_text, [self.window_rect.left + 10, self.window_rect.top + 50])
-                win.blit(self.price_text, [self.window_rect.left + 10, self.window_rect.top + 80])
-                win.blit(self.speed_text, [self.window_rect.left + 10, self.window_rect.top + 95])
+                win.blit(self.id_text, [self.window_rect.left + 10, self.window_rect.top + 50 + offset_for_air])
+                win.blit(self.price_text, [self.window_rect.left + 10, self.window_rect.top + 80 + offset_for_air])
+                win.blit(self.speed_text, [self.window_rect.left + 10, self.window_rect.top + 95 + offset_for_air])
                 # column II
                 i = 0
                 for weapon_data_text in self.weapons_data_texts:
@@ -114,6 +122,9 @@ class Shop_unit_label: #(Base_window):
         self.base_HP = unit.base_HP
         self.player_id = unit.player_id
         self.team_id = unit.team_id
+        self.unit_type = unit.unit_type 
+        if self.unit_type == "air":
+            self.base_fuel = unit.base_fuel      
         # variables for managing the graphics window
         self.extra_wide = extra_wide
         self.origin = origin
@@ -128,6 +139,10 @@ class Shop_unit_label: #(Base_window):
         self.name_text = self.font_arial_20.render(self.name, True, LIME)
         self.HP_text = self.font_arial_15.render("HP:  " + str(unit.base_HP), True, GRAY)
         self.speed_text = self.font_arial_15.render("Speed:  " + str(unit.v_max), True, GRAY)
+        self.offset_for_air = 0
+        if self.unit_type == "air":
+            self.fuel_text = self.font_arial_15.render("Fuel:  " + str(self.base_fuel), True, GRAY)
+            self.offset_for_air = 15
         self.weapons_data_texts = [self.font_arial_15.render("Weapons:", True, GRAY)]
         for weapon in unit.Weapons:
             self.weapons_data_texts.append(self.font_arial_15.render("-" + weapon.description, True, GRAY))
@@ -151,14 +166,17 @@ class Shop_unit_label: #(Base_window):
         price_text = self.font_arial_15.render("Cost:  " + str(self.price), True, color)
         win.blit(price_text, [self.window_rect.left + 10, self.window_rect.top + 35])
         win.blit(self.HP_text, [self.window_rect.left + 10, self.window_rect.top + 50])
-        win.blit(self.speed_text, [self.window_rect.left + 10, self.window_rect.top + 65])
+        win.blit(self.speed_text, [self.window_rect.left + 10, self.window_rect.top + 65 + self.offset_for_air])
+        if self.unit_type == "air":
+             win.blit(self.fuel_text, [self.window_rect.left + 10, self.window_rect.top + 65])
+
         # column II
         i = 0
         for weapon_data_text in self.weapons_data_texts:
             if self.extra_wide:
                 win.blit(weapon_data_text, [self.window_rect.left + 130, self.window_rect.top + 10 + 15*i])
             else:
-                win.blit(weapon_data_text, [self.window_rect.left + 10, self.window_rect.top + 85 + 15*i])
+                win.blit(weapon_data_text, [self.window_rect.left + 10, self.window_rect.top + 85 + 15*i + self.offset_for_air])
             i += 1
 
     def press_left(self, dict_with_game_state, dict_with_units, press_coord):
@@ -319,7 +337,7 @@ class Page_navy_T1(Page_with_shop):
 class Page_navy_T2(Page_with_shop):
     name = "T2"
     unlock_level = 2
-    Product_classes = [Battle_cruiser]
+    Product_classes = [Battle_cruiser, Aircraft_carrier]
 
 class Page_navy_T3(Page_with_shop):
     name = "T3"

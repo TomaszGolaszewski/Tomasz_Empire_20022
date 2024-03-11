@@ -499,6 +499,13 @@ class Air_unit(Unit):
     unit_type = "air"
     visibility_after_death = FRAMERATE * 3
 
+    def __init__(self, id, coord, angle, player_id, team_id, factory_id=0):
+    # initialization of the unit
+        Unit.__init__(self, id, coord, angle, player_id, team_id, factory_id)
+        self.base_fuel = self.base.base_fuel
+        self.fuel = self.base.base_fuel
+        self.countdown_to_search_for_airport = FRAMERATE
+    
     def draw_unit_type_icon(self, win, coord_on_screen):
     # draw unit type icon - land / AIR / navy / etc.
 
@@ -507,6 +514,46 @@ class Air_unit(Unit):
             (coord_on_screen[0] - 6, coord_on_screen[1] + 5),
             (coord_on_screen[0] + 6, coord_on_screen[1] + 5)
         ], 0)    
+
+    def draw_HP(self, win, offset_x, offset_y, scale):
+    # draw HP bar
+        Unit.draw_HP(self, win, offset_x, offset_y, scale)
+        # draw status of fuel
+        if self.fuel > 0:
+            start_point = [self.coord[0] - 12 * scale, self.coord[1] + 15 * scale]
+            percentage_of_BP = self.fuel / self.base_fuel
+            pygame.draw.line(win, BLUE, 
+                    world2screen(start_point, offset_x, offset_y, scale), 
+                    world2screen([start_point[0] + 24 * percentage_of_BP * scale, start_point[1]], offset_x, offset_y, scale), int(3 * scale))
+
+    def run(self, map, dict_with_game_state, dict_with_units, list_with_bullets):
+    # life-cycle of the unit 
+        Unit.run(self, map, dict_with_game_state, dict_with_units, list_with_bullets)  
+        if self.is_alive:
+            # consume fuel
+            if self.fuel <= 0:
+                self.get_hit(map, 1)
+            else:
+                self.fuel -= 1
+                self.base.fuel = self.fuel
+
+            # search for an airport 
+            if not self.countdown_to_search_for_airport:
+                self.countdown_to_search_for_airport = FRAMERATE
+                # refuel
+                if dist_two_points(self.coord, self.base.airport) < 100:
+                    self.fuel = self.base_fuel
+                    self.base.fuel = self.fuel
+                # find the nearest airport
+                current_dist = math.hypot(self.coord[0]-self.base.airport[0], self.coord[1]-self.base.airport[1])
+                for unit_id in dict_with_units:
+                    if dict_with_units[unit_id].team_id == self.team_id and dict_with_units[unit_id].name in ["Land factory", "Aircraft carrier"]:
+                        dist = math.hypot(self.coord[0]-dict_with_units[unit_id].coord[0], self.coord[1]-dict_with_units[unit_id].coord[1])
+                        if dist < current_dist:
+                            current_dist = dist
+                            self.base.airport = dict_with_units[unit_id].coord
+            else:
+                self.countdown_to_search_for_airport -= 1
 
     def is_valid_target_for_AI(self, unit_type):
     # checks (by unit type) if the target can be targeted
@@ -656,3 +703,18 @@ class Battleship(Small_AA_ship):
                     (Minigun, (-40, -23, math.pi))]
     unit_level = 3
     price = FRAMERATE * 120
+
+class Aircraft_carrier(Naval_unit):
+    name = "Aircraft carrier"
+    Vehicle_class = Aircraft_carrier_body
+    Weapon_classes = [(Minigun, (-7, 23, 3*math.pi/2)),
+                    (Minigun, (-63, 23, 3*math.pi/2)),
+                    (Minigun, (13, -23, math.pi/2))]
+    unit_level = 2
+    price = FRAMERATE * 100
+
+    def draw_unit_application_icon(self, win, coord_on_screen):
+    # draw unit application icon - tank / anti-aircraft / bomber / etc.
+        # A
+        pygame.draw.line(win, WHITE, [coord_on_screen[0] - 3, coord_on_screen[1] + 3], [coord_on_screen[0], coord_on_screen[1] - 3], 1) # /
+        pygame.draw.line(win, WHITE, [coord_on_screen[0] + 3, coord_on_screen[1] + 3], [coord_on_screen[0], coord_on_screen[1] - 3], 1) # \

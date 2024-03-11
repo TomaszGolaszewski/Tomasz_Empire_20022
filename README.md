@@ -27,9 +27,14 @@ From modern army to cutting-edge more and more futuristic technology, strategica
 </p>
 
 ### Current stage:
-v0.15 - Map stage III
+v0.16 - Planes stage II
 
 ### Last changes:
+v0.16.0 - 11.03.2024
+
+* New unit: Aircraft_carrier;
+* New fuel consumption mechanics for aircraft.
+
 v0.15.5 - 14.01.2024
 * Minor changes;
 * Code cleaning.
