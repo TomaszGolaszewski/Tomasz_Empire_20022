@@ -25,26 +25,32 @@ class Plane(Vehicle):
     # initialization of the Plane
         Vehicle.__init__(self, id, coord, angle, player_id, team_id, factory_id)
         self.fuel = self.base_fuel
-        self.airport = coord
+        self.airport = factory_id
+        self.airport_coord = coord
 
     def draw_extra_data(self, win, offset_x, offset_y, scale):
     # draw extra data about the Plane on the screen
         Vehicle.draw_extra_data(self, win, offset_x, offset_y, scale)
         # draw line to airport
-        pygame.draw.line(win, YELLOW, world2screen(self.coord, offset_x, offset_y, scale), world2screen(self.airport, offset_x, offset_y, scale))
-        pygame.draw.circle(win, YELLOW, world2screen(self.airport, offset_x, offset_y, scale), 10*scale, 1)
+        if self.airport:
+            pygame.draw.line(win, YELLOW, world2screen(self.coord, offset_x, offset_y, scale), world2screen(self.airport_coord, offset_x, offset_y, scale))
+            pygame.draw.circle(win, YELLOW, world2screen(self.airport_coord, offset_x, offset_y, scale), 10*scale, 1)
         
     def draw_movement_target(self, win, offset_x, offset_y, scale):
     # draw extra data about the Plane movement target
         Vehicle.draw_movement_target(self, win, offset_x, offset_y, scale)
         # draw line to airport if fuel level is low
-        if self.fuel < 0.5 * self.base_fuel:
-            pygame.draw.line(win, YELLOW, world2screen(self.coord, offset_x, offset_y, scale), world2screen(self.airport, offset_x, offset_y, scale))
-            pygame.draw.circle(win, YELLOW, world2screen(self.airport, offset_x, offset_y, scale), 10*scale, 1)
+        if self.fuel < 0.5 * self.base_fuel and self.airport:
+            pygame.draw.line(win, YELLOW, world2screen(self.coord, offset_x, offset_y, scale), world2screen(self.airport_coord, offset_x, offset_y, scale))
+            pygame.draw.circle(win, YELLOW, world2screen(self.airport_coord, offset_x, offset_y, scale), 10*scale, 1)
 
     def run(self, map, dict_with_units):
     # life-cycle of the Plane
-        if self.fuel > 0.5 * self.base_fuel:
+        if self.fuel > 0.5 * self.base_fuel or \
+                    not dict_with_units.get(self.airport, False) or \
+                    (dict_with_units.get(self.airport, False) and \
+                    (dict_with_units[self.airport].team_id != self.team_id or \
+                    not dict_with_units[self.airport].is_alive)):
             if len(self.movement_target):
                 dist_to_target = dist_two_points(self.coord, self.movement_target[0]) # TODO: check movement target mechanics
                 self.accelerate()
@@ -55,7 +61,7 @@ class Plane(Vehicle):
                     self.movement_target.pop(0) # remove the achieved target
         else:
             self.accelerate()
-            target_angle = angle_to_target(self.coord, self.airport)
+            target_angle = angle_to_target(self.coord, self.airport_coord)
             self.angle = turn_to_target_angle(self.angle, target_angle, self.turn_speed)
             self.coord = move_point(self.coord, self.v_current, self.angle)
 

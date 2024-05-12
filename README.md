@@ -30,6 +30,10 @@ From modern army to cutting-edge more and more futuristic technology, strategica
 v0.16 - Planes stage II
 
 ### Last changes:
+v0.16.1 - 12.05.2024
+
+* Fixes in fuel consumption mechanics.
+
 v0.16.0 - 11.03.2024
 
 * New unit: Aircraft_carrier;
@@ -49,10 +53,6 @@ v0.15.3 - 29.12.2023
     * added currently selected map dimensions,
     * added new trees option;  
 * Lot of small fixes.
-
-v0.15.2 - 17.12.2023
-* Fixes in start position on bridge map;
-* New algorythm for finding places for naval factories.
 
 
 <p align="center">

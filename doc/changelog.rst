@@ -1,6 +1,10 @@
 Changelog
 ======
 
+v0.16.1 - 12.05.2024
+----
+* Fixes in fuel consumption mechanics.
+
 v0.16.0 - 11.03.2024
 ----
 * New unit: Aircraft_carrier;

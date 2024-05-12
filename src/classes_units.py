@@ -519,7 +519,7 @@ class Air_unit(Unit):
     # draw HP bar
         Unit.draw_HP(self, win, offset_x, offset_y, scale)
         # draw status of fuel
-        if self.fuel > 0:
+        if self.is_alive and self.fuel > 0:
             start_point = [self.coord[0] - 12 * scale, self.coord[1] + 15 * scale]
             percentage_of_BP = self.fuel / self.base_fuel
             pygame.draw.line(win, BLUE, 
@@ -541,17 +541,23 @@ class Air_unit(Unit):
             if not self.countdown_to_search_for_airport:
                 self.countdown_to_search_for_airport = FRAMERATE
                 # refuel
-                if dist_two_points(self.coord, self.base.airport) < 100:
+                if dist_two_points(self.coord, self.base.airport_coord) < 100 and \
+                            dict_with_units.get(self.base.airport, False) and \
+                            (dict_with_units[self.base.airport].team_id == self.team_id and \
+                            dict_with_units[self.base.airport].is_alive):
                     self.fuel = self.base_fuel
                     self.base.fuel = self.fuel
+                    
                 # find the nearest airport
-                current_dist = math.hypot(self.coord[0]-self.base.airport[0], self.coord[1]-self.base.airport[1])
+                current_dist = 99999
+                self.base.airport = 0
                 for unit_id in dict_with_units:
                     if dict_with_units[unit_id].team_id == self.team_id and dict_with_units[unit_id].name in ["Land factory", "Aircraft carrier"]:
                         dist = math.hypot(self.coord[0]-dict_with_units[unit_id].coord[0], self.coord[1]-dict_with_units[unit_id].coord[1])
                         if dist < current_dist:
                             current_dist = dist
-                            self.base.airport = dict_with_units[unit_id].coord
+                            self.base.airport_coord = dict_with_units[unit_id].coord
+                            self.base.airport = unit_id
             else:
                 self.countdown_to_search_for_airport -= 1
 
